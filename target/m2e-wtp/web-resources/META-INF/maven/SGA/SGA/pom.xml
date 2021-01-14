@@ -63,6 +63,13 @@
             <version>1.18.16</version>
             <scope>provided</scope>
         </dependency>
+        
+        <dependency>
+		    <groupId>org.hibernate.orm</groupId>
+		    <artifactId>hibernate-c3p0</artifactId>
+		    <version>6.0.0.Alpha6</version>
+		</dependency>
+        
 
     </dependencies>
 </project>

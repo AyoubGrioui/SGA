@@ -1,6 +1,6 @@
 package com.sga.entities;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 import javax.persistence.Entity;
 import javax.persistence.PrimaryKeyJoinColumn;
@@ -21,7 +21,7 @@ import lombok.Setter;
 public class DonCheque extends Don {
 	private static final long serialVersionUID = 4912258162784610425L;
 	private String numeroCompteBanque;
-	private LocalDateTime dateCheque;
-	private LocalDateTime dateDepot;
+	private LocalDate dateCheque;
+	private LocalDate dateDepot;
 	private String nomBanque;
 }

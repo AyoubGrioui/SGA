@@ -1,7 +1,7 @@
 package com.sga.entities;
 
 import java.io.Serializable;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -31,7 +31,7 @@ public class Adherent implements Serializable {
 	private String nom;
 	private String prenom;
 	private String cin;
-	private LocalDateTime dateNaissance;
+	private LocalDate dateNaissance;
 	private String lieuNaissance;
 	private String dateAdhesion;
 	private String profession;

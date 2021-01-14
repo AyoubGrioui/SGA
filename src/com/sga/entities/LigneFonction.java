@@ -1,7 +1,7 @@
 package com.sga.entities;
 
 import java.io.Serializable;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -25,6 +25,6 @@ public class LigneFonction implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long idLigneFonction;
-	private LocalDateTime dateDebut;
-	private LocalDateTime dateFin;
+	private LocalDate dateDebut;
+	private LocalDate dateFin;
 }

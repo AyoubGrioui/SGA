@@ -16,7 +16,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class DonneurMorale extends Donneur {
+public class DonneurMoral extends Donneur {
 	private static final long serialVersionUID = 8626659034469556559L;
 	private String nom;
 }

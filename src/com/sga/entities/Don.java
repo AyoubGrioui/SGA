@@ -1,7 +1,7 @@
 package com.sga.entities;
 
 import java.io.Serializable;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -28,6 +28,6 @@ public abstract class Don implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long idDon;
-	private LocalDateTime dateDon;
+	private LocalDate dateDon;
 	private Double montant;
 }

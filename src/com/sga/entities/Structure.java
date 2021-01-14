@@ -1,7 +1,7 @@
 package com.sga.entities;
 
 import java.io.Serializable;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -31,7 +31,7 @@ public class Structure implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long idStructure;
 	private String nom;
-	private LocalDateTime dateCreation;
+	private LocalDate dateCreation;
 	private String email;
 	private String adresse;
 	private String siteWeb;

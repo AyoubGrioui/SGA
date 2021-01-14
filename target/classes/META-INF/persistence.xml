@@ -14,14 +14,14 @@
         <class>com.sga.entities.DonVersement</class>
         <class>com.sga.entities.DonEspece</class>
         <class>com.sga.entities.Donneur</class>
-        <class>com.sga.entities.DonneurMorale</class>
+        <class>com.sga.entities.DonneurMoral</class>
         <class>com.sga.entities.DonneurPhysique</class>
         <class>com.sga.entities.Fonction</class>
         <class>com.sga.entities.LigneFonction</class>
         <class>com.sga.entities.Structure</class>
 
         <properties>
-            <property name="javax.persistence.jdbc.driver" value="org.cj.mysql.jdbc.Driver" />
+            <property name="javax.persistence.jdbc.driver" value="com.mysql.cj.jdbc.Driver" />
             <property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/SGA?serverTimezone=UTC" />
             <property name="javax.persistence.jdbc.user" value="digitals" />
             <property name="javax.persistence.jdbc.password" value="digitals2021" />

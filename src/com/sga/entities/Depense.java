@@ -1,7 +1,7 @@
 package com.sga.entities;
 
 import java.io.Serializable;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -26,7 +26,7 @@ public class Depense implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long idDepense;
 	private Double montant;
-	private LocalDateTime dateDepense;
+	private LocalDate dateDepense;
 	private String typeDepense;
 
 }
