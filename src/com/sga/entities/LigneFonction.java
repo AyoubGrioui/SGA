@@ -8,6 +8,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Past;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -25,6 +27,10 @@ public class LigneFonction implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long idLigneFonction;
+	@NotEmpty(message = "Merci d'entrer la date de debut.")
+	@Past(message = "la date de debut est incorrecte.")
 	private LocalDate dateDebut;
+	@NotEmpty(message = "Merci d'entrer la date de fin.")
+	@Past(message = "la date de naissance est incorrecte.")
 	private LocalDate dateFin;
 }

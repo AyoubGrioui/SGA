@@ -9,7 +9,11 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.PastOrPresent;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -28,6 +32,12 @@ public abstract class Don implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long idDon;
+	@NotBlank(message = "Merci d'entrer la date du don.")
+	@PastOrPresent(message = "la date du don est incorrecte.")
 	private LocalDate dateDon;
+	@NotBlank(message = "Merci d'entrer le montant du don.")
 	private Double montant;
+	@ManyToOne
+	@JoinColumn(name = "idDonneur")
+	private Donneur donneur;
 }

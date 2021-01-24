@@ -1,22 +1,50 @@
 package com.sga.repositories;
 
-import javax.persistence.EntityManager;
-
 import com.sga.entities.Depense;
+import org.hibernate.Transaction;
 
-public class HibernateDepensePersister implements Repository<Depense> {
-	@Override
-	public Depense read(Long id) {
-		Depense object = null;
-		try {
-			EntityManager em = rf.getEntityManager();
-			object = em.find(Depense.class, id);
-		} catch (Exception e) {
-			e.printStackTrace();
-		} finally {
-			rf.close();
-		}
-		return object;
-	}
+import java.util.List;
 
+public class HibernateDepensePersister extends Repository<Depense> {
+    Transaction transaction = null;
+
+    @Override
+    public Depense read(Long idStructure) {
+        Depense obj = null;
+        try {
+            session = getSessionFactory().openSession();
+            transaction = session.getTransaction();
+            transaction.begin();
+            obj = session.find(Depense.class, idStructure);
+            transaction.commit();
+        } catch (Exception e) {
+            if (transaction != null) {
+                transaction.rollback();
+            }
+        } finally {
+            if (session != null)
+                session.close();
+            return obj;
+        }
+    }
+
+    @Override
+    public List<Depense> getAll() {
+        List<Depense> list = null;
+        try {
+            session = getSessionFactory().openSession();
+            transaction = session.getTransaction();
+            transaction.begin();
+            list = session.createQuery("from Depense").list();
+            transaction.commit();
+        } catch (Exception e) {
+            if (transaction != null) {
+                transaction.rollback();
+            }
+        } finally {
+            if (session != null)
+                session.close();
+            return list;
+        }
+    }
 }

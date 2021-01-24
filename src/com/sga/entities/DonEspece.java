@@ -1,12 +1,12 @@
 package com.sga.entities;
 
-import javax.persistence.Entity;
-import javax.persistence.PrimaryKeyJoinColumn;
-import javax.persistence.Table;
-
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
+import javax.persistence.Entity;
+import javax.persistence.PrimaryKeyJoinColumn;
+import javax.persistence.Table;
 
 @Entity
 @Table(name = "DonsEspece")
@@ -15,5 +15,5 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 public class DonEspece extends Don {
-	private static final long serialVersionUID = 2831079144558236402L;
+    private static final long serialVersionUID = 2831079144558236402L;
 }

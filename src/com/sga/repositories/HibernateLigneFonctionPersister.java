@@ -1,22 +1,50 @@
 package com.sga.repositories;
 
-import javax.persistence.EntityManager;
-
 import com.sga.entities.LigneFonction;
+import org.hibernate.Transaction;
 
-public class HibernateLigneFonctionPersister implements Repository<LigneFonction> {
-	@Override
-	public LigneFonction read(Long id) {
-		LigneFonction object = null;
-		try {
-			EntityManager em = rf.getEntityManager();
-			object = em.find(LigneFonction.class, id);
-		} catch (Exception e) {
-			e.printStackTrace();
-		} finally {
-			rf.close();
-		}
-		return object;
-	}
+import java.util.List;
 
+public class HibernateLigneFonctionPersister extends Repository<LigneFonction> {
+    Transaction transaction = null;
+
+    @Override
+    public LigneFonction read(Long idStructure) {
+        LigneFonction obj = null;
+        try {
+            session = getSessionFactory().openSession();
+            transaction = session.getTransaction();
+            transaction.begin();
+            obj = session.find(LigneFonction.class, idStructure);
+            transaction.commit();
+        } catch (Exception e) {
+            if (transaction != null) {
+                transaction.rollback();
+            }
+        } finally {
+            if (session != null)
+                session.close();
+            return obj;
+        }
+    }
+
+    @Override
+    public List<LigneFonction> getAll() {
+        List<LigneFonction> list = null;
+        try {
+            session = getSessionFactory().openSession();
+            transaction = session.getTransaction();
+            transaction.begin();
+            list = session.createQuery("from LigneFonction").list();
+            transaction.commit();
+        } catch (Exception e) {
+            if (transaction != null) {
+                transaction.rollback();
+            }
+        } finally {
+            if (session != null)
+                session.close();
+            return list;
+        }
+    }
 }

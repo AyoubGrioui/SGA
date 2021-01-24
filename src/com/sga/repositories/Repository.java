@@ -1,58 +1,75 @@
 package com.sga.repositories;
 
-import javax.persistence.EntityManager;
-import javax.persistence.EntityTransaction;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
 
-public interface Repository<DataObject> {
-	static RepositoryFactory rf = RepositoryFactory.getInstance();
+import java.util.List;
 
-	public default void create(DataObject data) {
-		EntityTransaction et = null;
-		try {
-			EntityManager em = rf.getEntityManager();
-			et = em.getTransaction();
-			et.begin();
-			em.persist(data);
-			et.commit();
-		} catch (Exception e) {
-			et.rollback();
-			e.printStackTrace();
-		} finally {
-			rf.close();
-		}
-	}
+public abstract class Repository<DataObject> {
+    RepositoryFactory rf = RepositoryFactory.getInstance();
 
-	public DataObject read(Long id);
+    Session session = null;
 
-	public default void update(DataObject data) {
-		EntityTransaction et = null;
-		try {
-			EntityManager em = rf.getEntityManager();
-			et = em.getTransaction();
-			et.begin();
-			em.persist(data);
-			et.commit();
-		} catch (Exception e) {
-			et.rollback();
-			e.printStackTrace();
-		} finally {
-			rf.close();
-		}
-	}
+    SessionFactory getSessionFactory() {
+        return rf.getSessionFactory();
+    }
 
-	public default void delete(DataObject data) {
-		EntityTransaction et = null;
-		try {
-			EntityManager em = rf.getEntityManager();
-			et = em.getTransaction();
-			et.begin();
-			em.remove(data);
-			et.commit();
-		} catch (Exception e) {
-			et.rollback();
-			e.printStackTrace();
-		} finally {
-			rf.close();
-		}
-	}
+    public abstract DataObject read(Long idStructure);
+
+    public abstract List<DataObject> getAll();
+
+    public Session getSession() {
+        return getSessionFactory().openSession();
+    }
+
+    public void create(DataObject data) {
+        try {
+            session = getSessionFactory().openSession();
+            session.beginTransaction();
+            session.save(data);
+            session.getTransaction().commit();
+        } catch (Exception e) {
+            e.printStackTrace();
+            if (session.getTransaction() != null) {
+                session.getTransaction().rollback();
+            }
+        } finally {
+            if (session != null)
+                session.close();
+        }
+    }
+
+
+    public void delete(DataObject data) {
+        try {
+            session = getSessionFactory().openSession();
+            session.getTransaction().begin();
+            session.delete(data);
+            session.getTransaction().commit();
+        } catch (Exception e) {
+            if (getSession().getTransaction() != null)
+                getSession().getTransaction().rollback();
+        } finally {
+            session.close();
+        }
+    }
+
+    public void update(DataObject s) {
+        Transaction transaction = null;
+        try {
+            session = getSessionFactory().openSession();
+            transaction = session.getTransaction();
+            transaction.begin();
+            session.update(s);
+            transaction.commit();
+        } catch (Exception e) {
+            if (transaction != null) {
+                transaction.rollback();
+            }
+        } finally {
+            if (session != null)
+                session.close();
+        }
+    }
 }

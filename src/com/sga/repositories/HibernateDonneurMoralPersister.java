@@ -1,22 +1,50 @@
 package com.sga.repositories;
 
-import javax.persistence.EntityManager;
-
 import com.sga.entities.DonneurMoral;
+import org.hibernate.Transaction;
 
-public class HibernateDonneurMoralPersister implements Repository<DonneurMoral> {
-	@Override
-	public DonneurMoral read(Long id) {
-		DonneurMoral object = null;
-		try {
-			EntityManager em = rf.getEntityManager();
-			object = em.find(DonneurMoral.class, id);
-		} catch (Exception e) {
-			e.printStackTrace();
-		} finally {
-			rf.close();
-		}
-		return object;
-	}
+import java.util.List;
 
+public class HibernateDonneurMoralPersister extends Repository<DonneurMoral> {
+    Transaction transaction = null;
+
+    @Override
+    public DonneurMoral read(Long idStructure) {
+        DonneurMoral obj = null;
+        try {
+            session = getSessionFactory().openSession();
+            transaction = session.getTransaction();
+            transaction.begin();
+            obj = session.find(DonneurMoral.class, idStructure);
+            transaction.commit();
+        } catch (Exception e) {
+            if (transaction != null) {
+                transaction.rollback();
+            }
+        } finally {
+            if (session != null)
+                session.close();
+            return obj;
+        }
+    }
+
+    @Override
+    public List<DonneurMoral> getAll() {
+        List<DonneurMoral> list = null;
+        try {
+            session = getSessionFactory().openSession();
+            transaction = session.getTransaction();
+            transaction.begin();
+            list = session.createQuery("from DonneurMoral").list();
+            transaction.commit();
+        } catch (Exception e) {
+            if (transaction != null) {
+                transaction.rollback();
+            }
+        } finally {
+            if (session != null)
+                session.close();
+            return list;
+        }
+    }
 }
