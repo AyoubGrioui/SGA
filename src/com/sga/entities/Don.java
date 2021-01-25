@@ -13,6 +13,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.PastOrPresent;
 
 import lombok.AllArgsConstructor;
@@ -37,6 +38,8 @@ public abstract class Don implements Serializable {
 	private LocalDate dateDon;
 	@NotBlank(message = "Merci d'entrer le montant du don.")
 	private Double montant;
+
+	@NotNull(message = "Merci de saisir les information srequises")
 	@ManyToOne
 	@JoinColumn(name = "idDonneur")
 	private Donneur donneur;

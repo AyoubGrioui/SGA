@@ -28,6 +28,7 @@ public class Fonction implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long idFonction;
+	
 	@NotBlank(message = "Merci d'entrer un role.")
 	private String role;
 

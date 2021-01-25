@@ -43,7 +43,7 @@ public class Adherent implements Serializable {
 	@Min(value = 2, message = "le prenom doit contenir au moins 2 caracteres.")
 	private String prenom;
 	@NotBlank(message = "Merci d'entrer le CIN de l'adherent.")
-	@Size(min = 8, max = 8, message = "le CIN doit contenir 8 caracteres.")
+	@Size(min = 5, max = 8, message = "le CIN doit contenir 8 caracteres.")
 	private String cin;
 	@NotBlank(message = "Merci d'entrer la date de naissance de l'adherent.")
 	@Past(message = "la date de naissance est incorrecte.")
@@ -60,7 +60,6 @@ public class Adherent implements Serializable {
 	@NotBlank(message = "Merci d'entrer le sexe de l'adherent.")
 	private String sexe;
 	@NotNull(message = "Merci d'entrer le mot de passe de l'adherent.")
-	@Min(value = 5, message = "le mot de passe doit contenir au moins 5 caracteres.")
 	private String motDePasse;
 	@NotBlank(message = "Merci d'entrer le numero de telephone de l'adherent.")
 	@Size(min = 10, max = 10, message = "le numero de telephone doit contenir 10 chiffres.")
@@ -70,6 +69,7 @@ public class Adherent implements Serializable {
 	@NotBlank(message = "Merci d'entrer l'email de l'adherent")
 	@Email(message = "Veuillez saisir une adresse email valide")
 	private String email;
+
 	@ManyToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "idLigneFonction")
 	private LigneFonction ligneFonction;
