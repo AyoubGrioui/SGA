@@ -15,6 +15,7 @@ import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.PastOrPresent;
+import javax.validation.constraints.Pattern;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -35,6 +36,7 @@ public abstract class Don implements Serializable {
 	private Long idDon;
 	@NotBlank(message = "Merci d'entrer la date du don.")
 	@PastOrPresent(message = "la date du don est incorrecte.")
+	@Pattern(regexp="^(0[1-9]|1[0-9]|2[0-9]|3[0-1])([\\/])(0[1-9]|1[0-2])([\\/])([1-2][0-9][0-9][0-9])$",message="la date n'est pas valide")
 	private LocalDate dateDon;
 	@NotBlank(message = "Merci d'entrer le montant du don.")
 	private Double montant;

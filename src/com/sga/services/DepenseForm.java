@@ -28,12 +28,7 @@ public class DepenseForm {
     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
     LocalDate temp;
 
-    private String resultat;
     private Map<String,String> erreurs=new HashMap<String,String>();
-
-    public String getResultat() {
-        return resultat;
-    }
 
     public Map<String, String> getErreurs() {
         return erreurs;
@@ -72,13 +67,6 @@ public class DepenseForm {
             depense.setTypeDepense(typedepense);
         }
 
-        if(erreurs.isEmpty()) {
-            resultat = "succes de la creation du depense";
-        }
-        else {
-            resultat= "echec de la creation du depense";
-        }
-
         RepositoryFactory repFactory = new RepositoryFactory();
         Repository rep = repFactory.getDepenseRepository();
         rep.create(depense);
@@ -113,11 +101,11 @@ public class DepenseForm {
             try {
                 temp = Double.parseDouble( montant );
                 if ( temp < 0 ) {
-                    throw new Exception( "Le montant doit être un nombre positif." );
+                    throw new Exception( "Le montant doit etre un nombre positif." );
                 }
             } catch ( NumberFormatException e ) {
                 temp = -1;
-                throw new Exception( "Le montant doit être un nombre." );
+                throw new Exception( "Le montant doit etre un nombre." );
             }
         } else {
             temp = -1;

@@ -19,9 +19,6 @@ public class DonneurMoraleForm {
 	private static final String CHAMP_NOM = "nomDonneurMorale";
 	
 	private Map<String,String> erreurs = new HashMap<String,String>();
-	private String resultat;
-	
-	
 	
 	public Map<String, String> getErreurs() {
 		return erreurs;
@@ -29,16 +26,11 @@ public class DonneurMoraleForm {
 	public void setErreurs(Map<String, String> erreurs) {
 		this.erreurs = erreurs;
 	}
-	public String getResultat() {
-		return resultat;
-	}
-	public void setResultat(String resultat) {
-		this.resultat = resultat;
-	}
-	
+
 	public DonneurMoral creerDonneurMorale(HttpServletRequest request) {
 
 		String nom = getValeurChamp(request,CHAMP_NOM);
+		
 		DonneurMoral donneurMoral = new DonneurMoral();
 
 		String message=getValidationMessage(donneurMoral,CHAMP_NOM);

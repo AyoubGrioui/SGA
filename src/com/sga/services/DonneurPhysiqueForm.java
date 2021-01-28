@@ -23,20 +23,9 @@ public class DonneurPhysiqueForm {
 	private static final String CHAMP_CIN = "cinDonneurPhysique";
 	
 	private Map<String,String> erreurs = new HashMap<String,String>();
-	private String resultat;
-	
 	
 	public Map<String, String> getErreurs() {
 		return erreurs;
-	}
-	public void setErreurs(Map<String, String> erreurs) {
-		this.erreurs = erreurs;
-	}
-	public String getResultat() {
-		return resultat;
-	}
-	public void setResultat(String resultat) {
-		this.resultat = resultat;
 	}
 	
 	public DonneurPhysique creerDonneurPhysique(HttpServletRequest request) {
@@ -69,21 +58,12 @@ public class DonneurPhysiqueForm {
 			donneurPhysique.setCin(cin);
 		}
 
-		if(erreurs.isEmpty()) {
-			resultat = "succes de la creation du depense";
-		}
-		else {
-			resultat= "echec de la creation du depense";
-		}
-
 		RepositoryFactory repFactory = new RepositoryFactory();
 		Repository rep = repFactory.getDonneurPhysiqueRepository();
 		rep.create(donneurPhysique);
 
 		return donneurPhysique;
 	}
-
-
 
 	// get validation message
 

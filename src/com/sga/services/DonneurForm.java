@@ -25,20 +25,10 @@ public class DonneurForm {
 	}
 	
 	public Donneur creerDonneur(HttpServletRequest request) {
+		
+		
 		Donneur donneur = null;
 		
 		return donneur;
 	}
-
-	private void validationTelelhpne( String telephone ) throws Exception {
-        if ( telephone != null ) {
-            if ( !telephone.matches( "^\\d+$" ) ) {
-                throw new Exception( "Le num�ro de t�l�phone doit uniquement contenir des chiffres." );
-            } else if ( telephone.length() != 10 ) {
-                throw new Exception( "Le num�ro de t�l�phone doit contenir 10 chiffres." );
-            }
-        } else {
-            throw new Exception( "Merci d'entrer un num�ro de t�l�phone." );
-        }
-    }
 }
