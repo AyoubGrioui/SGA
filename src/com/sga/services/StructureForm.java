@@ -8,6 +8,8 @@ import javax.validation.MessageInterpolator;
 import javax.validation.Validation;
 import javax.validation.Validator;
 
+import com.sga.repositories.Repository;
+import com.sga.repositories.RepositoryFactory;
 import org.hibernate.validator.messageinterpolation.ResourceBundleMessageInterpolator;
 import org.hibernate.validator.resourceloading.PlatformResourceBundleLocator;
 
@@ -94,6 +96,11 @@ public class StructureForm {
 		}else {
 			structure.setObjectif(objectif);
 		}
+
+
+		RepositoryFactory repFactory = new RepositoryFactory();
+		Repository rep = repFactory.getDonVersementRepository();
+		rep.create(structure);
 		
 		return structure;
 	}

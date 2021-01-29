@@ -1,2 +1,4 @@
-package com.sga.controllers;public class LoginController {
+package com.sga.controllers;
+
+public class LoginController {
 }

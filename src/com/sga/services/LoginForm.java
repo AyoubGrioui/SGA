@@ -1,2 +1,4 @@
-package com.sga.services;public class LoginForm {
+package com.sga.services;
+
+public class LoginForm {
 }

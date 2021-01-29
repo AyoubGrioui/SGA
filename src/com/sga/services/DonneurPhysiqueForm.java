@@ -21,20 +21,29 @@ public class DonneurPhysiqueForm {
 	private static final String CHAMP_NOM = "nomDonneurPhysique";
 	private static final String CHAMP_PRENOM = "prenomDonneurPhysique";
 	private static final String CHAMP_CIN = "cinDonneurPhysique";
-	
+	private static final String CHAMP_EMAIL = "emailDonneurMorale";
+	private static final String CHAMP_TELEPHONE = "telephoneDonneurMorale";
+	private static final String CHAMP_ADRESSE = "adresseDonneurMorale";
+	private static final String CHAMP_MOT_DE_PASSE = "motDePasseDonneurMorale";
+
+
 	private Map<String,String> erreurs = new HashMap<String,String>();
-	
+
 	public Map<String, String> getErreurs() {
 		return erreurs;
 	}
-	
+
 	public DonneurPhysique creerDonneurPhysique(HttpServletRequest request) {
-		
+
 		DonneurPhysique donneurPhysique = new DonneurPhysique();
 
 		String nom = getValeurChamp(request,CHAMP_NOM);
 		String prenom = getValeurChamp(request,CHAMP_PRENOM);
 		String cin = getValeurChamp(request,CHAMP_CIN);
+		String email = getValeurChamp(request,CHAMP_EMAIL);
+		String telephone = getValeurChamp(request,CHAMP_TELEPHONE);
+		String adresse = getValeurChamp(request,CHAMP_ADRESSE);
+		String motDePasse = getValeurChamp(request,CHAMP_MOT_DE_PASSE);
 
 		String message=getValidationMessage(donneurPhysique,CHAMP_NOM);
 		if(! (message == null)) {
@@ -56,6 +65,34 @@ public class DonneurPhysiqueForm {
 			setErreurs(CHAMP_CIN, message);
 		}else {
 			donneurPhysique.setCin(cin);
+		}
+
+		message=getValidationMessage(donneurPhysique,CHAMP_EMAIL);
+		if(! (message == null)) {
+			setErreurs(CHAMP_EMAIL, message);
+		}else {
+			donneurPhysique.setEmail(email);
+		}
+
+		message=getValidationMessage(donneurPhysique,CHAMP_TELEPHONE);
+		if(! (message == null)) {
+			setErreurs(CHAMP_TELEPHONE, message);
+		}else {
+			donneurPhysique.setTelephone(telephone);
+		}
+
+		message=getValidationMessage(donneurPhysique,CHAMP_ADRESSE);
+		if(! (message == null)) {
+			setErreurs(CHAMP_ADRESSE, message);
+		}else {
+			donneurPhysique.setAdresse(adresse);
+		}
+
+		message=getValidationMessage(donneurPhysique,CHAMP_MOT_DE_PASSE);
+		if(! (message == null)) {
+			setErreurs(CHAMP_MOT_DE_PASSE, message);
+		}else {
+			donneurPhysique.setMotDePasse(motDePasse);
 		}
 
 		RepositoryFactory repFactory = new RepositoryFactory();

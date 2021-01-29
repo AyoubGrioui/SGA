@@ -8,6 +8,8 @@ import javax.validation.MessageInterpolator;
 import javax.validation.Validation;
 import javax.validation.Validator;
 
+import com.sga.repositories.Repository;
+import com.sga.repositories.RepositoryFactory;
 import org.hibernate.validator.messageinterpolation.ResourceBundleMessageInterpolator;
 import org.hibernate.validator.resourceloading.PlatformResourceBundleLocator;
 
@@ -17,6 +19,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class DonChequeForm {
+	private static final String CHAMP_DATE_DON="dateDon";
+	private static final String CHAMP_MONTANT="montant";
+	private static final String CHAMP_DONNEUR="donneur";
 	public static final String CHAMP_NUMERO_COMPTE_BANQUE="numeroCompteBanqueDonCheque";
 	public static final String CHAMP_DATE_CHEQUE="dateChequeDonCheque";
 	public static final String CHAMP_DATE_DEPOT="dateDepotDonCheque";
@@ -37,10 +42,29 @@ public class DonChequeForm {
 		String dateCheque = getValeurChamp(request,CHAMP_DATE_CHEQUE);
 		String dateDepot = getValeurChamp(request,CHAMP_DATE_DEPOT);
 		String nomBanque = getValeurChamp(request,CHAMP_NOM_BANQUE);
+		String montant = getValeurChamp(request,CHAMP_MONTANT);
+		String dateDon =getValeurChamp(request,CHAMP_DATE_DON);
 
-		DonCheque donCheque = null;
-		
-		String message=getValidationMessage(donCheque,CHAMP_NUMERO_COMPTE_BANQUE);
+		DonCheque donCheque = new DonCheque();
+
+		String message=getValidationMessage(donCheque,CHAMP_DATE_DON);
+		if(! (message == null)) {
+			setErreurs(CHAMP_DATE_DON, message);
+		}else {
+			temp = LocalDate.parse(dateDon, formatter);
+			donCheque.setDateDon(temp);
+		}
+
+		message=getValidationMessage(donCheque,CHAMP_MONTANT);
+		double valeurMontant=-1;
+		try {
+			valeurMontant=validationMontant(montant);
+		}catch(Exception e) {
+			setErreurs(CHAMP_MONTANT, message);
+		}
+		donCheque.setMontant(valeurMontant);
+
+		message=getValidationMessage(donCheque,CHAMP_NUMERO_COMPTE_BANQUE);
 		if(! (message == null)) {
 			setErreurs(CHAMP_NUMERO_COMPTE_BANQUE, message);
 		}else {
@@ -69,10 +93,32 @@ public class DonChequeForm {
 		}else {
 			donCheque.setNomBanque(nomBanque);
 		}
-		
+
+		RepositoryFactory repFactory = new RepositoryFactory();
+		Repository rep = repFactory.getDonVersementRepository();
+		rep.create(donCheque);
+
 		return donCheque;
 	}
-
+	//validation du montant
+	private double validationMontant( String montant ) throws Exception {
+		double temp;
+		if ( montant != null ) {
+			try {
+				temp = Double.parseDouble( montant );
+				if ( temp < 0 ) {
+					throw new Exception( "Le montant doit etre un nombre positif." );
+				}
+			} catch ( NumberFormatException e ) {
+				temp = -1;
+				throw new Exception( "Le montant doit etre un nombre." );
+			}
+		} else {
+			temp = -1;
+			throw new Exception( "Merci d'entrer un montant." );
+		}
+		return temp;
+	}
 	/* ajoute un message correspondant au champ specifie a la map des erreurs */
 
 	private void setErreurs(String champ, String message) {
