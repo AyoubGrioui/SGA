@@ -17,6 +17,7 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Past;
 import javax.validation.constraints.PastOrPresent;
+import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
 import lombok.AllArgsConstructor;
@@ -36,22 +37,24 @@ public class Adherent implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long idAdherent;
-	@NotBlank(message = "Merci d'entrer le nom de l'adherent..")
+	@NotBlank(message = "Merci d'entrer le nom de l'adherent.")
 	@Min(value = 2, message = "le nom doit contenir au moins 2 caracteres.")
 	private String nom;
 	@NotBlank(message = "Merci d'entrer le prenom de l'adherent.")
 	@Min(value = 2, message = "le prenom doit contenir au moins 2 caracteres.")
 	private String prenom;
 	@NotBlank(message = "Merci d'entrer le CIN de l'adherent.")
-	@Size(min = 8, max = 8, message = "le CIN doit contenir 8 caracteres.")
+	@Size(min = 5, max = 8, message = "le CIN n'est pas valide")
 	private String cin;
 	@NotBlank(message = "Merci d'entrer la date de naissance de l'adherent.")
 	@Past(message = "la date de naissance est incorrecte.")
+	@Pattern(regexp="^(0[1-9]|1[0-9]|2[0-9]|3[0-1])([\\/])(0[1-9]|1[0-2])([\\/])([1-2][0-9][0-9][0-9])",message="la date n'est pas valide")
 	private LocalDate dateNaissance;
-	@NotBlank(message = "Merci d'entrer le lieu de naissance de l'adherent..")
+	@NotBlank(message = "Merci d'entrer le lieu de naissance de l'adherent.")
 	private String lieuNaissance;
-	@NotBlank(message = "Merci d'entrer la date d'adhesion de l'adherent..")
+	@NotBlank(message = "Merci d'entrer la date d'adhesion de l'adherent.")
 	@PastOrPresent(message = "la date d'adhesion est incorrecte.")
+	@Pattern(regexp="^(0[1-9]|1[0-9]|2[0-9]|3[0-1])([\\/])(0[1-9]|1[0-2])([\\/])([1-2][0-9][0-9][0-9])",message="la date n'est pas valide")
 	private LocalDate dateAdhesion;
 	@NotBlank(message = "Merci d'entrer la profession de l'adherent.")
 	private String profession;
@@ -60,16 +63,17 @@ public class Adherent implements Serializable {
 	@NotBlank(message = "Merci d'entrer le sexe de l'adherent.")
 	private String sexe;
 	@NotNull(message = "Merci d'entrer le mot de passe de l'adherent.")
-	@Min(value = 5, message = "le mot de passe doit contenir au moins 5 caracteres.")
 	private String motDePasse;
 	@NotBlank(message = "Merci d'entrer le numero de telephone de l'adherent.")
+	@Pattern(regexp="^\\d+$",message="le numero de telephone doit contenir uniquement des chiffres")
 	@Size(min = 10, max = 10, message = "le numero de telephone doit contenir 10 chiffres.")
 	private String telephone;
 	@NotBlank(message = "Merci d'entrer l'adresse de l'adherent.")
 	private String adresse;
-	@NotBlank(message = "Merci d'entrer l'email de l'adherent")
-	@Email(message = "Veuillez saisir une adresse email valide")
+	@NotBlank(message = "Merci d'entrer l'email de l'adherent.")
+	@Email(message = "Veuillez saisir une adresse email valide.")
 	private String email;
+
 	@ManyToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "idLigneFonction")
 	private LigneFonction ligneFonction;

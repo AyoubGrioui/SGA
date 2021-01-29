@@ -28,6 +28,6 @@ public class DonneurPhysique extends Donneur {
 	@Min(value = 2, message = "le prenom doit contenir au moins 2 caracteres.")
 	private String prenom;
 	@NotBlank(message = "Merci d'entrer le CIN du donneur.")
-	@Size(min = 8, max = 8, message = "le CIN doit contenir 8 caracteres.")
+	@Size(min = 5, max = 8, message = "le CIN n'est pas valide.")
 	private String cin;
 }
