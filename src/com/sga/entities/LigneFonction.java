@@ -29,11 +29,6 @@ public class LigneFonction implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long idLigneFonction;
-	@NotEmpty(message = "Merci d'entrer la date de debut.")
-	@PastOrPresent(message = "la date de debut est incorrecte.")
-	@Pattern(regexp="^(0[1-9]|1[0-9]|2[0-9]|3[0-1])([\\/])(0[1-9]|1[0-2])([\\/])([1-2][0-9][0-9][0-9])",message="la date n'est pas valide")
 	private LocalDate dateDebut;
-	@NotEmpty(message = "Merci d'entrer la date de fin.")
-	@Pattern(regexp="^(0[1-9]|1[0-9]|2[0-9]|3[0-1])([\\/])(0[1-9]|1[0-2])([\\/])([1-2][0-9][0-9][0-9])",message="la date n'est pas valide")
 	private LocalDate dateFin;
 }

@@ -30,20 +30,11 @@ public class Structure implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idStructure;
     @Setter
-    @NotBlank(message = "Merci d'entrer le nom de la structure.")
-    @Min(value = 2, message="le nom doit contenir au moins 2 caracteres.")
     private String nom;
-    @PastOrPresent(message= "la date de creation est incorrecte.")
-    @Pattern(regexp="^(0[1-9]|1[0-9]|2[0-9]|3[0-1])([\\/])(0[1-9]|1[0-2])([\\/])([1-2][0-9][0-9][0-9])",message="la date n'est pas valide")
     private LocalDate dateCreation;
-    @NotBlank(message = "Merci d'entrer l'email.")
-    @Email(message = "Veuillez saisir un email valide.")
     private String email;
-    @NotBlank(message = "Merci de donner l'adresse.")
     private String adresse;
-    @URL(message = "Merci de donner un url valide.")
     private String siteWeb;
-    @NotBlank(message = "Merci d'entrer l'objectif")
     private String objectif;
 
     @OneToMany(targetEntity = Adherent.class, cascade = CascadeType.ALL)

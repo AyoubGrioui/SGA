@@ -20,7 +20,5 @@ import lombok.Setter;
 @AllArgsConstructor
 public class DonVersement extends Don {
 	private static final long serialVersionUID = -3438451077900734023L;
-	@NotBlank(message = "Merci d'entrer le numero de compte.")
-	@Pattern(regexp="^\\d+$",message="le numero de compte doit contenir uniquement des chiffres")
 	private String numeroCompteBanque;
 }
