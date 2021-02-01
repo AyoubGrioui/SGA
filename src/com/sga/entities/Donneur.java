@@ -6,10 +6,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Pattern;
-import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -29,4 +25,9 @@ public abstract class Donneur implements Serializable
     @OneToMany(targetEntity = Don.class,cascade = CascadeType.ALL)
     @JoinColumn(name = "idDonneur")
     private List<Don> donList=new ArrayList<>();
+
+    @OneToOne(targetEntity = Structure.class,cascade = CascadeType.ALL)
+    @JoinColumn(name = "idStructure")
+    private  Structure structure;
+
 }
