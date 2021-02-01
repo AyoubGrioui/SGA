@@ -11,6 +11,7 @@ import javax.validation.MessageInterpolator;
 import javax.validation.Validation;
 import javax.validation.Validator;
 
+import com.sga.helpers.SGAUtil;
 import com.sga.repositories.Repository;
 import com.sga.repositories.RepositoryFactory;
 import org.hibernate.validator.messageinterpolation.ResourceBundleMessageInterpolator;
@@ -42,30 +43,30 @@ public class DepenseForm {
 
         Depense depense = new Depense();
 
-        String message=getValidationMessage(depense,CHAMP_MONTANT);
+        
         double valeurMontant=-1;
         try {
             valeurMontant=validationMontant(montant);
         }catch(Exception e) {
-            setErreurs(CHAMP_MONTANT, message);
+            setErreurs(CHAMP_MONTANT, e.getMessage());
         }
 
         depense.setMontant(valeurMontant);
 
-        message=getValidationMessage(depense,CHAMP_DATE_DEPENSE);
-        if(! (message == null)) {
-            setErreurs(CHAMP_DATE_DEPENSE, message);
-        }else {
-            temp = LocalDate.parse(dateDepense, formatter);
-            depense.setDateDepense(temp);
+        try {
+           validationTypeDepense(typedepense);
+        }catch(Exception e) {
+            setErreurs(CHAMP_TYPE_DEPENSE, typedepense);
         }
 
-        message=getValidationMessage(depense,CHAMP_TYPE_DEPENSE);
-        if(! (message == null)) {
-            setErreurs(CHAMP_TYPE_DEPENSE, message);
-        }else {
-            depense.setTypeDepense(typedepense);
+        depense.setTypeDepense(typedepense);
+        
+        try {
+            validationDate( dateDepense );
+        } catch ( Exception e ) {
+            setErreurs( CHAMP_DATE_DEPENSE, e.getMessage() );
         }
+        depense.setDateDepense(SGAUtil.StringToLocalDate(dateDepense));
 
         RepositoryFactory repFactory = new RepositoryFactory();
         Repository rep = repFactory.getDepenseRepository();
@@ -74,26 +75,6 @@ public class DepenseForm {
         return depense;
     }
 
-    // get validation message
-
-    private String getValidationMessage(Depense obj,String champ) {
-        Validator validator = Validation.byDefaultProvider()
-                .configure()
-                .messageInterpolator(
-                        (MessageInterpolator) new ResourceBundleMessageInterpolator(
-                                new PlatformResourceBundleLocator( "MyMessages" )
-                        )
-                )
-                .buildValidatorFactory()
-                .getValidator();
-
-
-        String	message = validator.validateProperty( obj,champ).iterator().next().getMessage();
-
-
-        return message;
-
-    }
     //validation du montant
     private double validationMontant( String montant ) throws Exception {
         double temp;
@@ -131,4 +112,22 @@ public class DepenseForm {
             return valeur;
         }
     }
+    
+	//validation date
+	private void validationDate( String date ) throws Exception {
+
+        if ( date == null )
+        {
+            throw new Exception( "Merci d'entrer une date." );
+        }
+
+    }
+	
+	//validation date
+	private void validationTypeDepense( String typeDepense ) throws Exception {
+
+        if ( typeDepense == null ) {
+            throw new Exception( "Merci d'entrer un type de depense." );    
+    }
+}
 }

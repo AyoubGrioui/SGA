@@ -1,15 +1,11 @@
 package com.sga.services;
 
-import com.sga.entities.Adherent;
 import com.sga.entities.Structure;
+import com.sga.repositories.Repository;
+import com.sga.repositories.RepositoryFactory;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.validation.MessageInterpolator;
-import javax.validation.Validation;
-import javax.validation.Validator;
 
-import org.hibernate.validator.messageinterpolation.ResourceBundleMessageInterpolator;
-import org.hibernate.validator.resourceloading.PlatformResourceBundleLocator;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -26,8 +22,6 @@ public class StructureForm {
 	public static final String CHAMP_SITE_WEB="siteWeb";
 	public static final String CHAMP_OBJECTIF="objectif";
 	
-	LocalDate temp;
-	DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 	
 	private Map<String,String> erreurs=new HashMap<String,String>();
 	
@@ -43,57 +37,54 @@ public class StructureForm {
 		String siteWeb = getValeurChamp(request,CHAMP_SITE_WEB);
 		String objectif = getValeurChamp(request,CHAMP_OBJECTIF);
 		
-		Structure structure = null;
+		Structure structure = new Structure();
 		
-		String message=getValidationMessage(structure,CHAMP_NOM);
-		if(! (message == null)) {
-			setErreurs(CHAMP_NOM, message);
-		}else {
-			structure.setNom(nom);
-		}
+        LocalDate date = null;
+        try {
+        	date = validationDate( dateCreation );
+        } catch ( Exception e ) {
+            setErreurs( CHAMP_DATE_CREATION, e.getMessage() );
+        }
+        structure.setDateCreation( date );
+        
+        try {
+            validationNom(nom);
+        } catch ( Exception e ) {
+            setErreurs( CHAMP_NOM, e.getMessage() );
+        }
+        structure.setNom( nom );
 		
-		message=getValidationMessage(structure,CHAMP_DATE_CREATION);
-		if(! (message == null)) {
-			setErreurs(CHAMP_DATE_CREATION, message);
-		}else {
-			temp = LocalDate.parse(dateCreation, formatter);
-			structure.setDateCreation(temp);
-		}
-	
-		message=getValidationMessage(structure,CHAMP_EMAIL);
-		if(! (message == null)) {
-			setErreurs(CHAMP_EMAIL, message);
-		}else {
-			structure.setEmail(email);
-		}
+        try {
+            validationEmail(email);
+        } catch ( Exception e ) {
+            setErreurs( CHAMP_EMAIL, e.getMessage() );
+        }
+        structure.setEmail( email );
+        
+        try {
+            validationAdresse(adresse);
+        } catch ( Exception e ) {
+            setErreurs( CHAMP_ADRESSE, e.getMessage() );
+        }
+        structure.setAdresse( adresse );
+        
+        try {
+            validationUrl(siteWeb);
+        } catch ( Exception e ) {
+            setErreurs( CHAMP_SITE_WEB, e.getMessage() );
+        }
+        structure.setSiteWeb( siteWeb );
+        
+        try {
+        	validationObjectif(objectif);
+        } catch ( Exception e ) {
+            setErreurs( CHAMP_OBJECTIF, e.getMessage() );
+        }
+        structure.setObjectif( objectif );
 		
-		message=getValidationMessage(structure,CHAMP_ADRESSE);
-		if(! (message == null)) {
-			setErreurs(CHAMP_ADRESSE, message);
-		}else {
-			structure.setAdresse(adresse);
-		}
-		
-		message=getValidationMessage(structure,CHAMP_SITE_WEB);
-		if(! (message == null)) {
-			setErreurs(CHAMP_SITE_WEB, message);
-		}else {
-			structure.setSiteWeb(siteWeb);
-		}
-		
-		message=getValidationMessage(structure,CHAMP_SITE_WEB);
-		if(! (message == null)) {
-			setErreurs(CHAMP_SITE_WEB, message);
-		}else {
-			structure.setSiteWeb(siteWeb);
-		}
-		
-		message=getValidationMessage(structure,CHAMP_OBJECTIF);
-		if(! (message == null)) {
-			setErreurs(CHAMP_OBJECTIF, message);
-		}else {
-			structure.setObjectif(objectif);
-		}
+		RepositoryFactory repFactory = new RepositoryFactory();
+		Repository rep = repFactory.getLigneFonctionRepository();
+		rep.create(structure);
 		
 		return structure;
 	}
@@ -115,25 +106,58 @@ public class StructureForm {
 			return valeur;
 		}
 	}
-	// get validation message
+	
+	//validation date
+	
+	private LocalDate validationDate( String date ) throws Exception {
+    	DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+    	LocalDate temp;
+        
+        if ( date != null ) {
+                temp = LocalDate.parse(date, formatter);      
+        } else {
+            throw new Exception( "Merci d'entrer une date." );
+        }
+        return temp;
+    }
+	//Fonction de validation du nom
+	
+	private void validationNom( String nom ) throws Exception {
+	    if ( nom != null ) {
+	        if ( nom.length() < 2 ) {
+	            throw new Exception( "Le nom  doit contenir au moins 2 caract�res." );
+	        }
+	    } else {
+	        throw new Exception( "Merci d'entrer le nom de la structure." );
+	    }
+	}
+	//Foction de validation d'un adresse email
 
-	private String getValidationMessage(Structure obj, String champ) {
-		Validator validator = Validation.byDefaultProvider()
-				.configure()
-				.messageInterpolator(
-						(MessageInterpolator) new ResourceBundleMessageInterpolator(
-								new PlatformResourceBundleLocator( "MyMessages" )
-						)
-				)
-				.buildValidatorFactory()
-				.getValidator();
-
-
-		String	message = validator.validateProperty( obj,champ).iterator().next().getMessage();
-
-
-		return message;
-
+	private void validationEmail( String email ) throws Exception {
+	    if ( email != null && !email.matches( "([^.@]+)(\\.[^.@]+)*@([^.@]+\\.)+([^.@]+)" ) ) {
+	        throw new Exception( "Merci de saisir une adresse mail valide." );
+	    }
 	}
 	
+	//fonction de validation de la fonction
+	
+	private void validationObjectif( String fonction ) throws Exception {
+	    if ( fonction == null ) {
+	        throw new Exception( "Merci de saisir une fonction." );
+	    }
+	}
+	//fonction de la validation du URL
+	
+	private void validationUrl(String url) throws Exception {
+		if(url == null)
+		{
+			throw new Exception("Merci de donner un url valide.");
+	}
+}
+	//fonction de la validation de l'adresse
+	private void validationAdresse( String adresse ) throws Exception {
+	    if ( adresse == null ) {
+	        throw new Exception( "Merci de saisir une adresse." );
+	    }
+	}
 }

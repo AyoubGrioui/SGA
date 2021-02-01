@@ -19,6 +19,5 @@ import lombok.Setter;
 @AllArgsConstructor
 public class DonneurMoral extends Donneur {
 	private static final long serialVersionUID = 8626659034469556559L;
-	@NotBlank(message = "Merci d'entrer le nom du donneur.")
 	private String nom;
 }

@@ -1,22 +1,19 @@
 package com.sga.services;
 
 import com.sga.entities.Adherent;
-import com.sga.entities.DonneurMoral;
+import com.sga.helpers.SGAUtil;
 import com.sga.repositories.Repository;
 import com.sga.repositories.RepositoryFactory;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.validation.MessageInterpolator;
-import javax.validation.Validation;
-import javax.validation.Validator;
 
-import org.hibernate.validator.messageinterpolation.ResourceBundleMessageInterpolator;
-import org.hibernate.validator.resourceloading.PlatformResourceBundleLocator;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.Map;
+
+import static com.sga.helpers.SGAUtil.*;
 
 
 public class AdherentForm {
@@ -34,9 +31,7 @@ public class AdherentForm {
 	public static final String CHAMP_TELEPHONE="telephoneAdherent";
 	public static final String CHAMP_ADRESSE="adresseAdherent";
 	public static final String CHAMP_EMAIL="emailAdherent";
-	
-	LocalDate temp;
-	DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+
 	
 	private Map<String,String> erreurs=new HashMap<String,String>();
 	
@@ -59,101 +54,103 @@ public class AdherentForm {
 		String adresse = getValeurChamp(request,CHAMP_ADRESSE);
 		String email = getValeurChamp(request,CHAMP_EMAIL);
 		
-		Adherent adherent = null;
+		Adherent adherent = new Adherent();
 		
-		String message=getValidationMessage(adherent,CHAMP_NOM);
-		if(! (message == null)) {
-			setErreurs(CHAMP_NOM, message);
-		}else {
-			adherent.setNom(nom);
-		}
 		
-		message=getValidationMessage(adherent,CHAMP_PRENOM);
-		if(! (message == null)) {
-			setErreurs(CHAMP_PRENOM, message);
-		}else {
-			adherent.setPrenom(prenom);
-		}
+
+        try {
+        	validationDate( dateNaissance );
+        } catch ( Exception e ) {
+            setErreurs( CHAMP_DATE_NAISSANCE, e.getMessage() );
+        }
+        adherent.setDateNaissance(SGAUtil.StringToLocalDate(dateNaissance) );
 		
-		message=getValidationMessage(adherent,CHAMP_CIN);
-		if(! (message == null)) {
-			setErreurs(CHAMP_CIN, message);
-		}else {
-			adherent.setCin(cin);
-		}
+        try {
+            validationDate( dateAdhesion );
+        } catch ( Exception e ) {
+            setErreurs( CHAMP_DATE_ADHESION, e.getMessage() );
+        }
+        adherent.setDateAdhesion( SGAUtil.StringToLocalDate(dateAdhesion)  );
+        
+        try {
+            validationNom(nom);
+        } catch ( Exception e ) {
+            setErreurs( CHAMP_NOM, e.getMessage() );
+        }
+        adherent.setNom( nom );
 		
-		message=getValidationMessage(adherent,CHAMP_DATE_NAISSANCE);
-		if(! (message == null)) {
-			setErreurs(CHAMP_DATE_NAISSANCE, message);
-		}else {
-			temp = LocalDate.parse(dateNaissance, formatter);
-			adherent.setDateNaissance(temp);
-		}
+        try {
+            validationPrenom(prenom);
+        } catch ( Exception e ) {
+            setErreurs( CHAMP_PRENOM, e.getMessage() );
+        }
+        adherent.setPrenom( prenom );
 		
-		message=getValidationMessage(adherent,CHAMP_LIEU_NAISSANCE);
-		if(! (message == null)) {
-			setErreurs(CHAMP_LIEU_NAISSANCE, message);
-		}else {
-			adherent.setLieuNaissance(lieuNaissance);
-		}
+        try {
+            validationCin(cin);
+        } catch ( Exception e ) {
+            setErreurs( CHAMP_CIN, e.getMessage() );
+        }
+        adherent.setCin( cin );
 		
-		message=getValidationMessage(adherent,CHAMP_DATE_ADHESION);
-		if(! (message == null)) {
-			setErreurs(CHAMP_DATE_ADHESION, message);
-		}else {
-			temp = LocalDate.parse(dateAdhesion, formatter);
-			adherent.setDateAdhesion(temp);
-		}
+        try {
+            validationLieuNaissance(lieuNaissance);
+        } catch ( Exception e ) {
+            setErreurs( CHAMP_LIEU_NAISSANCE, e.getMessage() );
+        }
+        adherent.setLieuNaissance( lieuNaissance );
 		
-		message=getValidationMessage(adherent,CHAMP_PROFESSION);
-		if(! (message == null)) {
-			setErreurs(CHAMP_PROFESSION, message);
-		}else {
-			adherent.setProfession(profession);
-		}
+        try {
+            validationProfession(profession);
+        } catch ( Exception e ) {
+            setErreurs( CHAMP_PROFESSION, e.getMessage() );
+        }
+        adherent.setProfession( profession );
 		
-		message=getValidationMessage(adherent,CHAMP_PHOTO);
-		if(! (message == null)) {
-			setErreurs(CHAMP_PHOTO, message);
-		}else {
-			adherent.setPhoto(photo);
-		}
+        try {
+            validationPhoto(photo);
+        } catch ( Exception e ) {
+            setErreurs( CHAMP_PHOTO, e.getMessage() );
+        }
+        adherent.setPhoto( photo );
 		
-		message=getValidationMessage(adherent,CHAMP_SEXE);
-		if(! (message == null)) {
-			setErreurs(CHAMP_SEXE, message);
-		}else {
-			adherent.setSexe(sexe);
-		}
+        try {
+            validationSexe(sexe);
+        } catch ( Exception e ) {
+            setErreurs( CHAMP_SEXE, e.getMessage() );
+        }
+        adherent.setSexe( sexe );
+        
+        try {
+            validationAdresse(adresse);
+        } catch ( Exception e ) {
+            setErreurs( CHAMP_ADRESSE, e.getMessage() );
+        }
+        adherent.setAdresse( adresse );
 		
-		message=getValidationMessage(adherent,CHAMP_MOT_DE_PASSE);
-		if(! (message == null)) {
-			setErreurs(CHAMP_MOT_DE_PASSE, message);
-		}else {
-			adherent.setSexe(motDePasse);
-		}
+        try {
+            validationTelephone(telephone);
+        } catch ( Exception e ) {
+            setErreurs( CHAMP_TELEPHONE, e.getMessage() );
+        }
+        adherent.setTelephone( telephone );
 		
-		message=getValidationMessage(adherent,CHAMP_TELEPHONE);
-		if(! (message == null)) {
-			setErreurs(CHAMP_TELEPHONE, message);
-		}else {
-			adherent.setTelephone(telephone);
-		}
+        try {
+            validationEmail(email);
+        } catch ( Exception e ) {
+            setErreurs( CHAMP_EMAIL, e.getMessage() );
+        }
+        adherent.setEmail( email );
 		
-		message=getValidationMessage(adherent,CHAMP_ADRESSE);
-		if(! (message == null)) {
-			setErreurs(CHAMP_ADRESSE, message);
-		}else {
-			adherent.setAdresse(adresse);
-		}
+        try {
+            validationMotDePasse(motDePasse);
+        } catch ( Exception e ) {
+            setErreurs( CHAMP_MOT_DE_PASSE, e.getMessage() );
+        }
+        adherent.setMotDePasse( motDePasse );
 		
-		message=getValidationMessage(adherent,CHAMP_EMAIL);
-		if(! (message == null)) {
-			setErreurs(CHAMP_EMAIL, message);
-		}else {
-			adherent.setEmail(email);
-		}
-		
+		//Persistance des Donnnée
+
 		RepositoryFactory repFactory = new RepositoryFactory();
 		Repository rep = repFactory.getDonneurMoralRepository();
 		rep.create(adherent);
@@ -178,25 +175,121 @@ public class AdherentForm {
 			return valeur;
 		}
 	}
-	// get validation message
+	
+	//Fonction de validation du nom
+	private void validationNom( String nom ) throws Exception {
+	    if ( nom != null ) {
+	        if ( nom.length() < 2 ) {
+	            throw new Exception( "Le nom  doit contenir au moins 2 caractéres." );
+	        }
+	    } else {
+	        throw new Exception( "Merci d'entrer le nom de l'adherent" );
+	    }
+	}
+	// Fonction de validation du prenom
+	private void validationPrenom( String prenom ) throws Exception {
+	    if ( prenom != null ) {
+	        if ( prenom.length() < 2 ) {
+	            throw new Exception( "Le prenom doit contenir au moins 2 caractéres." );
+	        }
+	    } else {
+	        throw new Exception( "Merci d'entrer le prenom de l'adherent" );
+	    }
+	}
+	//Fonction de validation du cin
+	private void validationCin( String cin ) throws Exception {
+	    if ( cin != null ) {
+	        if ( cin.length() < 5 || cin.length()>8 ) {
+	            throw new Exception( "ce CIN n'est pas valide." );
+	        }
+	    } else {
+	        throw new Exception( "Merci d'entrer le CIN de l'adherent." );
+	    }
+	}
+	
+	//validation date
+	private void validationDate( String date ) throws Exception {
 
-	private String getValidationMessage(Adherent obj, String champ) {
-		Validator validator = Validation.byDefaultProvider()
-				.configure()
-				.messageInterpolator(
-						(MessageInterpolator) new ResourceBundleMessageInterpolator(
-								new PlatformResourceBundleLocator( "MyMessages" )
-						)
-				)
-				.buildValidatorFactory()
-				.getValidator();
+        if ( date != null ) {
+                if(LocalDate.now().isBefore(SGAUtil.StringToLocalDate(date)))
+				{
+					throw new Exception("Merci d'entrer une date valide");
+				}
+        } else {
+            throw new Exception( "Merci d'entrer une date." );
+        }
+    }
+	
+	//Fonction de validation du lieu de naissance
+	private void validationLieuNaissance( String lieuNaissance ) throws Exception {
+	    if ( lieuNaissance == null ) {
+	        throw new Exception( "Merci d'entrer le lieu de naissance de l'adherent." );
+	    }
+	}
+	//Fonction de validation du profession
+	private void validationProfession( String profession ) throws Exception {
+	    if ( profession == null ) {
+	        throw new Exception( "Merci d'entrer la profession." );
+	    }
+	}
+	//Fonction de validation du photo
+	private void validationPhoto( String photo ) throws Exception {
+	    if ( photo == null ) {
+	        throw new Exception( "Merci d'entrer une photo." );
+	    }
+	}
+	
+	//Fonction de validation du de sexe
+	private void validationSexe(String sexe) throws Exception {
+		if (sexe == null) {
+			if(! sexe.equalsIgnoreCase("male") || !sexe.equalsIgnoreCase("femelle") || !sexe.equalsIgnoreCase("autre")) {
+				throw new Exception("le sexe doit etre soit 'male' , 'femelle' ou 'autre'.");
+			}
+		}
+		else {
+			throw new Exception("Merci d'entrer le sexe");
+		}
+	}
+	
+	 /*Fonction de validation de l'adresse */
 
+	private void validationAdresse(String adresse) throws Exception{
+		if( adresse != null) {
+			if(adresse.length()<6) {
+				throw new Exception("l'adresse de l'adherent doit contenir au moins 6 caracteres");
+			}
+		}
+		else {
+			throw new Exception("Merci d'entrer un adresse de l'adherent");
+		}
+	}
 
-		String	message = validator.validateProperty( obj,champ).iterator().next().getMessage();
+	/*Fonction de validation de numero de telephone */
 
+	private void validationTelephone(String telephone) throws Exception{
+		if(telephone != null) {
+			if(!telephone.matches("^\\d{10}$") ) {
+				throw new Exception("Le numero de telephone doit contenir des 10 chiffres .");
+			}
+		}
+		else {
+			throw new Exception ("Merci d'entrer un numero de telephone.");
+		}
+	}
+	
+	//Foction de validation d'un adresse email
 
-		return message;
-
+	private void validationEmail( String email ) throws Exception {
+	    if ( email != null && !email.matches( "([^.@]+)(\\.[^.@]+)*@([^.@]+\\.)+([^.@]+)" ) ) {
+	        throw new Exception( "Merci de saisir une adresse mail valide." );
+	    }
+	}
+	// a faire
+	//Foction de validation du mot de passe
+	private void validationMotDePasse( String motDePasse ) throws Exception {
+	    if ( motDePasse == null  ) {
+	        throw new Exception( "Merci de saisir un mot de passe." );
+	    }
 	}
 	
 }

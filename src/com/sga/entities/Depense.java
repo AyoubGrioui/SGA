@@ -31,16 +31,11 @@ public class Depense implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long idDepense;
-	@NotBlank(message = "Merci d'entrer l'identifiant de l'adherent.")
 	private Long idAdherent;
-	@NotBlank(message = "Merci d'entrer le montant de la depense.")
 	private Double montant;
-	@NotBlank(message = "Merci d'entrer la date de depense.")
-	@PastOrPresent(message = "la date de depense est incorrecte.")
-	@Pattern(regexp="^(0[1-9]|1[0-9]|2[0-9]|3[0-1])([\\/])(0[1-9]|1[0-2])([\\/])([1-2][0-9][0-9][0-9])",message="la date n'est pas valide")
 	private LocalDate dateDepense;
-	@NotNull(message = "Merci d'entrer le type de depense.")
 	private String typeDepense;
+
 	@ManyToOne
 	@JoinColumn(name = "idStructure")
 	private Structure structure;

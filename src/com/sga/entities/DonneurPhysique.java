@@ -21,11 +21,7 @@ import lombok.Setter;
 @AllArgsConstructor
 public class DonneurPhysique extends Donneur {
 	private static final long serialVersionUID = -1824530304311273895L;
-	@NotBlank(message = "Merci d'entrer le nom du donneur.")
-	@Min(value = 2, message = "le nom doit contenir au moins 2 caracteres.")
 	private String nom;
-	@NotBlank(message = "Merci d'entrer le nom du donneur.")
-	@Min(value = 2, message = "le prenom doit contenir au moins 2 caracteres.")
 	private String prenom;
 	@NotBlank(message = "Merci d'entrer le CIN du donneur.")
 	@Size(min = 5, max = 8, message = "le CIN n'est pas valide.")
