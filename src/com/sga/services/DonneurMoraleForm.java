@@ -19,9 +19,7 @@ public class DonneurMoraleForm {
 	
 	private Map<String,String> erreurs = new HashMap<String,String>();
 	private String resultat;
-	
-	
-	
+
 	public Map<String, String> getErreurs() {
 		return erreurs;
 	}

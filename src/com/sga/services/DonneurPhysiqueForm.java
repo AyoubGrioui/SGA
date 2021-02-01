@@ -19,16 +19,11 @@ public class DonneurPhysiqueForm {
 	private static final String CHAMP_MOT_DE_PASSE = "motDePasseDonneurMorale";
 	
 	private Map<String,String> erreurs = new HashMap<String,String>();
-	private String resultat;
-	
-	
+
 	public Map<String, String> getErreurs() {
 		return erreurs;
 	}
 	
-	public String getResultat() {
-		return resultat;
-	}
 	
 	public DonneurPhysique creerDonneurPhysique(HttpServletRequest request) {
 		
@@ -84,15 +79,6 @@ public class DonneurPhysiqueForm {
 			setErreurs(CHAMP_ADRESSE, e.getMessage());
 		}
 		donneurPhysique.setAdresse(adresse);
-		
-		
-		
-		if(erreurs.isEmpty()) {
-			resultat = "succes de la creation du donneur physique";
-		}
-		else {
-			resultat= "echec de la creation du donneur physique";
-		}
 		
 		RepositoryFactory repFactory = new RepositoryFactory();
 		Repository rep = repFactory.getDonneurPhysiqueRepository();

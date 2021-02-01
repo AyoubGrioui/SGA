@@ -16,17 +16,11 @@ public class LigneFonctionForm {
 	private static final String CHAMP_DATE_FIN = "dateFinLigneFonction";
 	
 	private Map<String,String> erreurs = new HashMap<String,String>();
-	private String resultat;
-	
-	
+
 	public Map<String, String> getErreurs() {
 		return erreurs;
 	}
-	
-	public String getResultat() {
-		return resultat;
-	}
-	
+
 	public LigneFonction creerLigneFonction(HttpServletRequest request) {
 		
 		
@@ -50,14 +44,6 @@ public class LigneFonctionForm {
 			setErreurs(CHAMP_DATE_FIN, e.getMessage());
 		}
 		ligneFonction.setDateFin(dateFinTemp);
-		
-		
-		if(erreurs.isEmpty()) {
-			resultat = "succes de la creation du client";
-		}
-		else {
-			resultat= "echec de la creation du client";
-		}
 		
 		RepositoryFactory repFactory = new RepositoryFactory();
 		Repository rep = repFactory.getLigneFonctionRepository();

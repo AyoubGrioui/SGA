@@ -14,19 +14,11 @@ public class FonctionForm {
 	private static final String CHAMP_ROLE = "roleFonction";
 	
 	private Map<String,String> erreurs = new HashMap<String,String>();
-	private String resultat;
-	
-	
-	
+
 	public Map<String, String> getErreurs() {
 		return erreurs;
 	}
-	
-	public String getResultat() {
-		return resultat;
-	}
-	
-	
+
 	public Fonction creerFonction(HttpServletRequest request) {
 		
 		String role = getValeurChamp(request, CHAMP_ROLE);
@@ -39,13 +31,6 @@ public class FonctionForm {
 			setErreurs(CHAMP_ROLE, e.getMessage());
 		}
 		fonction.setRole(role);
-		
-		if(erreurs.isEmpty()) {
-			resultat = "succes de la creation du client";
-		}
-		else {
-			resultat= "echec de la creation du client";
-		}
 		
 		RepositoryFactory repFactory = new RepositoryFactory();
 		Repository rep = repFactory.getFonctionRepository();
