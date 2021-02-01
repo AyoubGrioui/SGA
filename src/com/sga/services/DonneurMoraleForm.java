@@ -15,15 +15,11 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class DonneurMoraleForm {
-
+	
 	private static final String CHAMP_NOM = "nomDonneurMorale";
-	private static final String CHAMP_EMAIL = "emailDonneurMorale";
-	private static final String CHAMP_TELEPHONE = "telephoneDonneurMorale";
-	private static final String CHAMP_ADRESSE = "adresseDonneurMorale";
-	private static final String CHAMP_MOT_DE_PASSE = "motDePasseDonneurMorale";
-
+	
 	private Map<String,String> erreurs = new HashMap<String,String>();
-
+	
 	public Map<String, String> getErreurs() {
 		return erreurs;
 	}
@@ -34,11 +30,7 @@ public class DonneurMoraleForm {
 	public DonneurMoral creerDonneurMorale(HttpServletRequest request) {
 
 		String nom = getValeurChamp(request,CHAMP_NOM);
-		String email = getValeurChamp(request,CHAMP_EMAIL);
-		String telephone = getValeurChamp(request,CHAMP_TELEPHONE);
-		String adresse = getValeurChamp(request,CHAMP_ADRESSE);
-		String motDePasse = getValeurChamp(request,CHAMP_MOT_DE_PASSE);
-
+		
 		DonneurMoral donneurMoral = new DonneurMoral();
 
 		String message=getValidationMessage(donneurMoral,CHAMP_NOM);
@@ -48,38 +40,10 @@ public class DonneurMoraleForm {
 			donneurMoral.setNom(nom);
 		}
 
-		message=getValidationMessage(donneurMoral,CHAMP_EMAIL);
-		if(! (message == null)) {
-			setErreurs(CHAMP_EMAIL, message);
-		}else {
-			donneurMoral.setEmail(email);
-		}
-
-		message=getValidationMessage(donneurMoral,CHAMP_TELEPHONE);
-		if(! (message == null)) {
-			setErreurs(CHAMP_TELEPHONE, message);
-		}else {
-			donneurMoral.setTelephone(telephone);
-		}
-
-		message=getValidationMessage(donneurMoral,CHAMP_ADRESSE);
-		if(! (message == null)) {
-			setErreurs(CHAMP_ADRESSE, message);
-		}else {
-			donneurMoral.setAdresse(adresse);
-		}
-
-		message=getValidationMessage(donneurMoral,CHAMP_MOT_DE_PASSE);
-		if(! (message == null)) {
-			setErreurs(CHAMP_MOT_DE_PASSE, message);
-		}else {
-			donneurMoral.setMotDePasse(motDePasse);
-		}
-
 		RepositoryFactory repFactory = new RepositoryFactory();
 		Repository rep = repFactory.getDonneurMoralRepository();
 		rep.create(donneurMoral);
-
+		
 		return donneurMoral;
 	}
 
