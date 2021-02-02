@@ -1,12 +1,11 @@
 package com.sga.services;
 
 import com.sga.entities.LigneFonction;
+import com.sga.helpers.SGAUtil;
 import com.sga.repositories.Repository;
 import com.sga.repositories.RepositoryFactory;
 
 import javax.servlet.http.HttpServletRequest;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -35,21 +34,20 @@ public class LigneFonctionForm {
 
 		LigneFonction ligneFonction = new LigneFonction();
 		
-		LocalDate dateDebutTemp = null; 
+
 		try {
-			dateDebutTemp = validationDate(dateDebut);
+			validationDate(dateDebut);
 		}catch (Exception e) {
 			setErreurs(CHAMP_DATE_FIN, e.getMessage());
 		}
-		ligneFonction.setDateDebut(dateDebutTemp);
+		ligneFonction.setDateDebut(SGAUtil.StringToLocalDate(dateDebut));
 		
-		LocalDate dateFinTemp = null; 
 		try {
-			dateFinTemp = validationDate(dateFin);
+			validationDate(dateFin);
 		}catch (Exception e) {
 			setErreurs(CHAMP_DATE_FIN, e.getMessage());
 		}
-		ligneFonction.setDateFin(dateFinTemp);
+		ligneFonction.setDateFin(SGAUtil.StringToLocalDate(dateFin));
 		
 		
 		if(erreurs.isEmpty()) {
@@ -67,16 +65,12 @@ public class LigneFonctionForm {
 	}
 	
 	//validation date
-		private LocalDate validationDate( String date ) throws Exception {
-	    	DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-	    	LocalDate temp;
-	        
-	        if ( date != null ) {
-	                temp = LocalDate.parse(date, formatter);      
-	        } else {
+		private void validationDate( String date ) throws Exception {
+
+	        if(date == null)
+			{
 	            throw new Exception( "Merci d'entrer une date." );
 	        }
-	        return temp;
 	    }
 	
 	/* ajoute un message correspondant au champ specifie a la map des erreurs */

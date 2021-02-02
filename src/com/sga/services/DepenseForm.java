@@ -1,23 +1,11 @@
 package com.sga.services;
 
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import com.sga.entities.Depense;
+import com.sga.helpers.SGAUtil;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.validation.MessageInterpolator;
-import javax.validation.Validation;
-import javax.validation.Validator;
-
-import com.sga.helpers.SGAUtil;
-import com.sga.repositories.Repository;
-import com.sga.repositories.RepositoryFactory;
-import org.hibernate.validator.messageinterpolation.ResourceBundleMessageInterpolator;
-import org.hibernate.validator.resourceloading.PlatformResourceBundleLocator;
-
-import com.sga.entities.Depense;
+import java.util.HashMap;
+import java.util.Map;
 
 public class DepenseForm {
 
@@ -26,12 +14,11 @@ public class DepenseForm {
     public static final String CHAMP_DATE_DEPENSE="dateDepense";
     public static final String CHAMP_TYPE_DEPENSE="typeDepense";
 
-    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-    LocalDate temp;
 
     private Map<String,String> erreurs=new HashMap<String,String>();
 
-    public Map<String, String> getErreurs() {
+    public Map<String, String> getErreurs()
+    {
         return erreurs;
     }
 
@@ -44,13 +31,14 @@ public class DepenseForm {
         Depense depense = new Depense();
 
         
-        double valeurMontant=-1;
-        try {
+        double valeurMontant= 0;
+        try
+        {
             valeurMontant=validationMontant(montant);
-        }catch(Exception e) {
-            setErreurs(CHAMP_MONTANT, e.getMessage());
         }
-
+        catch(Exception e) {
+            setErreurs(CHAMP_MONTANT, "HALOOOO ERRORRR");
+        }
         depense.setMontant(valeurMontant);
 
         try {
@@ -68,28 +56,31 @@ public class DepenseForm {
         }
         depense.setDateDepense(SGAUtil.StringToLocalDate(dateDepense));
 
-        RepositoryFactory repFactory = new RepositoryFactory();
-        Repository rep = repFactory.getDepenseRepository();
-        rep.create(depense);
+/*        if(erreurs.isEmpty())
+        {
+            RepositoryFactory repFactory = new RepositoryFactory();
+            Repository rep = repFactory.getDepenseRepository();
+            rep.create(depense);
+        }*/
+
 
         return depense;
     }
 
     //validation du montant
     private double validationMontant( String montant ) throws Exception {
-        double temp;
-        if ( montant != null ) {
+        double temp=0;
+        if ( montant != null )
+        {
             try {
                 temp = Double.parseDouble( montant );
-                if ( temp < 0 ) {
+                if ( temp <= 0 ) {
                     throw new Exception( "Le montant doit etre un nombre positif." );
                 }
             } catch ( NumberFormatException e ) {
-                temp = -1;
                 throw new Exception( "Le montant doit etre un nombre." );
             }
         } else {
-            temp = -1;
             throw new Exception( "Merci d'entrer un montant." );
         }
         return temp;
@@ -97,7 +88,8 @@ public class DepenseForm {
 
     /* ajoute un message correspondant au champ specifie a la map des erreurs */
 
-    private void setErreurs(String champ, String message) {
+    private void setErreurs(String champ, String message)
+    {
         erreurs.put(champ, message);
     }
 
@@ -128,6 +120,6 @@ public class DepenseForm {
 
         if ( typeDepense == null ) {
             throw new Exception( "Merci d'entrer un type de depense." );    
+        }
     }
-}
 }

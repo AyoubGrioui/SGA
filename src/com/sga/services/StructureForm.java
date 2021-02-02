@@ -1,14 +1,11 @@
 package com.sga.services;
 
 import com.sga.entities.Structure;
+import com.sga.helpers.SGAUtil;
 import com.sga.repositories.Repository;
 import com.sga.repositories.RepositoryFactory;
 
 import javax.servlet.http.HttpServletRequest;
-
-
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -39,13 +36,12 @@ public class StructureForm {
 		
 		Structure structure = new Structure();
 		
-        LocalDate date = null;
         try {
-        	date = validationDate( dateCreation );
+        	validationDate( dateCreation );
         } catch ( Exception e ) {
             setErreurs( CHAMP_DATE_CREATION, e.getMessage() );
         }
-        structure.setDateCreation( date );
+        structure.setDateCreation(SGAUtil.StringToLocalDate(dateCreation));
         
         try {
             validationNom(nom);
@@ -108,18 +104,13 @@ public class StructureForm {
 	}
 	
 	//validation date
-	
-	private LocalDate validationDate( String date ) throws Exception {
-    	DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-    	LocalDate temp;
-        
-        if ( date != null ) {
-                temp = LocalDate.parse(date, formatter);      
-        } else {
-            throw new Exception( "Merci d'entrer une date." );
-        }
-        return temp;
-    }
+	private void validationDate( String date ) throws Exception {
+
+		if(date == null)
+		{
+			throw new Exception( "Merci d'entrer une date." );
+		}
+	}
 	//Fonction de validation du nom
 	
 	private void validationNom( String nom ) throws Exception {

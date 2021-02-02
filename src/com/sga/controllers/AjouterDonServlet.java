@@ -1,7 +1,6 @@
 package com.sga.controllers;
 
 import com.sga.entities.*;
-import com.sga.repositories.Repository;
 import com.sga.repositories.RepositoryFactory;
 import com.sga.services.*;
 
@@ -11,7 +10,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.List;
 
 @WebServlet( "/ajouterDon" )
 public class AjouterDonServlet extends HttpServlet {
@@ -35,14 +33,16 @@ public class AjouterDonServlet extends HttpServlet {
     protected void doGet( HttpServletRequest request, HttpServletResponse response )
             throws ServletException, IOException {
 
-        RepositoryFactory repFactory = new RepositoryFactory();
-        Repository rep1 = repFactory.getDonneurMoralRepository();
-        List<Donneur> donneurList= rep1.getAll();
-
-        Repository rep2 = repFactory.getDonneurPhysiqueRepository();
-        donneurList.addAll(rep2.getAll());
-
-        request.setAttribute(ATT_ANCIENDONNEUR,donneurList);
+		/*
+		 * RepositoryFactory repFactory = new RepositoryFactory(); Repository rep1 =
+		 * repFactory.getDonneurMoralRepository(); List<Donneur> donneurList=
+		 * rep1.getAll();
+		 * 
+		 * Repository rep2 = repFactory.getDonneurPhysiqueRepository();
+		 * donneurList.addAll(rep2.getAll());
+		 * 
+		 * request.setAttribute(ATT_ANCIENDONNEUR,donneurList);
+		 */
 
         this.getServletContext().getRequestDispatcher( VUE_AJOUTER_DON ).forward( request, response );
     }

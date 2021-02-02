@@ -201,26 +201,59 @@ pageEncoding="UTF-8"%>
                   </label>
                 </div>
                 <!--Fin formulair d'un nouveau donateur-->
-                <div id="ancienDonateur">
-                  <!--Ancien donateur-->
-                  <label class="block mt-4 text-sm">
+                  <div id="ancienDonateur">
+                      <!--Ancien donateur-->
+                      <label class="block mt-4 text-sm">
+                    <span class="text-gray-700 font-medium dark:text-gray-400">
+                      Type de donateur
+                    </span>
+                          <select
+                                  class="block w-full mt-1 text-sm dark:text-gray-300 dark:border-gray-600 dark:bg-gray-700 form-select focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:focus:shadow-outline-gray"
+                                  onchange="listeDesDonateurs(this)"
+                                  name=""
+                          >
+                              <option value="physique">Physique</option>
+                              <option value="morale">Morale</option>
+                          </select>
+                      </label>
+                      <div id="listeMorale" style="display: none">
+                          <label class="block mt-4 text-sm">
                     <span class="text-gray-700 dark:text-gray-400">
                       Liste des donateurs
                     </span>
-                    <select
-                      class="block w-full mt-1 text-sm dark:text-gray-300 dark:border-gray-600 dark:bg-gray-700 form-multiselect focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:focus:shadow-outline-gray"
-                      multiple
-                      name="listAncienDonneur"
-                    >
-                      <option>Option 1</option>
-                      <option>Option 2</option>
-                      <option>Option 3</option>
-                      <option>Option 4</option>
-                      <option>Option 5</option>
-                    </select>
-                  </label>
-                </div>
-                <!--fin ancien donateur-->
+                              <select
+                                      class="block w-full mt-1 text-sm dark:text-gray-300 dark:border-gray-600 dark:bg-gray-700 form-multiselect focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:focus:shadow-outline-gray"
+                                      multiple
+                                      name=""
+                              >
+                                  <option>morale donateur 1</option>
+                                  <option>Option 2</option>
+                                  <option>Option 3</option>
+                                  <option>Option 4</option>
+                                  <option>Option 5</option>
+                              </select>
+                          </label>
+                      </div>
+                      <div id="listePhysique">
+                          <label class="block mt-4 text-sm">
+                    <span class="text-gray-700 dark:text-gray-400">
+                      Liste des donateurs
+                    </span>
+                              <select
+                                      class="block w-full mt-1 text-sm dark:text-gray-300 dark:border-gray-600 dark:bg-gray-700 form-multiselect focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:focus:shadow-outline-gray"
+                                      multiple
+                                      name=""
+                              >
+                                  <option>Physique donateur 1</option>
+                                  <option>Option 2</option>
+                                  <option>Option 3</option>
+                                  <option>Option 4</option>
+                                  <option>Option 5</option>
+                              </select>
+                          </label>
+                      </div>
+                  </div>
+                  <!--fin ancien donateur-->
               </div>
 
               <!-- Don inputs -->

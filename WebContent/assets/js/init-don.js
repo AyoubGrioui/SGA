@@ -16,6 +16,18 @@ window.onload = function load() {
       var ancienDonateur = document.getElementById("ancienDonateur");
       ancienDonateur.style.display = "none";
   }
+
+    const listeDesDonateurs = (element) => {
+    var moraleListeDiv = document.getElementById("listeMorale");
+    var physiqueListeDiv = document.getElementById("listePhysique");
+    if(element.value === 'morale'){
+        moraleListeDiv.style.display = "block";
+        physiqueListeDiv.style.display = "none";
+    }else {
+        moraleListeDiv.style.display = "none";
+        physiqueListeDiv.style.display = "block";
+    }
+}
   const typeDonateur = (element) => {
       var moraleDiv = document.getElementById("morale");
       var physiqueDiv = document.getElementById("physique");
