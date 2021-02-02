@@ -6,14 +6,9 @@ import com.sga.repositories.Repository;
 import com.sga.repositories.RepositoryFactory;
 
 import javax.servlet.http.HttpServletRequest;
-
-
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.Map;
-
-import static com.sga.helpers.SGAUtil.*;
 
 
 public class AdherentForm {
@@ -284,7 +279,7 @@ public class AdherentForm {
 	        throw new Exception( "Merci de saisir une adresse mail valide." );
 	    }
 	}
-	// a faire
+
 	//Foction de validation du mot de passe
 	private void validationMotDePasse( String motDePasse ) throws Exception {
 	    if ( motDePasse == null  ) {

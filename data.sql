@@ -46,6 +46,7 @@ CREATE TABLE Fonctions(
     idLigneFonction INT NOT NULL  REFERENCES LigneFonctions(idLigneFonction),
     role text NOT NULL
     );
+
 CREATE TABLE Donneurs(
     idDonneur INT PRIMARY KEY AUTO_INCREMENT,
     idStructure INT NOT NULL  REFERENCES  Structures(idStructure),

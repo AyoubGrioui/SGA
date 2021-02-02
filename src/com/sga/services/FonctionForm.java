@@ -33,7 +33,7 @@ public class FonctionForm {
 		
 		Fonction fonction = new Fonction();
 		
-		try {
+/*		try {
 			validationRole(role);
 		} catch(Exception e) {
 			setErreurs(CHAMP_ROLE, e.getMessage());
@@ -46,7 +46,7 @@ public class FonctionForm {
 		else {
 			resultat= "echec de la creation du client";
 		}
-		
+		*/
 		RepositoryFactory repFactory = new RepositoryFactory();
 		Repository rep = repFactory.getFonctionRepository();
 		rep.create(fonction);

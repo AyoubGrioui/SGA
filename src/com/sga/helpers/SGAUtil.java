@@ -7,8 +7,12 @@ public class SGAUtil
 {
     public static LocalDate StringToLocalDate(String date)
     {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        if(date != null) {
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
-        return LocalDate.parse(date,formatter);
+            return LocalDate.parse(date, formatter);
+        }
+
+        return null;
     }
 }

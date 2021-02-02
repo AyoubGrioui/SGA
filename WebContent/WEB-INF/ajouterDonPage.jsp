@@ -29,7 +29,7 @@ pageEncoding="UTF-8"%>
         <c:import url="Menu/headerSecretaire.jsp"></c:import>
 
         <main class="h-full pb-16 overflow-y-auto">
-          <form methode="" action="">
+          <form methode="POST" action="">
             <div class="container px-6 mx-auto grid">
               <h2
                 class="my-6 text-2xl font-semibold text-gray-700 dark:text-gray-200"
@@ -58,7 +58,7 @@ pageEncoding="UTF-8"%>
                         type="radio"
                         class="text-purple-600 form-radio focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:focus:shadow-outline-gray"
                         name="accountType"
-                        value="personal"
+                        value="nouveau"
                         checked
                         onclick="show()"
                         name=""
@@ -72,7 +72,7 @@ pageEncoding="UTF-8"%>
                         type="radio"
                         class="text-purple-600 form-radio focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:focus:shadow-outline-gray"
                         name="accountType"
-                        value="busines"
+                        value="ancien"
                         onclick="hide()"
                         name=""
                       />
@@ -89,7 +89,7 @@ pageEncoding="UTF-8"%>
                     <select
                       class="block w-full mt-1 text-sm dark:text-gray-300 dark:border-gray-600 dark:bg-gray-700 form-select focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:focus:shadow-outline-gray"
                       onchange="typeDonateur(this)"
-                      name=""
+                      name="typeDonateur"
                     >
                       <option value="physique">Physique</option>
                       <option value="morale">Morale</option>
@@ -210,7 +210,7 @@ pageEncoding="UTF-8"%>
                     <select
                       class="block w-full mt-1 text-sm dark:text-gray-300 dark:border-gray-600 dark:bg-gray-700 form-multiselect focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:focus:shadow-outline-gray"
                       multiple
-                      name=""
+                      name="listAncienDonneur"
                     >
                       <option>Option 1</option>
                       <option>Option 2</option>
@@ -268,7 +268,7 @@ pageEncoding="UTF-8"%>
                   <select
                     class="block w-full mt-1 text-sm dark:text-gray-300 dark:border-gray-600 dark:bg-gray-700 form-select focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:focus:shadow-outline-gray"
                     onchange="typePaiement(this)"
-                    name=""
+                    name="typeDon"
                   >
                     <option value="espece">Espèce</option>
                     <option value="cheque">Chèque</option>
