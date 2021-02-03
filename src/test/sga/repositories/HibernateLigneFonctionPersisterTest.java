@@ -11,7 +11,9 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import com.sga.entities.Fonction;
 import com.sga.entities.LigneFonction;
+import com.sga.repositories.HibernateFonctionPersister;
 import com.sga.repositories.HibernateLigneFonctionPersister;
 
 class HibernateLigneFonctionPersisterTest {
@@ -32,6 +34,10 @@ class HibernateLigneFonctionPersisterTest {
 		LigneFonction obj = new LigneFonction();
 		obj.setDateDebut(LocalDate.now());
 		obj.setDateFin(LocalDate.now());
+		Fonction f = new Fonction();
+		f.setRole("Test");
+		(new HibernateFonctionPersister()).create(f);
+		obj.setFonction(f);
 		cut.create(obj);
 		Session session = cut.getSession();
 		LigneFonction r = (LigneFonction) session.createQuery("from LigneFonction ORDER BY idLigneFonction DESC")
@@ -46,6 +52,10 @@ class HibernateLigneFonctionPersisterTest {
 		LigneFonction obj = new LigneFonction();
 		obj.setDateDebut(LocalDate.now());
 		obj.setDateFin(LocalDate.now());
+		Fonction f = new Fonction();
+		f.setRole("Test");
+		(new HibernateFonctionPersister()).create(f);
+		obj.setFonction(f);
 		cut.create(obj);
 		obj.setDateDebut(LocalDate.ofEpochDay(0));
 		cut.update(obj);
@@ -62,6 +72,10 @@ class HibernateLigneFonctionPersisterTest {
 		LigneFonction obj = new LigneFonction();
 		obj.setDateDebut(LocalDate.now());
 		obj.setDateFin(LocalDate.now());
+		Fonction f = new Fonction();
+		f.setRole("Test");
+		(new HibernateFonctionPersister()).create(f);
+		obj.setFonction(f);
 		cut.create(obj);
 		cut.delete(obj);
 		assertNull(cut.read(obj.getIdLigneFonction()));

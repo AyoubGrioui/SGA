@@ -4,17 +4,13 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
-import java.time.LocalDate;
-
 import org.hibernate.Session;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import com.sga.entities.Fonction;
-import com.sga.entities.LigneFonction;
 import com.sga.repositories.HibernateFonctionPersister;
-import com.sga.repositories.HibernateLigneFonctionPersister;
 
 class HibernateFonctionPersisterTest {
 	HibernateFonctionPersister cut;
@@ -33,12 +29,6 @@ class HibernateFonctionPersisterTest {
 	void givenHibernateFonctionPersister_whenCreate_thenPersist() {
 		Fonction obj = new Fonction();
 		obj.setRole("Test");
-		LigneFonction ligneFonction = new LigneFonction();
-		ligneFonction.setDateDebut(LocalDate.now());
-		ligneFonction.setDateFin(LocalDate.now());
-		(new HibernateLigneFonctionPersister()).create(ligneFonction);
-		obj.setLigneFonction(ligneFonction);
-		obj.setLigneFonction(ligneFonction);
 		cut.create(obj);
 		Session session = cut.getSession();
 		Fonction r = (Fonction) session.createQuery("from Fonction ORDER BY idFonction DESC").setMaxResults(1).list()
@@ -52,12 +42,6 @@ class HibernateFonctionPersisterTest {
 	void givenHibernateFonctionPersister_whenUpdate_thenPersist() {
 		Fonction obj = new Fonction();
 		obj.setRole("Test");
-		LigneFonction ligneFonction = new LigneFonction();
-		ligneFonction.setDateDebut(LocalDate.now());
-		ligneFonction.setDateFin(LocalDate.now());
-		(new HibernateLigneFonctionPersister()).create(ligneFonction);
-		obj.setLigneFonction(ligneFonction);
-		obj.setLigneFonction(ligneFonction);
 		cut.create(obj);
 		obj.setRole("Modified");
 		cut.update(obj);
@@ -73,12 +57,6 @@ class HibernateFonctionPersisterTest {
 	void givenHibernateFonctionPersister_whenDelete_thenSuccess() {
 		Fonction obj = new Fonction();
 		obj.setRole("Test");
-		LigneFonction ligneFonction = new LigneFonction();
-		ligneFonction.setDateDebut(LocalDate.now());
-		ligneFonction.setDateFin(LocalDate.now());
-		(new HibernateLigneFonctionPersister()).create(ligneFonction);
-		obj.setLigneFonction(ligneFonction);
-		obj.setLigneFonction(ligneFonction);
 		cut.create(obj);
 		cut.delete(obj);
 		assertNull(cut.read(obj.getIdFonction()));

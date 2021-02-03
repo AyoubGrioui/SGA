@@ -1,12 +1,17 @@
 package com.sga.entities;
 
+import java.io.Serializable;
+
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
-import javax.persistence.*;
-import java.io.Serializable;
 
 @Entity
 @Table(name = "Fonctions")
@@ -20,8 +25,4 @@ public class Fonction implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long idFonction;
 	private String role;
-
-	@ManyToOne(cascade = CascadeType.ALL)
-	@JoinColumn(name = "idLigneFonction")
-	private LigneFonction ligneFonction;
 }

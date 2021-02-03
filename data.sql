@@ -38,12 +38,12 @@ CREATE TABLE Adherents(
     );
 CREATE TABLE LigneFonctions(
     idLigneFonction INT PRIMARY KEY AUTO_INCREMENT,
+    idFonction INT NOT NULL  REFERENCES Fonctions(idFonction),
     dateDebut DATE NOT NULL,
     dateFin DATE NOT NULL
     );
 CREATE TABLE Fonctions(
     idFonction INT PRIMARY KEY AUTO_INCREMENT,
-    idLigneFonction INT NOT NULL  REFERENCES LigneFonctions(idLigneFonction),
     role text NOT NULL
     );
 

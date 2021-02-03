@@ -3,15 +3,14 @@ package com.sga.entities;
 import java.io.Serializable;
 import java.time.LocalDate;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.Past;
-import javax.validation.constraints.PastOrPresent;
-import javax.validation.constraints.Pattern;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -31,4 +30,7 @@ public class LigneFonction implements Serializable {
 	private Long idLigneFonction;
 	private LocalDate dateDebut;
 	private LocalDate dateFin;
+	@ManyToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name = "idFonction")
+	private Fonction fonction;
 }
