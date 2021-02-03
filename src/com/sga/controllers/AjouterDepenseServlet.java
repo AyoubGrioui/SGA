@@ -31,10 +31,16 @@ public class AjouterDepenseServlet extends HttpServlet {
     {
         DepenseForm depenseForm = new DepenseForm();
         Depense depense = depenseForm.creerDepense(request);
-
+        
         request.setAttribute(ATT_DEPENSEFORM,depenseForm);
         request.setAttribute(ATT_DEPENSE,depense);
 
+        if(depenseForm.getErreurs().isEmpty())
+        {
+        	depense=null;
+        	request.setAttribute(ATT_DEPENSE,depense);
+        }
+        
         this.getServletContext().getRequestDispatcher( VUE_AJOUTER_DEPENSE ).forward( request, response );
 
     }

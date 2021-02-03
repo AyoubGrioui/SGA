@@ -57,7 +57,7 @@ pageEncoding="UTF-8"%>
                     value="<c:out value="${depense.montant}"/>"
                   />
                   <span class="text-xs text-red-600 dark:text-red-400">
-                    <c:out value="${depenseForm.erreurs['montant']}" />
+                    <c:out value="${depenseForm.erreurs['montantDepense']}" />
                   </span>
                 </label>
                 <label class="block mt-4 text-sm">

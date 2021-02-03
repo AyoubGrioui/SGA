@@ -37,14 +37,15 @@ public class DepenseForm {
             valeurMontant=validationMontant(montant);
         }
         catch(Exception e) {
-            setErreurs(CHAMP_MONTANT, "HALOOOO ERRORRR");
+            setErreurs(CHAMP_MONTANT, e.getMessage());
         }
         depense.setMontant(valeurMontant);
 
-        try {
+        try
+        {
            validationTypeDepense(typedepense);
         }catch(Exception e) {
-            setErreurs(CHAMP_TYPE_DEPENSE, typedepense);
+            setErreurs(CHAMP_TYPE_DEPENSE, e.getMessage());
         }
 
         depense.setTypeDepense(typedepense);
