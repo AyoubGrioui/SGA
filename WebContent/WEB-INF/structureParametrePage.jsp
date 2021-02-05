@@ -47,74 +47,74 @@ pageEncoding="UTF-8"%>
                 <!--Debut formulaire d'une nouvelle dépense-->
                 <label class="block mt-1 text-sm">
                   <span class="text-gray-700 font-medium dark:text-gray-400">
-                    Nom de l'association
+                    <c:out value="structure.nomStructure" default="Nom de l'association" />
                   </span>
                   <input
                     class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input"
                     placeholder="Nom de l'association"
                   />
                   <span class="text-xs text-red-600 dark:text-red-400">
-                    Champ invalide (erreur exemple)
+                   <c:out value="${structureForm.erreurs['nomStructure']}" />
                   </span>
                 </label>
                 <label class="block mt-4 text-sm">
                   <span class="text-gray-700 font-medium dark:text-gray-400">
-                    Date de création
+                    <c:out value="${structure.dateCreationStructure}" default="Date de création" />
                   </span>
                   <input
                     class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input"
                     type="date"
                   />
                   <span class="text-xs text-red-600 dark:text-red-400">
-                    Champ invalide (erreur exemple)
+                    <c:out value="${structureForm.erreurs['dateCreationStructure']}" />
                   </span>
                 </label>
                 <label class="block mt-4 text-sm">
                   <span class="text-gray-700 font-medium dark:text-gray-400">
-                    Email
+                    <c:out value="${structure.emailStructure}"  default="Email"/>
                   </span>
                   <input
                     class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input"
                     placeholder="email"
                   />
                   <span class="text-xs text-red-600 dark:text-red-400">
-                    Champ invalide (erreur exemple)
+                    <c:out value="${structureForm.erreurs['emailStructure']}" />
                   </span>
                 </label>
                 <label class="block mt-4 text-sm">
                   <span class="text-gray-700 font-medium dark:text-gray-400">
-                    Adresse de l'association
+                    <c:out value="${structure.adresseStructure}" default="Adresse de l'association" />
                   </span>
                   <textarea
                     class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input"
                     placeholder="Adresse"
                   ></textarea>
                   <span class="text-xs text-red-600 dark:text-red-400">
-                    Champ invalide (erreur exemple)
+                    <c:out value="${structureForm.erreurs['adresseStructure']}" />
                   </span>
                 </label>
                 <label class="block mt-4 text-sm">
                   <span class="text-gray-700 font-medium dark:text-gray-400">
-                    Site web
+                    <c:out value="structure.siteWeb" default="Site web" />
                   </span>
                   <input
                     class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input"
                     placeholder="www.test.com"
                   />
                   <span class="text-xs text-red-600 dark:text-red-400">
-                    Champ invalide (erreur exemple)
+                   <c:out value="${structureForm.erreurs['siteWeb']}" />
                   </span>
                 </label>
                 <label class="block mt-4 text-sm">
                   <span class="text-gray-700 font-medium dark:text-gray-400">
-                    Objectif
+                    <c:out value="${structure.objectif}" default="Objectif" />
                   </span>
                   <input
                     class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input"
                     placeholder="Objectif"
                   />
                   <span class="text-xs text-red-600 dark:text-red-400">
-                    Champ invalide (erreur exemple)
+                    <c:out value="${structureForm.erreurs['objectif']}" />
                   </span>
                 </label>
               </div>

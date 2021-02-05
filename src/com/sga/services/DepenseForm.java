@@ -26,9 +26,6 @@ public class DepenseForm {
     public static final String CHAMP_DATE_DEPENSE="dateDepense";
     public static final String CHAMP_TYPE_DEPENSE="typeDepense";
 
-    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-    LocalDate temp;
-
     private Map<String,String> erreurs=new HashMap<String,String>();
 
     public Map<String, String> getErreurs() {
@@ -116,14 +113,17 @@ public class DepenseForm {
 	//validation date
 	private void validationDate( String date ) throws Exception {
 
-        if ( date == null )
-        {
+        if ( date != null ) {
+                if(LocalDate.now().isBefore(SGAUtil.StringToLocalDate(date)))
+				{
+					throw new Exception("Merci d'entrer une date valide");
+				}
+        } else {
             throw new Exception( "Merci d'entrer une date." );
         }
-
     }
 	
-	//validation date
+	//validation type depense
 	private void validationTypeDepense( String typeDepense ) throws Exception {
 
         if ( typeDepense == null ) {

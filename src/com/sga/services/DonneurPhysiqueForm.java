@@ -10,7 +10,7 @@ import java.util.Map;
 
 public class DonneurPhysiqueForm {
 
-	private static final String CHAMP_NOM = "nomDonneurPhysique";
+	private static final String CHAMP_NOM = "nomDonneurMorale";
 	private static final String CHAMP_PRENOM = "prenomDonneurPhysique";
 	private static final String CHAMP_CIN = "cinDonneurPhysique";
 	private static final String CHAMP_EMAIL = "emailDonneurMorale";

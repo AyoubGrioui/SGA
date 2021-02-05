@@ -58,18 +58,25 @@ pageEncoding="UTF-8"%>
                   <tbody
                     class="bg-white divide-y dark:divide-gray-700 dark:bg-gray-800"
                   >
+                 	<c:forEach items="${donList}" var="don" varStatus="boucle" >
                     <tr class="text-gray-700 dark:text-gray-400">
                       <td class="px-4 py-3">
                         <div class="flex items-center text-sm">
                           <div>
-                            <p class="font-semibold">Donateur test</p>
+                            <p class="font-semibold"><c:out value="${don.donneur.nomDonneurMorale}" /></p>
                           </div>
                         </div>
                       </td>
-                      <td class="px-4 py-3 text-sm">12/12/2012</td>
+                      <td class="px-4 py-3 text-sm"><c:out value="${don.dateDon}"/></td>
                       <td class="px-4 py-3 text-sm">Description don</td>
-                      <td class="px-4 py-3 text-sm">2121212</td>
-                      <td class="px-4 py-3 text-sm">chéque</td>
+                      <td class="px-4 py-3 text-sm"><c:out value="${don.montant}"/></td>
+                      <td class="px-4 py-3 text-sm">
+                      	<c:choose>
+                      		<c:when test="${don instanceof com.sga.entities.DonCheque}"><c:out value="${chèque}" /> </c:when>
+                      		<c:when test="${don instanceof com.sga.entities.DonEspece}"><c:out value="${espece}" /> </c:when>
+                      		<c:when test="${don instanceof com.sga.entities.DonVersement}"><c:out value="${versement}" /> </c:when>
+                      	</c:choose>
+                      </td>
                       <td class="px-4 py-3">
                         <div class="flex items-center space-x-4 text-sm">
                           <button
@@ -127,6 +134,7 @@ pageEncoding="UTF-8"%>
                         </div>
                       </td>
                     </tr>
+                    </c:forEach>
                   </tbody>
                 </table>
               </div>
@@ -202,7 +210,7 @@ pageEncoding="UTF-8"%>
 
           <div class="mb-4">
             <span class="font-semibold text-gray-700 dark:text-gray-400"
-              >Nom du donateur :
+              ><c:out value="${don.donneur.nomDonneurMorale}" />
             </span>
            <span class="text-gray-700 dark:text-gray-300">
             <c:out value="test"/>
@@ -211,7 +219,7 @@ pageEncoding="UTF-8"%>
 
           <div class="mb-4">
             <span class="font-semibold text-gray-700 dark:text-gray-400"
-              >Date du don :
+              ><c:out value="${don.dateDon}"/>
             </span>
             <span class="text-gray-700 dark:text-gray-300">
             <c:out value="test" />
@@ -229,7 +237,7 @@ pageEncoding="UTF-8"%>
 
           <div class="mb-4">
             <span class="font-semibold text-gray-700 dark:text-gray-400"
-              >Montant :
+              ><c:out value="${don.montant}"/>
             </span>
             <span class="text-gray-700 dark:text-gray-300">
             <c:out value="JK90000" />
@@ -238,7 +246,12 @@ pageEncoding="UTF-8"%>
 
           <div class="mb-4">
             <span class="font-semibold text-gray-700 dark:text-gray-400"
-              >Type de paiement :
+              >
+                        <c:choose>
+                      		<c:when test="${don instanceof com.sga.entities.DonCheque}"><c:out value="${chèque}" /> </c:when>
+                      		<c:when test="${don instanceof com.sga.entities.DonEspece}"><c:out value="${espece}" /> </c:when>
+                      		<c:when test="${don instanceof com.sga.entities.DonVersement}"><c:out value="${versement}" /> </c:when>
+                      	</c:choose>
             </span>
             <span class="text-gray-700 dark:text-gray-300"
               ><c:out value="+212000000"

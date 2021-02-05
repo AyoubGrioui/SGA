@@ -58,17 +58,19 @@ pageEncoding="UTF-8"%>
                   <tbody
                     class="bg-white divide-y dark:divide-gray-700 dark:bg-gray-800"
                   >
+                  	
+                  	<c:forEach items="${donateurList}" var="donateur" varStatus="boucle" >
                     <tr class="text-gray-700 dark:text-gray-400">
                       <td class="px-4 py-3">
                         <div class="flex items-center text-sm">
                           <div>
-                            <p class="font-semibold">Donateur test</p>
+                            <p class="font-semibold"><c:out value="${donateur.nomDonneurMorale}" /></p>
                           </div>
                         </div>
                       </td>
-                      <td class="px-4 py-3 text-sm">test@gmail.com</td>
-                      <td class="px-4 py-3 text-sm">065212121</td>
-                      <td class="px-4 py-3 text-sm">Rue 3 residence test</td>
+                      <td class="px-4 py-3 text-sm"><c:out value="${donateur.emailDonneurMorale}" /></td>
+                      <td class="px-4 py-3 text-sm"><c:out value="${donateur.telephoneDonneurMorale}" /></td>
+                      <td class="px-4 py-3 text-sm"><c:out value="${donateur.adresseDonneurMorale}" /></td>
                       <td class="px-4 py-3">
                         <div class="flex items-center space-x-4 text-sm">
                           <button
@@ -106,6 +108,7 @@ pageEncoding="UTF-8"%>
                         </div>
                       </td>
                     </tr>
+                    </c:forEach>
                   </tbody>
                 </table>
               </div>
