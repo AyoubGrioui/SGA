@@ -1,19 +1,24 @@
 package com.sga.services;
 
+import com.sga.entities.Fonction;
 import com.sga.entities.LigneFonction;
 import com.sga.helpers.SGAUtil;
+import com.sga.repositories.HibernateFonctionPersister;
+import com.sga.repositories.HibernateLigneFonctionPersister;
 import com.sga.repositories.Repository;
 import com.sga.repositories.RepositoryFactory;
+import org.hibernate.Hibernate;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class LigneFonctionForm {
 
 	private static final String CHAMP_DATE_DEBUT = "dateDebutLigneFonction";
 	private static final String CHAMP_DATE_FIN = "dateFinLigneFonction";
-	
+
 	private Map<String,String> erreurs = new HashMap<String,String>();
 	private String resultat;
 	
@@ -48,18 +53,17 @@ public class LigneFonctionForm {
 			setErreurs(CHAMP_DATE_FIN, e.getMessage());
 		}
 		ligneFonction.setDateFin(SGAUtil.StringToLocalDate(dateFin));
+
+		FonctionForm fonctionForm=new FonctionForm();
+		Fonction fonction=fonctionForm.creerFonction(request);
+
+		erreurs.putAll(fonctionForm.getErreurs());
 		
-		
-		if(erreurs.isEmpty()) {
-			resultat = "succes de la creation du client";
+		if(getErreurs().isEmpty())
+		{
+			HibernateLigneFonctionPersister ligneFonctionPersister=new HibernateLigneFonctionPersister();
+			ligneFonctionPersister.create(ligneFonction);
 		}
-		else {
-			resultat= "echec de la creation du client";
-		}
-		
-		RepositoryFactory repFactory = new RepositoryFactory();
-		Repository rep = repFactory.getLigneFonctionRepository();
-		rep.create(ligneFonction);
 		
 		return ligneFonction;
 	}
@@ -72,6 +76,8 @@ public class LigneFonctionForm {
 	            throw new Exception( "Merci d'entrer une date." );
 	        }
 	    }
+
+
 	
 	/* ajoute un message correspondant au champ specifie a la map des erreurs */
 	

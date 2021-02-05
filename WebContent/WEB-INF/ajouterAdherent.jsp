@@ -53,9 +53,10 @@ pageEncoding="UTF-8"%>
                     name="nomAdherent"
                     class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input"
                     placeholder="Nom"
+                    value="<c:out value="${adherent.nom}"/>"
                   />
                   <span class="text-xs text-red-600 dark:text-red-400">
-                    adherentForm.erreurs['nomAdherent']
+                    <c:out value="${erreurs['nomAdherent']}"/>
                   </span>
                 </label>
 
@@ -66,7 +67,11 @@ pageEncoding="UTF-8"%>
                     name="prenomAdherent"
                     class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input"
                     placeholder="Prenom"
+                    value="<c:out value="${adherent.prenom}"/>"
                   />
+                  <span class="text-xs text-red-600 dark:text-red-400">
+                    <c:out value="${erreurs['prenomAdherent']}"/>
+                  </span>
                 </label>
 
                 <label class="block mt-4 text-sm">
@@ -76,9 +81,10 @@ pageEncoding="UTF-8"%>
                     name="emailAdherent"
                     class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input"
                     placeholder="*******@gmail.com"
+                    value="<c:out value="${adherent.email}"/>"
                   />
                   <span class="text-xs text-red-600 dark:text-red-400">
-                    adherentForm.erreurs['emailAdherent']
+                    <c:out value="${erreurs['emailAdherent']}"/>
                   </span>
                 </label>
 
@@ -93,7 +99,7 @@ pageEncoding="UTF-8"%>
                     placeholder=""
                   />
                   <span class="text-xs text-red-600 dark:text-red-400">
-                    adherentForm.erreurs['motDePasseAdherent']
+                    <c:out value="${erreurs['motDePasseAdherent']}"/>
                   </span>
                 </label>
 
@@ -104,7 +110,11 @@ pageEncoding="UTF-8"%>
                     name="cinAdherent"
                     class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input"
                     placeholder="CIN"
+                    value="<c:out value="${adherent.cin}"/>"
                   />
+                  <span class="text-xs text-red-600 dark:text-red-400">
+                    <c:out value="${erreurs['cinAdherent']}"/>
+                  </span>
                 </label>
 
                 <label class="block mt-4 text-sm">
@@ -116,7 +126,11 @@ pageEncoding="UTF-8"%>
                     name="lieuNaissanceAdherent"
                     class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input"
                     placeholder=""
+                    value="<c:out value="${adherent.lieuNaissance}"/>"
                   />
+                  <span class="text-xs text-red-600 dark:text-red-400">
+                    <c:out value="${erreurs['lieuNaissanceAdherent']}"/>
+                  </span>
                 </label>
 
                 <label class="block mt-4 text-sm">
@@ -128,7 +142,11 @@ pageEncoding="UTF-8"%>
                     name="dateNaissanceAdherent"
                     class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input"
                     placeholder=""
+                    value="<c:out value="${adherent.dateNaissance}"/>"
                   />
+                  <span class="text-xs text-red-600 dark:text-red-400">
+                    <c:out value="${erreurs['dateNaissanceAdherent']}"/>
+                  </span>
                 </label>
 
                 <label class="block mt-4 text-sm">
@@ -140,7 +158,11 @@ pageEncoding="UTF-8"%>
                     name="telephoneAdherent"
                     class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input"
                     placeholder=""
+                    value="<c:out value="${adherent.telephone}"/>"
                   />
+                  <span class="text-xs text-red-600 dark:text-red-400">
+                    <c:out value="${erreurs['telephone']}"/>
+                  </span>
                 </label>
 
                 <label class="block mt-4 text-sm">
@@ -150,7 +172,11 @@ pageEncoding="UTF-8"%>
                     name="adresseAdherent"
                     class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input"
                     placeholder=""
+                    value="<c:out value="${adherent.adresse}"/>"
                   />
+                  <span class="text-xs text-red-600 dark:text-red-400">
+                    <c:out value="${erreurs['adresseAdherent']}"/>
+                  </span>
                 </label>
 
                 <label class="block mt-4 text-sm">
@@ -162,7 +188,11 @@ pageEncoding="UTF-8"%>
                     name="dateadhesionAdherent"
                     class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input"
                     placeholder=""
+                    value="<c:out value="${adherent.dateAdhesion}"/>"
                   />
+                  <span class="text-xs text-red-600 dark:text-red-400">
+                    <c:out value="${erreurs['dateadhesionAdherent']}"/>
+                  </span>
                 </label>
 
                 <label class="block mt-4 text-sm">
@@ -174,7 +204,11 @@ pageEncoding="UTF-8"%>
                     name="professionAdherent"
                     class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input"
                     placeholder=""
+                    value="<c:out value="${adherent.profession}"/>"
                   />
+                  <span class="text-xs text-red-600 dark:text-red-400">
+                    <c:out value="${erreurs['professionAdherent']}"/>
+                  </span>
                 </label>
 
                 <label class="block mt-4 text-sm">
@@ -184,6 +218,7 @@ pageEncoding="UTF-8"%>
                     name="photoAdherent"
                     class="block mt-2"
                     placeholder=""
+
                   />
                 </label>
 
@@ -232,10 +267,13 @@ pageEncoding="UTF-8"%>
                     class="block w-full mt-1 text-sm dark:text-gray-300 dark:border-gray-600 dark:bg-gray-700 form-select focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:focus:shadow-outline-gray"
                   >
                     <option>Président(e)</option>
-                    <option>Secrétaire</option>
+                    <option>Secretaire</option>
                     <option>Tréssorie</option>
                     <option>Autre</option>
                   </select>
+                  <span class="text-xs text-red-600 dark:text-red-400">
+                    <c:out value="${erreurs['roleFonction']}"/>
+                  </span>
                 </label>
 
                 <label class="block mt-4 text-sm">
@@ -247,7 +285,11 @@ pageEncoding="UTF-8"%>
                     name="dateDebutLigneFonction"
                     class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input"
                     placeholder=""
+                    value="<c:out value="${adherent.ligneFonction.dateDebut}"/>"
                   />
+                  <span class="text-xs text-red-600 dark:text-red-400">
+                    <c:out value="${erreurs['dateDebutLigneFonction']}"/>
+                  </span>
                 </label>
 
                 <label class="block mt-4 text-sm">
@@ -257,7 +299,26 @@ pageEncoding="UTF-8"%>
                     name="dateFinLigneFonction"
                     class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input"
                     placeholder=""
+                    value="<c:out value="${adherent.ligneFonction.dateFin}"/>"
                   />
+                  <span class="text-xs text-red-600 dark:text-red-400">
+                    <c:out value="${erreurs['dateFinLigneFonction']}"/>
+                  </span>
+                </label>
+                <label class="block mt-4 text-sm">
+    <span class="text-gray-700 font-medium dark:text-gray-400">
+      Structure
+    </span>
+                  <select
+                          class="block w-full mt-1 text-sm dark:text-gray-300 dark:border-gray-600 dark:bg-gray-700 form-select focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:focus:shadow-outline-gray"
+                          name="listStructure"
+                  >
+
+                     <c:forEach items="${structureList}" var="structure" varStatus="boucle">
+                          <option value="${structure.idStructure}"><c:out value="${structure.nom}"/> </option>
+                     </c:forEach>
+
+                  </select>
                 </label>
               </div>
 

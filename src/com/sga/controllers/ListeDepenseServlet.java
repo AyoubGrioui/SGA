@@ -1,6 +1,7 @@
 package com.sga.controllers;
 
 import com.sga.entities.Depense;
+import com.sga.repositories.HibernateDepensePersister;
 import com.sga.repositories.Repository;
 import com.sga.repositories.RepositoryFactory;
 
@@ -28,9 +29,8 @@ public class ListeDepenseServlet extends HttpServlet {
     protected void doGet( HttpServletRequest request, HttpServletResponse response )
             throws ServletException, IOException
     {
-        RepositoryFactory repositoryFactory =new RepositoryFactory();
-        Repository repository =repositoryFactory.getDepenseRepository();
-        List<Depense> depenseList= repository.getAll();
+        HibernateDepensePersister depensePersister=new HibernateDepensePersister();
+        List<Depense> depenseList= depensePersister.getAll();
 
         request.setAttribute(ATT_DEPENSELIST,depenseList);
 

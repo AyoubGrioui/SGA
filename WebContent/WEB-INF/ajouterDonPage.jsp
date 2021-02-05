@@ -395,6 +395,21 @@ pageEncoding="UTF-8"%>
                     Champ invalide (erreur exemple)
                   </span>
                 </label>
+                <label class="block mt-4 text-sm">
+    <span class="text-gray-700 font-medium dark:text-gray-400">
+      Structure
+    </span>
+                  <select
+                          class="block w-full mt-1 text-sm dark:text-gray-300 dark:border-gray-600 dark:bg-gray-700 form-select focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:focus:shadow-outline-gray"
+                          name="listStructure"
+                  >
+
+                    <c:forEach items="${structureList}" var="structure" varStatus="boucle">
+                      <option value="${structure.idStructure}"><c:out value="${structure.nom}"/> </option>
+                    </c:forEach>
+
+                  </select>
+                </label>
               </div>
               <div class="mb-8">
                 <input

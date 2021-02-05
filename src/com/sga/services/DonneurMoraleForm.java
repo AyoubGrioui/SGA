@@ -1,6 +1,9 @@
 package com.sga.services;
 
 import com.sga.entities.DonneurMoral;
+import com.sga.entities.Structure;
+import com.sga.repositories.HibernateDonneurMoralPersister;
+import com.sga.repositories.HibernateStructurePersister;
 import com.sga.repositories.Repository;
 import com.sga.repositories.RepositoryFactory;
 
@@ -16,7 +19,8 @@ public class DonneurMoraleForm {
 	private static final String CHAMP_TELEPHONE = "telephoneDonneurMorale";
 	private static final String CHAMP_ADRESSE = "adresseDonneurMorale";
 	private static final String CHAMP_MOT_DE_PASSE = "motDePasseDonneurMorale";
-	
+	private static final String CHAMP_STRUCTURE = "listStructure";
+
 	private Map<String,String> erreurs = new HashMap<String,String>();
 	private String resultat;
 	
@@ -38,6 +42,7 @@ public class DonneurMoraleForm {
 		String telephone = getValeurChamp(request,CHAMP_TELEPHONE);
 		String adresse = getValeurChamp(request,CHAMP_ADRESSE);
 		String motDePasse = getValeurChamp(request,CHAMP_MOT_DE_PASSE);
+		String idStructure = getValeurChamp(request,CHAMP_STRUCTURE);
 		
 		DonneurMoral donneurMorale = new DonneurMoral();
 		
@@ -77,11 +82,23 @@ public class DonneurMoraleForm {
 		else {
 			resultat= "echec de la creation de donneur morale";
 		}
-		
-		RepositoryFactory repFactory = new RepositoryFactory();
-		Repository rep = repFactory.getDonneurMoralRepository();
-		rep.create(donneurMorale);
-		
+
+		Structure structure=null;
+		try
+		{
+			structure =validationStructure(idStructure);
+		}
+		catch ( Exception e )
+		{
+			setErreurs( CHAMP_STRUCTURE,e.getMessage());
+		}
+		donneurMorale.setStructure(structure);
+
+		if(getErreurs().isEmpty())
+		{
+			HibernateDonneurMoralPersister donneurMoralPersister = new HibernateDonneurMoralPersister();
+			donneurMoralPersister.create(donneurMorale);
+		}
 		return donneurMorale;
 	}
 	
@@ -137,6 +154,34 @@ public class DonneurMoraleForm {
   	        throw new Exception( "Merci de saisir un mot de passe." );
   	    }
   	}
+
+	private Structure validationStructure(String id_structure) throws Exception {
+		if(id_structure == null)
+		{
+			throw new Exception( "Merci de choisir une structure");
+		}
+		else
+		{
+			try {
+				Long idStructure = Long.parseLong(id_structure);
+				HibernateStructurePersister structurePersister = new HibernateStructurePersister();
+				Structure structure =structurePersister.read(idStructure);
+
+				if(structure == null)
+				{
+					throw new Exception("Structure n'existe pas");
+				}
+
+				return structure;
+
+			}
+			catch (NumberFormatException n)
+			{
+				throw new Exception( "Structure invalid");
+			}
+
+		}
+	}
     
     /* ajoute un message correspondant au champ specifie a la map des erreurs */
 	

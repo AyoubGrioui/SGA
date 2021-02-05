@@ -1,13 +1,13 @@
 package com.sga.services;
 
 import com.sga.entities.Fonction;
+import com.sga.repositories.HibernateFonctionPersister;
 import com.sga.repositories.Repository;
 import com.sga.repositories.RepositoryFactory;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
+import java.util.List.*;
 
 public class FonctionForm {
 	
@@ -32,24 +32,28 @@ public class FonctionForm {
 		String role = getValeurChamp(request, CHAMP_ROLE);
 		
 		Fonction fonction = new Fonction();
-		
-/*		try {
+
+		try {
 			validationRole(role);
 		} catch(Exception e) {
 			setErreurs(CHAMP_ROLE, e.getMessage());
 		}
 		fonction.setRole(role);
-		
-		if(erreurs.isEmpty()) {
-			resultat = "succes de la creation du client";
+
+		HibernateFonctionPersister fonctionPersister=new HibernateFonctionPersister();
+		List<Fonction> fonctionList = fonctionPersister.getAll();
+
+		for (Fonction f : fonctionList)
+		{
+			if(role != null && role.equals(f.getRole()))
+				return f;
 		}
-		else {
-			resultat= "echec de la creation du client";
+
+
+		if(getErreurs().isEmpty())
+		{
+			fonctionPersister.create(fonction);
 		}
-		*/
-		RepositoryFactory repFactory = new RepositoryFactory();
-		Repository rep = repFactory.getFonctionRepository();
-		rep.create(fonction);
 		
 		return fonction;
 	}

@@ -1,8 +1,8 @@
 package com.sga.services;
 
 import com.sga.entities.DonneurPhysique;
-import com.sga.repositories.Repository;
-import com.sga.repositories.RepositoryFactory;
+import com.sga.entities.Structure;
+import com.sga.repositories.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
@@ -17,7 +17,8 @@ public class DonneurPhysiqueForm {
 	private static final String CHAMP_TELEPHONE = "telephoneDonneurMorale";
 	private static final String CHAMP_ADRESSE = "adresseDonneurMorale";
 	private static final String CHAMP_MOT_DE_PASSE = "motDePasseDonneurMorale";
-	
+	private static final String CHAMP_STRUCTURE = "listStructure";
+
 	private Map<String,String> erreurs = new HashMap<String,String>();
 	private String resultat;
 	
@@ -39,8 +40,9 @@ public class DonneurPhysiqueForm {
 		String telephone = getValeurChamp(request,CHAMP_TELEPHONE);
 		String adresse = getValeurChamp(request,CHAMP_ADRESSE);
 		String motDePasse = getValeurChamp(request,CHAMP_MOT_DE_PASSE);
-		
-		
+		String idStructure = getValeurChamp(request,CHAMP_STRUCTURE);
+
+
 		DonneurPhysique donneurPhysique = new DonneurPhysique();
 		
 		try {
@@ -84,23 +86,57 @@ public class DonneurPhysiqueForm {
 			setErreurs(CHAMP_ADRESSE, e.getMessage());
 		}
 		donneurPhysique.setAdresse(adresse);
-		
-		
-		
-		if(erreurs.isEmpty()) {
-			resultat = "succes de la creation du donneur physique";
+
+
+
+		Structure structure=null;
+		try
+		{
+			structure =validationStructure(idStructure);
 		}
-		else {
-			resultat= "echec de la creation du donneur physique";
+		catch ( Exception e )
+		{
+			setErreurs( CHAMP_STRUCTURE,e.getMessage());
 		}
-		
-		RepositoryFactory repFactory = new RepositoryFactory();
-		Repository rep = repFactory.getDonneurPhysiqueRepository();
-		rep.create(donneurPhysique);
+		donneurPhysique.setStructure(structure);
+
+		if(getErreurs().isEmpty())
+		{
+			HibernateDonneurPhysiquePersister donneurPhysiquePersister = new HibernateDonneurPhysiquePersister();
+			donneurPhysiquePersister.create(donneurPhysique);
+		}
 		
 		return donneurPhysique;
 	}
-	
+
+	private Structure validationStructure(String id_structure) throws Exception {
+		if(id_structure == null)
+		{
+			throw new Exception( "Merci de choisir une structure");
+		}
+		else
+		{
+			try {
+				Long idStructure = Long.parseLong(id_structure);
+				HibernateStructurePersister structurePersister = new HibernateStructurePersister();
+				Structure structure =structurePersister.read(idStructure);
+
+				if(structure == null)
+				{
+					throw new Exception("Structure n'existe pas");
+				}
+
+				return structure;
+
+			}
+			catch (NumberFormatException n)
+			{
+				throw new Exception( "Structure invalid");
+			}
+
+		}
+	}
+
 	// Fonction de validation du nom
     private void validationNom( String nom ) throws Exception {
         if ( nom != null ) {

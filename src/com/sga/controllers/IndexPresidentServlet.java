@@ -30,20 +30,4 @@ public class IndexPresidentServlet extends HttpServlet {
         this.getServletContext().getRequestDispatcher( VUE_DASHBOARD_PRESIDENT ).forward( request, response );
     }
 
-    @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException
-    {
-        HttpSession session = req.getSession();
-
-        Adherent adherent =(Adherent) session.getAttribute(ATT_SESSION_USER);
-
-        if(adherent!=null )
-        {
-            this.getServletContext().getRequestDispatcher(VUE_DASHBOARD_PRESIDENT).forward(req, resp);
-        }
-        else
-        {
-
-        }
-    }
 }

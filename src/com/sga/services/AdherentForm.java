@@ -1,9 +1,14 @@
 package com.sga.services;
 
 import com.sga.entities.Adherent;
+import com.sga.entities.LigneFonction;
+import com.sga.entities.Structure;
 import com.sga.helpers.SGAUtil;
+import com.sga.repositories.HibernateAdherentPersister;
+import com.sga.repositories.HibernateStructurePersister;
 import com.sga.repositories.Repository;
 import com.sga.repositories.RepositoryFactory;
+import org.jasypt.util.password.ConfigurablePasswordEncryptor;
 
 import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDate;
@@ -26,8 +31,9 @@ public class AdherentForm {
 	public static final String CHAMP_TELEPHONE="telephoneAdherent";
 	public static final String CHAMP_ADRESSE="adresseAdherent";
 	public static final String CHAMP_EMAIL="emailAdherent";
+	public static final String CHAMP_STRUCTURE = "listStructure";
+	private static final String ALGO_CHIFFREMENT = "SHA-256";
 
-	
 	private Map<String,String> erreurs=new HashMap<String,String>();
 	
 	public Map<String, String> getErreurs() {
@@ -48,8 +54,11 @@ public class AdherentForm {
 		String telephone = getValeurChamp(request,CHAMP_TELEPHONE);
 		String adresse = getValeurChamp(request,CHAMP_ADRESSE);
 		String email = getValeurChamp(request,CHAMP_EMAIL);
+		String idStructure = getValeurChamp(request,CHAMP_STRUCTURE);
 		
 		Adherent adherent = new Adherent();
+
+		String password = null;
 		
 		
 
@@ -138,17 +147,39 @@ public class AdherentForm {
         adherent.setEmail( email );
 		
         try {
-            validationMotDePasse(motDePasse);
+            password = validationMotDePasse(motDePasse);
         } catch ( Exception e ) {
             setErreurs( CHAMP_MOT_DE_PASSE, e.getMessage() );
         }
-        adherent.setMotDePasse( motDePasse );
+        adherent.setMotDePasse( password );
+
+        Structure structure=null;
+        try
+		{
+			structure =validationStructure(idStructure);
+		}
+		catch ( Exception e )
+		{
+			setErreurs( CHAMP_STRUCTURE,e.getMessage());
+		}
+        adherent.setStructure(structure);
+
+
+		LigneFonctionForm ligneFonctionForm = new LigneFonctionForm();
+		LigneFonction ligneFonction = ligneFonctionForm.creerLigneFonction(request);
+
+		adherent.setLigneFonction(ligneFonction);
+
+		erreurs.putAll(ligneFonctionForm.getErreurs());
+
 		
 		//Persistance des Donnnée
 
-		RepositoryFactory repFactory = new RepositoryFactory();
-		Repository rep = repFactory.getDonneurMoralRepository();
-		rep.create(adherent);
+		if(getErreurs().isEmpty())
+		{
+			HibernateAdherentPersister adherentPersister = new HibernateAdherentPersister();
+			adherentPersister.create(adherent);
+		}
 		
 		return adherent;
 	}
@@ -281,10 +312,58 @@ public class AdherentForm {
 	}
 
 	//Foction de validation du mot de passe
-	private void validationMotDePasse( String motDePasse ) throws Exception {
+	private String validationMotDePasse( String motDePasse ) throws Exception {
 	    if ( motDePasse == null  ) {
 	        throw new Exception( "Merci de saisir un mot de passe." );
 	    }
+	    else if(motDePasse.length()<8)
+	    {
+			throw new Exception( "Le Mot depasse doit contenir au minimum 8 caractéres" );
+		}
+	    else
+		{
+			return traiterMotsDePasse(motDePasse);
+		}
 	}
+
+	private String traiterMotsDePasse( String motDePasse ) throws Exception {
+
+		ConfigurablePasswordEncryptor passwordEncryptor = new ConfigurablePasswordEncryptor();
+		passwordEncryptor.setAlgorithm( ALGO_CHIFFREMENT );
+		passwordEncryptor.setPlainDigest( false );
+		String motDePasseChiffre = passwordEncryptor.encryptPassword( motDePasse );
+
+		return motDePasseChiffre;
+
+	}
+
+	private Structure validationStructure(String id_structure) throws Exception {
+		if(id_structure == null)
+		{
+			throw new Exception( "Merci de choisir une structure");
+		}
+		else
+		{
+			try {
+				Long idStructure = Long.parseLong(id_structure);
+				HibernateStructurePersister structurePersister = new HibernateStructurePersister();
+				Structure structure =structurePersister.read(idStructure);
+
+				if(structure == null)
+				{
+					throw new Exception("Structure n'existe pas");
+				}
+
+				return structure;
+
+			}
+			catch (NumberFormatException n)
+			{
+				throw new Exception( "Structure invalid");
+			}
+
+		}
+	}
+
 	
 }

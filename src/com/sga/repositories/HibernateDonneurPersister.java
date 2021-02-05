@@ -2,9 +2,11 @@ package com.sga.repositories;
 
 import java.util.List;
 
+import com.sga.entities.Adherent;
 import org.hibernate.Transaction;
 
 import com.sga.entities.Donneur;
+import org.hibernate.query.Query;
 
 public class HibernateDonneurPersister extends Repository<Donneur> {
 	Transaction transaction = null;
@@ -46,6 +48,32 @@ public class HibernateDonneurPersister extends Repository<Donneur> {
 			return list;
 		} catch (Exception e) {
 			e.printStackTrace();
+			if (transaction != null) {
+				transaction.rollback();
+			}
+			return null;
+		} finally {
+			if (session != null)
+				session.close();
+			if (sf != null)
+				sf.close();
+		}
+	}
+
+	public Donneur getByEmail(String email) {
+		Donneur obj = null;
+		Query<Donneur> query = null;
+		try {
+			sf = getSessionFactory();
+			session = sf.openSession();
+			transaction = session.getTransaction();
+			transaction.begin();
+			query = getSession().createQuery("from Donneur where email=:email");
+			query.setString("email", email);
+			obj = query.list().get(0);
+			transaction.commit();
+			return obj;
+		} catch (Exception e) {
 			if (transaction != null) {
 				transaction.rollback();
 			}
