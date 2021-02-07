@@ -183,6 +183,8 @@ public class AdherentForm {
 		
 		return adherent;
 	}
+
+
 	
 	// ajoute un message correspondant au champ specifie a la map des erreurs 
 

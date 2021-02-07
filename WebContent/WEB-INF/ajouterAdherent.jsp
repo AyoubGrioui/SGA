@@ -305,7 +305,7 @@ pageEncoding="UTF-8"%>
                     <c:out value="${erreurs['dateFinLigneFonction']}"/>
                   </span>
                 </label>
-                <label class="block mt-4 text-sm">
+                <label class="bl ock mt-4 text-sm">
     <span class="text-gray-700 font-medium dark:text-gray-400">
       Structure
     </span>

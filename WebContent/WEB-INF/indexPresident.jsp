@@ -60,7 +60,7 @@
                   <p
                     class="text-lg font-semibold text-gray-700 dark:text-gray-200"
                   >
-                    6389
+                    <c:out value="${adherentSize}" default="0"/>
                   </p>
                 </div>
               </div>
@@ -88,7 +88,7 @@
                   <p
                     class="text-lg font-semibold text-gray-700 dark:text-gray-200"
                   >
-                    10.000 MAD
+                    <c:out value="${depenseMontant}" default="0.00"/> MAD
                   </p>
                 </div>
               </div>
@@ -116,7 +116,7 @@
                   <p
                     class="text-lg font-semibold text-gray-700 dark:text-gray-200"
                   >
-                    376
+                    <c:out value="${donSize}" default="0"/>
                   </p>
                 </div>
               </div>
