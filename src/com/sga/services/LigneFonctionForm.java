@@ -68,6 +68,43 @@ public class LigneFonctionForm {
 		return ligneFonction;
 	}
 	
+public LigneFonction modifierLigneFonction(HttpServletRequest request) {
+		
+		
+		String dateDebut = getValeurChamp(request, CHAMP_DATE_DEBUT);
+		String dateFin = getValeurChamp(request, CHAMP_DATE_FIN);
+
+		LigneFonction ligneFonction = new LigneFonction();
+		
+
+		try {
+			validationDate(dateDebut);
+		}catch (Exception e) {
+			setErreurs(CHAMP_DATE_FIN, e.getMessage());
+		}
+		ligneFonction.setDateDebut(SGAUtil.StringToLocalDate(dateDebut));
+		
+		try {
+			validationDate(dateFin);
+		}catch (Exception e) {
+			setErreurs(CHAMP_DATE_FIN, e.getMessage());
+		}
+		ligneFonction.setDateFin(SGAUtil.StringToLocalDate(dateFin));
+
+		FonctionForm fonctionForm=new FonctionForm();
+		Fonction fonction=fonctionForm.creerFonction(request);
+
+		erreurs.putAll(fonctionForm.getErreurs());
+		
+		if(getErreurs().isEmpty())
+		{
+			HibernateLigneFonctionPersister ligneFonctionPersister=new HibernateLigneFonctionPersister();
+			ligneFonctionPersister.update(ligneFonction);
+		}
+		
+		return ligneFonction;
+	}
+	
 	//validation date
 		private void validationDate( String date ) throws Exception {
 

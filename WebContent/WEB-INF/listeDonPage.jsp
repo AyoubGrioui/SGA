@@ -77,6 +77,9 @@
                   </td>
                   <td class="px-4 py-3">
                     <div class="flex items-center space-x-4 text-sm">
+                    
+                   <a href="<c:url value="/modifierDon"><c:param name="donID" value="${don.idDon}" /></c:url>">
+                    
                       <button
                               class="flex items-center justify-between px-2 py-2 text-sm font-medium leading-5 text-purple-600 rounded-lg dark:text-gray-400 focus:outline-none focus:shadow-outline-gray"
                               aria-label="Edit"
@@ -92,6 +95,7 @@
                           ></path>
                         </svg>
                       </button>
+                     </a>
                       <button
                               class="flex items-center justify-between px-2 py-2 text-sm font-medium leading-5 text-purple-600 rounded-lg dark:text-gray-400 focus:outline-none focus:shadow-outline-gray"
                               aria-label="Details"
@@ -112,6 +116,9 @@
                           ></path>
                         </svg>
                       </button>
+                      
+                      <a href="<c:url value="/supprimerDon"><c:param name="donID" value="${don.idDon}" /></c:url>">
+                      
                       <button
                               class="flex items-center justify-between px-2 py-2 text-sm font-medium leading-5 text-purple-600 rounded-lg dark:text-gray-400 focus:outline-none focus:shadow-outline-gray"
                               aria-label="Delete"
@@ -129,6 +136,7 @@
                           ></path>
                         </svg>
                       </button>
+                      </a>
                     </div>
                   </td>
                 </tr>

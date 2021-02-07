@@ -186,6 +186,150 @@ public class AdherentForm {
 
 
 	
+	public Adherent modifierAdherent(HttpServletRequest request) {
+		String nom = getValeurChamp(request,CHAMP_NOM);
+		String prenom = getValeurChamp(request,CHAMP_PRENOM);
+		String cin = getValeurChamp(request,CHAMP_CIN);
+		String dateNaissance = getValeurChamp(request,CHAMP_DATE_NAISSANCE);
+		String lieuNaissance = getValeurChamp(request,CHAMP_LIEU_NAISSANCE);
+		String dateAdhesion = getValeurChamp(request,CHAMP_DATE_ADHESION);
+		String profession = getValeurChamp(request,CHAMP_PROFESSION);
+		String photo = getValeurChamp(request,CHAMP_PHOTO);
+		String sexe = getValeurChamp(request,CHAMP_SEXE);
+		String motDePasse = getValeurChamp(request,CHAMP_MOT_DE_PASSE);
+		String telephone = getValeurChamp(request,CHAMP_TELEPHONE);
+		String adresse = getValeurChamp(request,CHAMP_ADRESSE);
+		String email = getValeurChamp(request,CHAMP_EMAIL);
+		String idStructure = getValeurChamp(request,CHAMP_STRUCTURE);
+		
+		Adherent adherent = new Adherent();
+
+		String password = null;
+		
+		
+
+        try {
+        	validationDate( dateNaissance );
+        } catch ( Exception e ) {
+            setErreurs( CHAMP_DATE_NAISSANCE, e.getMessage() );
+        }
+        adherent.setDateNaissance(SGAUtil.StringToLocalDate(dateNaissance) );
+		
+        try {
+            validationDate( dateAdhesion );
+        } catch ( Exception e ) {
+            setErreurs( CHAMP_DATE_ADHESION, e.getMessage() );
+        }
+        adherent.setDateAdhesion( SGAUtil.StringToLocalDate(dateAdhesion)  );
+        
+        try {
+            validationNom(nom);
+        } catch ( Exception e ) {
+            setErreurs( CHAMP_NOM, e.getMessage() );
+        }
+        adherent.setNom( nom );
+		
+        try {
+            validationPrenom(prenom);
+        } catch ( Exception e ) {
+            setErreurs( CHAMP_PRENOM, e.getMessage() );
+        }
+        adherent.setPrenom( prenom );
+		
+        try {
+            validationCin(cin);
+        } catch ( Exception e ) {
+            setErreurs( CHAMP_CIN, e.getMessage() );
+        }
+        adherent.setCin( cin );
+		
+        try {
+            validationLieuNaissance(lieuNaissance);
+        } catch ( Exception e ) {
+            setErreurs( CHAMP_LIEU_NAISSANCE, e.getMessage() );
+        }
+        adherent.setLieuNaissance( lieuNaissance );
+		
+        try {
+            validationProfession(profession);
+        } catch ( Exception e ) {
+            setErreurs( CHAMP_PROFESSION, e.getMessage() );
+        }
+        adherent.setProfession( profession );
+		
+        try {
+            validationPhoto(photo);
+        } catch ( Exception e ) {
+            setErreurs( CHAMP_PHOTO, e.getMessage() );
+        }
+        adherent.setPhoto( photo );
+		
+        try {
+            validationSexe(sexe);
+        } catch ( Exception e ) {
+            setErreurs( CHAMP_SEXE, e.getMessage() );
+        }
+        adherent.setSexe( sexe );
+        
+        try {
+            validationAdresse(adresse);
+        } catch ( Exception e ) {
+            setErreurs( CHAMP_ADRESSE, e.getMessage() );
+        }
+        adherent.setAdresse( adresse );
+		
+        try {
+            validationTelephone(telephone);
+        } catch ( Exception e ) {
+            setErreurs( CHAMP_TELEPHONE, e.getMessage() );
+        }
+        adherent.setTelephone( telephone );
+		
+        try {
+            validationEmail(email);
+        } catch ( Exception e ) {
+            setErreurs( CHAMP_EMAIL, e.getMessage() );
+        }
+        adherent.setEmail( email );
+		
+        try {
+            password = validationMotDePasse(motDePasse);
+        } catch ( Exception e ) {
+            setErreurs( CHAMP_MOT_DE_PASSE, e.getMessage() );
+        }
+        adherent.setMotDePasse( password );
+
+        Structure structure=null;
+        try
+		{
+			structure =validationStructure(idStructure);
+		}
+		catch ( Exception e )
+		{
+			setErreurs( CHAMP_STRUCTURE,e.getMessage());
+		}
+        adherent.setStructure(structure);
+
+
+		LigneFonctionForm ligneFonctionForm = new LigneFonctionForm();
+		LigneFonction ligneFonction = ligneFonctionForm.modifierLigneFonction(request);
+
+		adherent.setLigneFonction(ligneFonction);
+
+		erreurs.putAll(ligneFonctionForm.getErreurs());
+
+		
+		//Persistance des Donnnée
+
+		if(getErreurs().isEmpty())
+		{
+			HibernateAdherentPersister adherentPersister = new HibernateAdherentPersister();
+			adherentPersister.update(adherent);
+		}
+		
+		return adherent;
+	}
+	
 	// ajoute un message correspondant au champ specifie a la map des erreurs 
 
 	private void setErreurs(String champ, String message) {

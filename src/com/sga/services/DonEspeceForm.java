@@ -61,6 +61,37 @@ public class DonEspeceForm
         return donEspece;
 
     }
+    
+    public DonEspece modifierDonEspece(HttpServletRequest request)
+    {
+        String montant = getValeurChamp(request,CHAMP_MONTANT);
+        String dateDon = getValeurChamp(request,CHAMP_DATE_DON);
+        String donneur = getValeurChamp(request,CHAMP_DONNEUR);
+
+        DonEspece donEspece = new DonEspece();
+
+        double valeurMontant=-1;
+        try {
+            valeurMontant=validationMontant(montant);
+        }catch(Exception e) {
+            setErreurs(CHAMP_MONTANT, e.getMessage());
+        }
+        donEspece.setMontant(valeurMontant);
+
+        try {
+            validationDate( dateDon );
+        } catch ( Exception e ) {
+            setErreurs( CHAMP_DATE_DON, e.getMessage() );
+        }
+        donEspece.setDateDon(SGAUtil.StringToLocalDate(dateDon));
+
+        RepositoryFactory repFactory = new RepositoryFactory();
+        Repository rep = repFactory.getDonVersementRepository();
+        rep.update(donEspece);
+
+        return donEspece;
+
+    }
 
     //validation du montant
     private double validationMontant( String montant ) throws Exception {
