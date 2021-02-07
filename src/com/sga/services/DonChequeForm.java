@@ -96,6 +96,69 @@ public class DonChequeForm {
 
 		return donCheque;
 	}
+	
+	public DonCheque modifierDonCheque(HttpServletRequest request) {
+		String numeroCompteBanque = getValeurChamp(request,CHAMP_NUMERO_COMPTE_BANQUE);
+		String dateCheque = getValeurChamp(request,CHAMP_DATE_CHEQUE);
+		String dateDepot = getValeurChamp(request,CHAMP_DATE_DEPOT);
+		String nomBanque = getValeurChamp(request,CHAMP_NOM_BANQUE);
+		String montant = getValeurChamp(request,CHAMP_MONTANT);
+		String dateDon =getValeurChamp(request,CHAMP_DATE_DON);
+
+		DonCheque donCheque = new DonCheque();
+
+
+		double valeurMontant=-1;
+		try {
+			valeurMontant=validationMontant(montant);
+		}catch(Exception e) {
+			setErreurs(CHAMP_MONTANT, e.getMessage());
+		}
+		donCheque.setMontant(valeurMontant);
+
+        try {
+        	validationDate( dateCheque );
+        } catch ( Exception e ) {
+            setErreurs( CHAMP_DATE_CHEQUE, e.getMessage() );
+        }
+        donCheque.setDateCheque(SGAUtil.StringToLocalDate(dateCheque));
+		
+        try {
+        	validationDate( dateDepot );
+        } catch ( Exception e ) {
+            setErreurs( CHAMP_DATE_DEPOT, e.getMessage() );
+        }
+        donCheque.setDateDepot( SGAUtil.StringToLocalDate(dateDepot) );
+		
+        try {
+        	validationDate( dateDon );
+        } catch ( Exception e ) {
+            setErreurs( CHAMP_DATE_DON, e.getMessage() );
+        }
+        donCheque.setDateDon(SGAUtil.StringToLocalDate(dateDon));
+        
+        try {
+            validationNomBanque(nomBanque);
+        } catch ( Exception e ) {
+            setErreurs( CHAMP_NOM_BANQUE, e.getMessage() );
+        }
+        donCheque.setNomBanque( nomBanque );
+        
+        try {
+        	validationNumBanque(numeroCompteBanque);
+        }catch(Exception e) {
+        	setErreurs(CHAMP_NUMERO_COMPTE_BANQUE,e.getMessage());
+        }
+        donCheque.setNumeroCompteBanque(numeroCompteBanque);
+		
+
+		RepositoryFactory repFactory = new RepositoryFactory();
+		Repository rep = repFactory.getDonVersementRepository();
+		rep.update(donCheque);
+
+		return donCheque;
+	}
+	
 	//validation du montant
 	private double validationMontant( String montant ) throws Exception {
 		double temp;

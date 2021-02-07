@@ -32,6 +32,7 @@ public class AjouterDonServlet extends HttpServlet {
     public static final String PARAM_TYPEDON = "typeDon";
     public static final String PARAM_ANCIENDONNEUR = "listAncienDonneur";
     private static final String ATT_LIST_STRUCTURE = "structureList";
+    
 
 
     protected void doGet( HttpServletRequest request, HttpServletResponse response )

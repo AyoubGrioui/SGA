@@ -85,6 +85,64 @@ public class DepenseForm {
 
         return depense;
     }
+    
+    public Depense modifierDepense(HttpServletRequest request) {
+
+        String montant = getValeurChamp(request,CHAMP_MONTANT);
+        String dateDepense = getValeurChamp(request,CHAMP_DATE_DEPENSE);
+        String typedepense = getValeurChamp(request,CHAMP_TYPE_DEPENSE);
+        String idStructure = getValeurChamp(request,CHAMP_STRUCTURE);
+
+
+        Depense depense = new Depense();
+
+        
+        double valeurMontant= 0;
+        try
+        {
+            valeurMontant=validationMontant(montant);
+        }
+        catch(Exception e) {
+            setErreurs(CHAMP_MONTANT, e.getMessage());
+        }
+        depense.setMontant(valeurMontant);
+
+        try
+        {
+           validationTypeDepense(typedepense);
+        }catch(Exception e) {
+            setErreurs(CHAMP_TYPE_DEPENSE, e.getMessage());
+        }
+
+        depense.setTypeDepense(typedepense);
+        
+        try {
+            validationDate( dateDepense );
+        } catch ( Exception e ) {
+            setErreurs( CHAMP_DATE_DEPENSE, e.getMessage() );
+        }
+        depense.setDateDepense(SGAUtil.StringToLocalDate(dateDepense));
+
+        Structure structure=null;
+        try
+        {
+            structure =validationStructure(idStructure);
+        }
+        catch ( Exception e )
+        {
+            setErreurs( CHAMP_STRUCTURE,e.getMessage());
+        }
+        depense.setStructure(structure);
+
+        if(erreurs.isEmpty())
+        {
+            HibernateDepensePersister depensePersister =new HibernateDepensePersister();
+            depensePersister.update(depense);
+        }
+
+
+        return depense;
+    }
 
     //validation du montant
     private double validationMontant( String montant ) throws Exception {

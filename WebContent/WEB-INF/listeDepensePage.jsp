@@ -1,5 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 pageEncoding="UTF-8"%> 
+    <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+
 <!DOCTYPE html>
 <html :class="{ 'theme-dark': dark }" x-data="data()" lang="en">
   <head>
@@ -55,7 +57,7 @@ pageEncoding="UTF-8"%>
                   <tbody
                     class="bg-white divide-y dark:divide-gray-700 dark:bg-gray-800"
                   >
-                    <c:foreach items="${depenseList}" var="depense" varStatus="boucle">
+                    <c:forEach items="${depenseList}" var="depense" varStatus="boucle">
                       <tr class="text-gray-700 dark:text-gray-400">
                         <td class="px-4 py-3">
                           <div class="flex items-center text-sm">
@@ -68,6 +70,9 @@ pageEncoding="UTF-8"%>
                         <td class="px-4 py-3 text-sm"><c:out value="${depense.typeDepense}"/></td>
                         <td class="px-4 py-3">
                           <div class="flex items-center space-x-4 text-sm">
+                          
+						<a href="<c:url value="/modifierDepense"><c:param name="depenseID" value="${depense.idDepense}" /></c:url>">
+                          
                             <button
                               class="flex items-center justify-between px-2 py-2 text-sm font-medium leading-5 text-purple-600 rounded-lg dark:text-gray-400 focus:outline-none focus:shadow-outline-gray"
                               aria-label="Edit"
@@ -83,6 +88,10 @@ pageEncoding="UTF-8"%>
                                 ></path>
                               </svg>
                             </button>
+                            </a>
+                            
+                            <a href="<c:url value="/supprimerDepense"><c:param name="depenseID" value="${depense.idDepense}" /></c:url>">
+                            
                             <button
                               class="flex items-center justify-between px-2 py-2 text-sm font-medium leading-5 text-purple-600 rounded-lg dark:text-gray-400 focus:outline-none focus:shadow-outline-gray"
                               aria-label="Delete"
@@ -100,10 +109,11 @@ pageEncoding="UTF-8"%>
                                 ></path>
                               </svg>
                             </button>
+                            </a>
                           </div>
                         </td>
                       </tr>
-                    </c:foreach>
+                    </c:forEach>
                   </tbody>
                 </table>
               </div>

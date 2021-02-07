@@ -70,6 +70,49 @@ public class DonVersementForm {
 
 		return donVersement;
 	}
+	
+	public DonVersement modifierDonVersement(HttpServletRequest request) {
+
+		String numCompte = getValeurChamp(request, CHAMP_NUMERO_DE_COMPTE);
+		String dateDon = getValeurChamp(request, CHAMP_DATE_DON);
+		String montant = getValeurChamp(request, CHAMP_MONTANT);
+
+		DonVersement donVersement = new DonVersement();
+
+		try {
+			validationNumCompte(numCompte);
+		} catch (Exception e) {
+			setErreurs(CHAMP_NUMERO_DE_COMPTE, e.getMessage());
+		}
+		donVersement.setNumeroCompteBanque(numCompte);
+
+		double valeurMontant = -1;
+		try {
+			valeurMontant = validationMontant(montant);
+		} catch (Exception e) {
+			setErreurs(CHAMP_MONTANT, e.getMessage());
+		}
+		donVersement.setMontant(valeurMontant);
+
+		try {
+			validationDate(CHAMP_DATE_DON);
+		} catch (Exception e) {
+			setErreurs(CHAMP_DATE_DON, e.getMessage());
+		}
+		donVersement.setDateDon(SGAUtil.StringToLocalDate(dateDon));
+
+		if (erreurs.isEmpty()) {
+			resultat = "succes de la creation du client";
+		} else {
+			resultat = "echec de la creation du client";
+		}
+
+		RepositoryFactory repFactory = new RepositoryFactory();
+		Repository rep = repFactory.getDonVersementRepository();
+		rep.update(donVersement);
+
+		return donVersement;
+	}
 
 	/*Fonction de validation d'un numero de compte */
 

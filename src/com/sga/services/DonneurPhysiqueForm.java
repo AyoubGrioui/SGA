@@ -108,6 +108,84 @@ public class DonneurPhysiqueForm {
 		
 		return donneurPhysique;
 	}
+	
+public DonneurPhysique modifierDonneurPhysique(HttpServletRequest request) {
+		
+		String nom = getValeurChamp(request, CHAMP_NOM);
+		String prenom = getValeurChamp(request, CHAMP_PRENOM);
+		String cin = getValeurChamp(request, CHAMP_CIN);
+		String email = getValeurChamp(request,CHAMP_EMAIL);
+		String telephone = getValeurChamp(request,CHAMP_TELEPHONE);
+		String adresse = getValeurChamp(request,CHAMP_ADRESSE);
+		String motDePasse = getValeurChamp(request,CHAMP_MOT_DE_PASSE);
+		String idStructure = getValeurChamp(request,CHAMP_STRUCTURE);
+
+
+		DonneurPhysique donneurPhysique = new DonneurPhysique();
+		
+		try {
+			validationNom(nom);
+		} catch (Exception e) {
+			setErreurs(CHAMP_NOM, e.getMessage());
+		}
+		donneurPhysique.setNom(nom);
+		
+		try {
+			validationPrenom(prenom);
+		} catch (Exception e) {
+			setErreurs(CHAMP_PRENOM, e.getMessage());
+		}
+		donneurPhysique.setPrenom(prenom);
+		
+		try {
+			validationCin(cin);
+		} catch (Exception e) {
+			setErreurs(CHAMP_CIN, e.getMessage());
+		}
+		donneurPhysique.setCin(cin);
+		
+		try {
+			validationEmail(email);
+		} catch (Exception e) {
+			setErreurs(CHAMP_EMAIL, e.getMessage());
+		}
+		donneurPhysique.setEmail(email);
+		
+		try {
+			validationTelephone(telephone);
+		} catch (Exception e) {
+			setErreurs(CHAMP_TELEPHONE, e.getMessage());
+		}
+		donneurPhysique.setTelephone(telephone);
+		
+		try {
+			validationAdresse(adresse);
+		} catch (Exception e) {
+			setErreurs(CHAMP_ADRESSE, e.getMessage());
+		}
+		donneurPhysique.setAdresse(adresse);
+
+
+
+		Structure structure=null;
+		try
+		{
+			structure =validationStructure(idStructure);
+		}
+		catch ( Exception e )
+		{
+			setErreurs( CHAMP_STRUCTURE,e.getMessage());
+		}
+		donneurPhysique.setStructure(structure);
+
+		if(getErreurs().isEmpty())
+		{
+			HibernateDonneurPhysiquePersister donneurPhysiquePersister = new HibernateDonneurPhysiquePersister();
+			donneurPhysiquePersister.update(donneurPhysique);
+		}
+		
+		return donneurPhysique;
+	}
 
 	private Structure validationStructure(String id_structure) throws Exception {
 		if(id_structure == null)

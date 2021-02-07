@@ -102,6 +102,73 @@ public class DonneurMoraleForm {
 		return donneurMorale;
 	}
 	
+public DonneurMoral modifierDonneurMorale(HttpServletRequest request) {
+		
+		String nom = getValeurChamp(request, CHAMP_NOM);
+		String email = getValeurChamp(request,CHAMP_EMAIL);
+		String telephone = getValeurChamp(request,CHAMP_TELEPHONE);
+		String adresse = getValeurChamp(request,CHAMP_ADRESSE);
+		String motDePasse = getValeurChamp(request,CHAMP_MOT_DE_PASSE);
+		String idStructure = getValeurChamp(request,CHAMP_STRUCTURE);
+		
+		DonneurMoral donneurMorale = new DonneurMoral();
+		
+		try {
+			validationNom(nom);
+		} catch (Exception e) {
+			setErreurs(CHAMP_NOM, e.getMessage());
+		}
+		donneurMorale.setNom(nom);
+		
+		try {
+			validationEmail(email);
+		} catch (Exception e) {
+			setErreurs(CHAMP_EMAIL, e.getMessage());
+		}
+		donneurMorale.setEmail(email);
+		
+		try {
+			validationTelephone(telephone);
+		} catch (Exception e) {
+			setErreurs(CHAMP_TELEPHONE, e.getMessage());
+		}
+		donneurMorale.setTelephone(telephone);
+		
+		try {
+			validationAdresse(adresse);
+		} catch (Exception e) {
+			setErreurs(CHAMP_ADRESSE, e.getMessage());
+		}
+		donneurMorale.setAdresse(adresse);
+		
+		
+		
+		if(erreurs.isEmpty()) {
+			resultat = "succes de la creation de donneur";
+		}
+		else {
+			resultat= "echec de la creation de donneur morale";
+		}
+
+		Structure structure=null;
+		try
+		{
+			structure =validationStructure(idStructure);
+		}
+		catch ( Exception e )
+		{
+			setErreurs( CHAMP_STRUCTURE,e.getMessage());
+		}
+		donneurMorale.setStructure(structure);
+
+		if(getErreurs().isEmpty())
+		{
+			HibernateDonneurMoralPersister donneurMoralPersister = new HibernateDonneurMoralPersister();
+			donneurMoralPersister.update(donneurMorale);
+		}
+		return donneurMorale;
+	}
+	
 /*Foction de validation d'un adresse email*/
 	
 	private void validationEmail( String email ) throws Exception {
