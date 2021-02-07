@@ -36,36 +36,30 @@ pageEncoding="UTF-8"%>
               />
               <div class="mb-4">
                 <span class="text-gray-700 dark:text-gray-400">Nom : </span
-                ><c:out value="${adherent.nomAdherent}" />
+                ><c:out value="${adherent.nom}" />
               </div>
 
               <div class="mb-4">
                 <span class="text-gray-700 dark:text-gray-400">Prenom : </span>
-                <c:out value="${adherent.prenomAdherent}" />
+                <c:out value="${adherent.prenom}" />
               </div>
 
               <div class="mb-4">
                 <span class="text-gray-700 dark:text-gray-400">Email : </span>
-                <c:out value="${adherent.emailAdherent}" />
+                <c:out value="${adherent.email}" />
               </div>
 
-              <div class="mb-4">
-                <span class="text-gray-700 dark:text-gray-400"
-                  >Mot de passe :
-                </span>
-                <c:out value="${adherent.motDePasseAdherent}" />
-              </div>
 
               <div class="mb-4">
                 <span class="text-gray-700 dark:text-gray-400">CIN : </span>
-                <c:out value="${adherent.cinAdherent}" />
+                <c:out value="${adherent.cin}" />
               </div>
 
               <div class="mb-4">
                 <span class="text-gray-700 dark:text-gray-400"
                   >Date de naissance :
                 </span>
-                <c:out value="${adherent.dateNaissanceAdherent}" />
+                <c:out value="${adherent.dateNaissance}" />
               </div>
 
               <div class="mb-4">
@@ -73,7 +67,7 @@ pageEncoding="UTF-8"%>
                   >Lieu de naissance :
                 </span>
                 <span class="text-gray-700 dark:text-gray-400"
-                  ><c:out value="${adherent.lieuNaissanceAdherent}"
+                  ><c:out value="${adherent.lieuNaissance}"
                 /></span>
               </div>
 
@@ -82,7 +76,7 @@ pageEncoding="UTF-8"%>
                   >Numéro de téléphone :
                 </span>
                 <span class="text-gray-700 dark:text-gray-400"
-                  ><c:out value="${adherent.lieuNaissanceAdherent}"
+                  ><c:out value="${adherent.telephone}"
                 /></span>
               </div>
 
@@ -90,7 +84,7 @@ pageEncoding="UTF-8"%>
                 <span class="text-gray-700 dark:text-gray-400"
                   >Date d'adhésion :
                 </span>
-                <c:out value="${adhrent.dateadhesionAdherent}" />
+                <c:out value="${adherent.dateAdhesion}" />
               </div>
 
               <div class="mb-4">
@@ -98,13 +92,13 @@ pageEncoding="UTF-8"%>
                   >Profession :
                 </span>
                 <span class="text-gray-700 dark:text-gray-400"
-                  ><c:out value="${adherent.professionAdherent}"
+                  ><c:out value="${adherent.profession}"
                 /></span>
               </div>
 
               <div class="mb-4">
                 <span class="text-gray-700 dark:text-gray-400">Sexe : </span>
-                <c:out value="${adherent.sexeAdherent}" />
+                <c:out value="${adherent.sexe}" />
               </div>
 
               <div class="mt-8">
@@ -144,7 +138,7 @@ pageEncoding="UTF-8"%>
                 </div>
 
                 <span class="text-gray-700 dark:text-gray-400">Adresse : </span>
-                <c:out value="${adhrent.adresseAdherent}" />
+                <c:out value="${adherent.adresse}" />
               </div>
 
               <h4
@@ -154,20 +148,20 @@ pageEncoding="UTF-8"%>
               </h4>
               <div class="mt-4 mb-4">
                 <span class="text-gray-700 dark:text-gray-400">Role : </span>
-                <c:out value="${fonction.roleFonction}" />
+                <c:out value="${adherent.ligneFonction.fonction.role}" />
               </div>
 
               <div class="mb-4">
                 <span class="text-gray-700 dark:text-gray-400"
                   >Date de début :
                 </span>
-                <c:out value="${ligneFonction.dateDebutLigneFonction}" />
+                <c:out value="${adherent.ligneFonction.dateDebut}" />
               </div>
               <div class="mb-4">
                 <span class="text-gray-700 dark:text-gray-400"
                   >Date de fin :
                 </span>
-                <c:out value="${ligneFonction.dateFinLigneFonction}" />
+                <c:out value="${adherent.ligneFonction.dateFin}" />
               </div>
             </div>
           </div>
