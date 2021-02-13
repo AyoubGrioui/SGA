@@ -1,31 +1,30 @@
 package com.sga.controllers;
 
-import com.sga.entities.Adherent;
-import com.sga.entities.LigneFonction;
-import com.sga.entities.Structure;
-import com.sga.repositories.HibernateStructurePersister;
-import com.sga.services.AdherentForm;
-import com.sga.services.LigneFonctionForm;
+import java.io.IOException;
+import java.util.List;
+import java.util.Map;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
-import java.util.List;
-import java.util.Map;
+
+import com.sga.entities.Adherent;
+import com.sga.entities.Structure;
+import com.sga.repositories.HibernateStructurePersister;
+import com.sga.services.AdherentForm;
 
 /**
- * Servlet implementation class DashBoardDonateurServlet
+ * Servlet implementation class AjouterAdherentServlet2
  */
-@WebServlet( "/ajouterAdherent" )
+@WebServlet("/ajouterAdherentServlet")
 public class AjouterAdherentServlet extends HttpServlet {
-
-    /**
+	/**
      * 
      */
     private static final long  serialVersionUID     = 1L;
+    public static final String CHEMIN = "chemin";
     public static final String VUE_AJOUTER_ADHERENT = "/WEB-INF/ajouterAdherent.jsp";
     public static final String ATT_ERREURS ="erreurs";
     public static final String ATT_ADHERENT="adherent";
@@ -45,8 +44,12 @@ public class AjouterAdherentServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        AdherentForm adherentForm = new AdherentForm();
-        Adherent adherent = adherentForm.creerAdherent(request);
+       
+    	String chemin = this.getServletConfig().getInitParameter(CHEMIN);
+    	
+    	
+    	AdherentForm adherentForm = new AdherentForm();
+        Adherent adherent = adherentForm.creerAdherent(request,chemin);
 
         Map<String, String> erreurs = adherentForm.getErreurs();
         request.setAttribute(ATT_ERREURS,erreurs);
@@ -55,6 +58,5 @@ public class AjouterAdherentServlet extends HttpServlet {
 
         this.getServletContext().getRequestDispatcher(VUE_AJOUTER_ADHERENT).forward( request , response );
     }
-
 
 }

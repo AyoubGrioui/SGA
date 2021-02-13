@@ -1,19 +1,35 @@
 package com.sga.services;
 
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.time.LocalDate;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.Part;
+
+import org.apache.commons.fileupload.FileItem;
+import org.apache.commons.fileupload.disk.DiskFileItemFactory;
+import org.apache.commons.fileupload.servlet.ServletFileUpload;
+import org.jasypt.util.password.ConfigurablePasswordEncryptor;
+
 import com.sga.entities.Adherent;
 import com.sga.entities.LigneFonction;
 import com.sga.entities.Structure;
+import com.sga.helpers.FormValidationException;
 import com.sga.helpers.SGAUtil;
 import com.sga.repositories.HibernateAdherentPersister;
 import com.sga.repositories.HibernateStructurePersister;
-import com.sga.repositories.Repository;
-import com.sga.repositories.RepositoryFactory;
-import org.jasypt.util.password.ConfigurablePasswordEncryptor;
 
-import javax.servlet.http.HttpServletRequest;
-import java.time.LocalDate;
-import java.util.HashMap;
-import java.util.Map;
+import eu.medsea.mimeutil.MimeUtil;
 
 
 public class AdherentForm {
@@ -34,13 +50,16 @@ public class AdherentForm {
 	public static final String CHAMP_STRUCTURE = "listStructure";
 	private static final String ALGO_CHIFFREMENT = "SHA-256";
 
+    private static final int    TAILLE_TAMPON   = 10240;                        // 10ko
+
+	
 	private Map<String,String> erreurs=new HashMap<String,String>();
 	
 	public Map<String, String> getErreurs() {
 		return erreurs;
 	}
 
-	public Adherent creerAdherent(HttpServletRequest request) {
+	public Adherent creerAdherent(HttpServletRequest request, String chemin) {
 		String nom = getValeurChamp(request,CHAMP_NOM);
 		String prenom = getValeurChamp(request,CHAMP_PRENOM);
 		String cin = getValeurChamp(request,CHAMP_CIN);
@@ -48,13 +67,15 @@ public class AdherentForm {
 		String lieuNaissance = getValeurChamp(request,CHAMP_LIEU_NAISSANCE);
 		String dateAdhesion = getValeurChamp(request,CHAMP_DATE_ADHESION);
 		String profession = getValeurChamp(request,CHAMP_PROFESSION);
-		String photo = getValeurChamp(request,CHAMP_PHOTO);
 		String sexe = getValeurChamp(request,CHAMP_SEXE);
 		String motDePasse = getValeurChamp(request,CHAMP_MOT_DE_PASSE);
 		String telephone = getValeurChamp(request,CHAMP_TELEPHONE);
 		String adresse = getValeurChamp(request,CHAMP_ADRESSE);
 		String email = getValeurChamp(request,CHAMP_EMAIL);
 		String idStructure = getValeurChamp(request,CHAMP_STRUCTURE);
+		String photo = null;
+
+		
 		
 		Adherent adherent = new Adherent();
 
@@ -111,12 +132,6 @@ public class AdherentForm {
         }
         adherent.setProfession( profession );
 		
-        try {
-            validationPhoto(photo);
-        } catch ( Exception e ) {
-            setErreurs( CHAMP_PHOTO, e.getMessage() );
-        }
-        adherent.setPhoto( photo );
 		
         try {
             validationSexe(sexe);
@@ -163,6 +178,14 @@ public class AdherentForm {
 			setErreurs( CHAMP_STRUCTURE,e.getMessage());
 		}
         adherent.setStructure(structure);
+
+        
+        try {
+        		photo = validationImage(request,chemin);
+        } catch(FormValidationException e) {
+        	setErreurs(CHAMP_PHOTO, e.getMessage());
+        }
+        adherent.setPhoto(photo);
 
 
 		LigneFonctionForm ligneFonctionForm = new LigneFonctionForm();
@@ -328,6 +351,23 @@ public class AdherentForm {
 		return adherent;
 	}
 	
+	// fonction pour l'upload d'un image
+	private String uploadFile(HttpServletRequest request ) {
+		
+		String message = null;
+		try {
+		ServletFileUpload sf = new ServletFileUpload(new DiskFileItemFactory());
+		List<FileItem> uploadFiles = sf.parseRequest(request);
+		
+		for(FileItem item : uploadFiles) {
+			item.write(new File("C:\\Users\\Mido\\IdeaProjects\\JeeProject\\uploadFiles" + item.getName()));
+		}
+		} catch(Exception e) {
+			message = e.getMessage();
+		}
+		return message;
+	}
+	
 	// ajoute un message correspondant au champ specifie a la map des erreurs 
 
 	private void setErreurs(String champ, String message) {
@@ -480,6 +520,147 @@ public class AdherentForm {
 		return motDePasseChiffre;
 
 	}
+//-----------------------------------------------------------------------------------------------------------------
+	//----------------------------------------------------------------------------------------------------
+	private String validationImage( HttpServletRequest request, String chemin ) throws FormValidationException {
+        /*
+         * Récupération du contenu du champ image du formulaire. Il faut ici
+         * utiliser la méthode getPart().
+         */
+        String nomFichier = null;
+        InputStream contenuFichier = null;
+        try {
+            Part part = request.getPart( CHAMP_PHOTO );
+            nomFichier = getNomFichier( part );
+
+            /*
+             * Si la méthode getNomFichier() a renvoyé quelque chose, il s'agit
+             * donc d'un champ de type fichier (input type="file").
+             */
+            if ( nomFichier != null && !nomFichier.isEmpty() ) {
+                /*
+                 * Antibug pour Internet Explorer, qui transmet pour une raison
+                 * mystique le chemin du fichier local à la machine du client...
+                 * 
+                 * Ex : C:/dossier/sous-dossier/fichier.ext
+                 * 
+                 * On doit donc faire en sorte de ne sélectionner que le nom et
+                 * l'extension du fichier, et de se débarrasser du superflu.
+                 */
+                nomFichier = nomFichier.substring( nomFichier.lastIndexOf( '/' ) + 1 )
+                        .substring( nomFichier.lastIndexOf( '\\' ) + 1 );
+
+                /* Récupération du contenu du fichier */
+                contenuFichier = part.getInputStream();
+
+                /* Extraction du type MIME du fichier depuis l'InputStream */
+                MimeUtil.registerMimeDetector( "eu.medsea.mimeutil.detector.MagicMimeMimeDetector" );
+                Collection<?> mimeTypes = MimeUtil.getMimeTypes( contenuFichier );
+
+                /*
+                 * Si le fichier est bien une image, alors son en-tête MIME
+                 * commence par la chaîne "image"
+                 */
+                if ( mimeTypes.toString().startsWith( "image" ) ) {
+                    /* Ecriture du fichier sur le disque */
+                    ecrireFichier( contenuFichier, nomFichier, chemin );
+                } else {
+                    throw new FormValidationException( "Le fichier envoyé doit être une image." );
+                }
+            }
+        } catch ( IllegalStateException e ) {
+            /*
+             * Exception retournée si la taille des données dépasse les limites
+             * définies dans la section <multipart-config> de la déclaration de
+             * notre servlet d'upload dans le fichier web.xml
+             */
+            e.printStackTrace();
+            throw new FormValidationException( "Le fichier envoyé ne doit pas dépasser 1Mo." );
+        } catch ( IOException e ) {
+            /*
+             * Exception retournée si une erreur au niveau des répertoires de
+             * stockage survient (répertoire inexistant, droits d'accès
+             * insuffisants, etc.)
+             */
+            e.printStackTrace();
+            throw new FormValidationException( "Erreur de configuration du serveur." );
+        } catch ( ServletException e ) {
+            /*
+             * Exception retournée si la requête n'est pas de type
+             * multipart/form-data.
+             */
+            e.printStackTrace();
+            throw new FormValidationException(
+                    "Ce type de requête n'est pas supporté, merci d'utiliser le formulaire prévu pour envoyer votre fichier." );
+        }
+
+        return nomFichier;
+    }
+
+	/*
+     * Méthode utilitaire qui a pour unique but d'analyser l'en-tête
+     * "content-disposition", et de vérifier si le paramètre "filename" y est
+     * présent. Si oui, alors le champ traité est de type File et la méthode
+     * retourne son nom, sinon il s'agit d'un champ de formulaire classique et
+     * la méthode retourne null.
+     */
+    private static String getNomFichier( Part part ) {
+        /* Boucle sur chacun des paramètres de l'en-tête "content-disposition". */
+        for ( String contentDisposition : part.getHeader( "content-disposition" ).split( ";" ) ) {
+            /* Recherche de l'éventuelle présence du paramètre "filename". */
+            if ( contentDisposition.trim().startsWith( "filename" ) ) {
+                /*
+                 * Si "filename" est présent, alors renvoi de sa valeur,
+                 * c'est-à-dire du nom de fichier sans guillemets.
+                 */
+                return contentDisposition.substring( contentDisposition.indexOf( '=' ) + 1 ).trim().replace( "\"", "" );
+            }
+        }
+        /* Et pour terminer, si rien n'a été trouvé... */
+        return null;
+    }
+
+    /*
+     * Méthode utilitaire qui a pour but d'écrire le fichier passé en paramètre
+     * sur le disque, dans le répertoire donné et avec le nom donné.
+     */
+    private void ecrireFichier( InputStream contenuFichier, String nomFichier, String chemin )
+            throws FormValidationException {
+        /* Prépare les flux. */
+        BufferedInputStream entree = null;
+        BufferedOutputStream sortie = null;
+        try {
+            /* Ouvre les flux. */
+            entree = new BufferedInputStream( contenuFichier, TAILLE_TAMPON );
+            sortie = new BufferedOutputStream( new FileOutputStream( new File( chemin + nomFichier ) ),
+                    TAILLE_TAMPON );
+
+            /*
+             * Lit le fichier reçu et écrit son contenu dans un fichier sur le
+             * disque.
+             */
+            byte[] tampon = new byte[TAILLE_TAMPON];
+            int longueur = 0;
+            while ( ( longueur = entree.read( tampon ) ) > 0 ) {
+                sortie.write( tampon, 0, longueur );
+            }
+        } catch ( Exception e ) {
+            throw new FormValidationException( "Erreur lors de l'écriture du fichier sur le disque." );
+        } finally {
+            try {
+                sortie.close();
+            } catch ( IOException ignore ) {
+            }
+            try {
+                entree.close();
+            } catch ( IOException ignore ) {
+            }
+        }
+    }
+    
+    //----------------------------------------------------------------------------------------------
+    //--------------------------------------------------------------------------------------------
+    
 
 	private Structure validationStructure(String id_structure) throws Exception {
 		if(id_structure == null)
