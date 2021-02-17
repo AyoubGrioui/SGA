@@ -27,7 +27,7 @@ pageEncoding="UTF-8"%>
       <div class="flex flex-col flex-1">
         <c:import url="Menu/headerMenu.jsp" />
           <main class="h-full pb-16 overflow-y-auto">
-          <form method="post" action="">
+          <form method="post" action="" enctype="multipart/form-data">
             <div class="container px-6 mx-auto grid">
               <!-------- Titre --------->
               <h2
@@ -161,7 +161,7 @@ pageEncoding="UTF-8"%>
                     value="<c:out value="${adherent.telephone}"/>"
                   />
                   <span class="text-xs text-red-600 dark:text-red-400">
-                    <c:out value="${erreurs['telephone']}"/>
+                    <c:out value="${erreurs['telephoneAdherent']}"/>
                   </span>
                 </label>
 
@@ -305,7 +305,7 @@ pageEncoding="UTF-8"%>
                     <c:out value="${erreurs['dateFinLigneFonction']}"/>
                   </span>
                 </label>
-                <label class="block mt-4 text-sm">
+                <label class="bl ock mt-4 text-sm">
     <span class="text-gray-700 font-medium dark:text-gray-400">
       Structure
     </span>
@@ -314,9 +314,9 @@ pageEncoding="UTF-8"%>
                           name="listStructure"
                   >
 
-                     <c:forEach items="${structureList}" var="structure" varStatus="boucle">
-                          <option value="${structure.idStructure}"><c:out value="${structure.nom}"/> </option>
-                     </c:forEach>
+					<c:forEach items="${structureList}" var="structure" varStatus="boucle">
+                      <option value="${structure.idStructure}"><c:out value="${structure.nom}"/> </option>
+                    </c:forEach>
 
                   </select>
                 </label>

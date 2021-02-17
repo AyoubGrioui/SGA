@@ -49,7 +49,6 @@
               >
                 <th class="px-4 py-3">Nom donateur</th>
                 <th class="px-4 py-3">Date</th>
-                <th class="px-4 py-3">Description</th>
                 <th class="px-4 py-3">Montant</th>
                 <th class="px-4 py-3">Type de paiement</th>
                 <th class="px-4 py-3">Actions</th>
@@ -63,19 +62,18 @@
                   <td class="px-4 py-3">
                     <div class="flex items-center text-sm">
                       <div>
-                        <p class="font-semibold"><c:out value="${don.donneur.nomDonneurMorale}" /></p>
+                        <p class="font-semibold"><c:out value="${don.donneur.nom}" /></p>
                       </div>
                     </div>
                   </td>
                   <td class="px-4 py-3 text-sm"><c:out value="${don.dateDon}"/></td>
-                  <td class="px-4 py-3 text-sm">Description don</td>
                   <td class="px-4 py-3 text-sm"><c:out value="${don.montant}"/></td>
                   <td class="px-4 py-3 text-sm">
-                    <c:choose>
-                      <c:when test="${don instanceof com.sga.entities.DonCheque}"><c:out value="${chèque}" /> </c:when>
-                      <c:when test="${don instanceof com.sga.entities.DonEspece}"><c:out value="${espece}" /> </c:when>
-                      <c:when test="${don instanceof com.sga.entities.DonVersement}"><c:out value="${versement}" /> </c:when>
-                    </c:choose>
+                   <c:choose>
+                      		<c:when test="${don.getClass().getName() == 'com.sga.entities.DonCheque'}"><c:out value="chèque" /></c:when>
+                      		<c:when test="${don.getClass().getName() == 'com.sga.entities.DonEspece'}"><c:out value="espece" /></c:when>
+                      		<c:when test="${don.getClass().getName() == 'com.sga.entities.DonVersement'}"><c:out value="versement" /></c:when>
+                      	</c:choose>
                   </td>
                   <td class="px-4 py-3">
                     <div class="flex items-center space-x-4 text-sm">
@@ -227,10 +225,10 @@
 
       <div class="mb-4">
             <span class="font-semibold text-gray-700 dark:text-gray-400"
-            ><c:out value="${don.dateDon}"/>
+            >Date du don :
             </span>
         <span class="text-gray-700 dark:text-gray-300">
-            <c:out value="test" />
+            <c:out value="${don.dateDon}"/>
             </span>
       </div>
 
@@ -245,25 +243,24 @@
 
       <div class="mb-4">
             <span class="font-semibold text-gray-700 dark:text-gray-400"
-            ><c:out value="${don.montant}"/>
+            >Montant :
             </span>
         <span class="text-gray-700 dark:text-gray-300">
-            <c:out value="JK90000" />
+            <c:out value="${don.montant}"/>
             </span>
       </div>
 
       <div class="mb-4">
             <span class="font-semibold text-gray-700 dark:text-gray-400"
-            >
-                        <c:choose>
-                          <c:when test="${don instanceof com.sga.entities.DonCheque}"><c:out value="${chèque}" /> </c:when>
-                          <c:when test="${don instanceof com.sga.entities.DonEspece}"><c:out value="${espece}" /> </c:when>
-                          <c:when test="${don instanceof com.sga.entities.DonVersement}"><c:out value="${versement}" /> </c:when>
-                        </c:choose>
+            >Type de paiement :
             </span>
         <span class="text-gray-700 dark:text-gray-300"
-        ><c:out value="+212000000"
-        /></span>
+        >
+                       <c:choose>
+                      		<c:when test="${don.getClass().getName() == 'com.sga.entities.DonCheque'}"><c:out value="chèque" /></c:when>
+                      		<c:when test="${don.getClass().getName() == 'com.sga.entities.DonEspece'}"><c:out value="espece" /></c:when>
+                      		<c:when test="${don.getClass().getName() == 'com.sga.entities.DonVersement'}"><c:out value="versement" /></c:when>
+                      	</c:choose></span>
       </div>
 
       <!-- If else pour les champs correspondant à un type de paiement -->

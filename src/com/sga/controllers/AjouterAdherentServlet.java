@@ -15,10 +15,8 @@ import com.sga.entities.Structure;
 import com.sga.repositories.HibernateStructurePersister;
 import com.sga.services.AdherentForm;
 
-/**
- * Servlet implementation class AjouterAdherentServlet2
- */
-@WebServlet("/ajouterAdherentServlet")
+
+@WebServlet("/ajouterAdherent")
 public class AjouterAdherentServlet extends HttpServlet {
 	/**
      * 
@@ -28,7 +26,7 @@ public class AjouterAdherentServlet extends HttpServlet {
     public static final String VUE_AJOUTER_ADHERENT = "/WEB-INF/ajouterAdherent.jsp";
     public static final String ATT_ERREURS ="erreurs";
     public static final String ATT_ADHERENT="adherent";
-    public static final String ATT_LIST_STRUCTURE ="StructureList";
+    public static final String ATT_LIST_STRUCTURE ="structureList";
 
 
     protected void doGet( HttpServletRequest request, HttpServletResponse response )
@@ -45,6 +43,12 @@ public class AjouterAdherentServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
        
+    	
+    	HibernateStructurePersister structurePersister =new HibernateStructurePersister();
+        List<Structure> structureList = structurePersister.getAll();
+
+        request.setAttribute(ATT_LIST_STRUCTURE,structureList);
+        
     	String chemin = this.getServletConfig().getInitParameter(CHEMIN);
     	
     	
@@ -54,8 +58,7 @@ public class AjouterAdherentServlet extends HttpServlet {
         Map<String, String> erreurs = adherentForm.getErreurs();
         request.setAttribute(ATT_ERREURS,erreurs);
         request.setAttribute(ATT_ADHERENT,adherent);
-
-
+        
         this.getServletContext().getRequestDispatcher(VUE_AJOUTER_ADHERENT).forward( request , response );
     }
 

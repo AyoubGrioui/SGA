@@ -16,15 +16,11 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.Part;
 
-import org.apache.commons.fileupload.FileItem;
-import org.apache.commons.fileupload.disk.DiskFileItemFactory;
-import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.jasypt.util.password.ConfigurablePasswordEncryptor;
 
 import com.sga.entities.Adherent;
 import com.sga.entities.LigneFonction;
 import com.sga.entities.Structure;
-import com.sga.helpers.FormValidationException;
 import com.sga.helpers.SGAUtil;
 import com.sga.repositories.HibernateAdherentPersister;
 import com.sga.repositories.HibernateStructurePersister;
@@ -182,7 +178,7 @@ public class AdherentForm {
         
         try {
         		photo = validationImage(request,chemin);
-        } catch(FormValidationException e) {
+        } catch(Exception e) {
         	setErreurs(CHAMP_PHOTO, e.getMessage());
         }
         adherent.setPhoto(photo);
@@ -196,7 +192,7 @@ public class AdherentForm {
 		erreurs.putAll(ligneFonctionForm.getErreurs());
 
 		
-		//Persistance des DonnnÃ©e
+		//Persistance des DonnnÃƒÂ©e
 
 		if(getErreurs().isEmpty())
 		{
@@ -340,7 +336,7 @@ public class AdherentForm {
 		erreurs.putAll(ligneFonctionForm.getErreurs());
 
 		
-		//Persistance des DonnnÃ©e
+		//Persistance des DonnnÃƒÂ©e
 
 		if(getErreurs().isEmpty())
 		{
@@ -351,22 +347,7 @@ public class AdherentForm {
 		return adherent;
 	}
 	
-	// fonction pour l'upload d'un image
-	private String uploadFile(HttpServletRequest request ) {
-		
-		String message = null;
-		try {
-		ServletFileUpload sf = new ServletFileUpload(new DiskFileItemFactory());
-		List<FileItem> uploadFiles = sf.parseRequest(request);
-		
-		for(FileItem item : uploadFiles) {
-			item.write(new File("C:\\Users\\Mido\\IdeaProjects\\JeeProject\\uploadFiles" + item.getName()));
-		}
-		} catch(Exception e) {
-			message = e.getMessage();
-		}
-		return message;
-	}
+	
 	
 	// ajoute un message correspondant au champ specifie a la map des erreurs 
 
@@ -390,7 +371,7 @@ public class AdherentForm {
 	private void validationNom( String nom ) throws Exception {
 	    if ( nom != null ) {
 	        if ( nom.length() < 2 ) {
-	            throw new Exception( "Le nom  doit contenir au moins 2 caractÃ©res." );
+	            throw new Exception( "Le nom  doit contenir au moins 2 caractÃƒÂ©res." );
 	        }
 	    } else {
 	        throw new Exception( "Merci d'entrer le nom de l'adherent" );
@@ -400,7 +381,7 @@ public class AdherentForm {
 	private void validationPrenom( String prenom ) throws Exception {
 	    if ( prenom != null ) {
 	        if ( prenom.length() < 2 ) {
-	            throw new Exception( "Le prenom doit contenir au moins 2 caractÃ©res." );
+	            throw new Exception( "Le prenom doit contenir au moins 2 caractÃƒÂ©res." );
 	        }
 	    } else {
 	        throw new Exception( "Merci d'entrer le prenom de l'adherent" );
@@ -493,6 +474,10 @@ public class AdherentForm {
 	    if ( email != null && !email.matches( "([^.@]+)(\\.[^.@]+)*@([^.@]+\\.)+([^.@]+)" ) ) {
 	        throw new Exception( "Merci de saisir une adresse mail valide." );
 	    }
+	    else if( email == null )
+	    {
+	        throw new Exception( "Merci de saisir une adresse mail." );
+	    }
 	}
 
 	//Foction de validation du mot de passe
@@ -502,7 +487,7 @@ public class AdherentForm {
 	    }
 	    else if(motDePasse.length()<8)
 	    {
-			throw new Exception( "Le Mot depasse doit contenir au minimum 8 caractÃ©res" );
+			throw new Exception( "Le Mot depasse doit contenir au minimum 8 caractÃƒÂ©res" );
 		}
 	    else
 		{
@@ -522,10 +507,10 @@ public class AdherentForm {
 	}
 //-----------------------------------------------------------------------------------------------------------------
 	//----------------------------------------------------------------------------------------------------
-	private String validationImage( HttpServletRequest request, String chemin ) throws FormValidationException {
+	private String validationImage( HttpServletRequest request, String chemin ) throws Exception {
         /*
-         * Récupération du contenu du champ image du formulaire. Il faut ici
-         * utiliser la méthode getPart().
+         * RÃ©cupÃ©ration du contenu du champ image du formulaire. Il faut ici
+         * utiliser la mÃ©thode getPart().
          */
         String nomFichier = null;
         InputStream contenuFichier = null;
@@ -534,23 +519,23 @@ public class AdherentForm {
             nomFichier = getNomFichier( part );
 
             /*
-             * Si la méthode getNomFichier() a renvoyé quelque chose, il s'agit
+             * Si la mÃ©thode getNomFichier() a renvoyÃ© quelque chose, il s'agit
              * donc d'un champ de type fichier (input type="file").
              */
             if ( nomFichier != null && !nomFichier.isEmpty() ) {
                 /*
                  * Antibug pour Internet Explorer, qui transmet pour une raison
-                 * mystique le chemin du fichier local à la machine du client...
+                 * mystique le chemin du fichier local Ã  la machine du client...
                  * 
                  * Ex : C:/dossier/sous-dossier/fichier.ext
                  * 
-                 * On doit donc faire en sorte de ne sélectionner que le nom et
-                 * l'extension du fichier, et de se débarrasser du superflu.
+                 * On doit donc faire en sorte de ne sÃ©lectionner que le nom et
+                 * l'extension du fichier, et de se dÃ©barrasser du superflu.
                  */
                 nomFichier = nomFichier.substring( nomFichier.lastIndexOf( '/' ) + 1 )
                         .substring( nomFichier.lastIndexOf( '\\' ) + 1 );
 
-                /* Récupération du contenu du fichier */
+                /* RÃ©cupÃ©ration du contenu du fichier */
                 contenuFichier = part.getInputStream();
 
                 /* Extraction du type MIME du fichier depuis l'InputStream */
@@ -558,75 +543,75 @@ public class AdherentForm {
                 Collection<?> mimeTypes = MimeUtil.getMimeTypes( contenuFichier );
 
                 /*
-                 * Si le fichier est bien une image, alors son en-tête MIME
-                 * commence par la chaîne "image"
+                 * Si le fichier est bien une image, alors son en-tÃªte MIME
+                 * commence par la chaÃ®ne "image"
                  */
                 if ( mimeTypes.toString().startsWith( "image" ) ) {
                     /* Ecriture du fichier sur le disque */
                     ecrireFichier( contenuFichier, nomFichier, chemin );
                 } else {
-                    throw new FormValidationException( "Le fichier envoyé doit être une image." );
+                    throw new Exception( "Le fichier envoyÃ© doit Ãªtre une image." );
                 }
             }
         } catch ( IllegalStateException e ) {
             /*
-             * Exception retournée si la taille des données dépasse les limites
-             * définies dans la section <multipart-config> de la déclaration de
+             * Exception retournÃ©e si la taille des donnÃ©es dÃ©passe les limites
+             * dÃ©finies dans la section <multipart-config> de la dÃ©claration de
              * notre servlet d'upload dans le fichier web.xml
              */
             e.printStackTrace();
-            throw new FormValidationException( "Le fichier envoyé ne doit pas dépasser 1Mo." );
+            throw new Exception( "Le fichier envoyÃ© ne doit pas dÃ©passer 1Mo." );
         } catch ( IOException e ) {
             /*
-             * Exception retournée si une erreur au niveau des répertoires de
-             * stockage survient (répertoire inexistant, droits d'accès
+             * Exception retournÃ©e si une erreur au niveau des rÃ©pertoires de
+             * stockage survient (rÃ©pertoire inexistant, droits d'accÃ¨s
              * insuffisants, etc.)
              */
             e.printStackTrace();
-            throw new FormValidationException( "Erreur de configuration du serveur." );
+            throw new Exception( "Erreur de configuration du serveur." );
         } catch ( ServletException e ) {
             /*
-             * Exception retournée si la requête n'est pas de type
+             * Exception retournÃ©e si la requÃªte n'est pas de type
              * multipart/form-data.
              */
             e.printStackTrace();
-            throw new FormValidationException(
-                    "Ce type de requête n'est pas supporté, merci d'utiliser le formulaire prévu pour envoyer votre fichier." );
+            throw new Exception(
+                    "Ce type de requÃªte n'est pas supportÃ©, merci d'utiliser le formulaire prÃ©vu pour envoyer votre fichier." );
         }
 
         return nomFichier;
     }
 
 	/*
-     * Méthode utilitaire qui a pour unique but d'analyser l'en-tête
-     * "content-disposition", et de vérifier si le paramètre "filename" y est
-     * présent. Si oui, alors le champ traité est de type File et la méthode
+     * MÃ©thode utilitaire qui a pour unique but d'analyser l'en-tÃªte
+     * "content-disposition", et de vÃ©rifier si le paramÃ¨tre "filename" y est
+     * prÃ©sent. Si oui, alors le champ traitÃ© est de type File et la mÃ©thode
      * retourne son nom, sinon il s'agit d'un champ de formulaire classique et
-     * la méthode retourne null.
+     * la mÃ©thode retourne null.
      */
     private static String getNomFichier( Part part ) {
-        /* Boucle sur chacun des paramètres de l'en-tête "content-disposition". */
+        /* Boucle sur chacun des paramÃ¨tres de l'en-tÃªte "content-disposition". */
         for ( String contentDisposition : part.getHeader( "content-disposition" ).split( ";" ) ) {
-            /* Recherche de l'éventuelle présence du paramètre "filename". */
+            /* Recherche de l'Ã©ventuelle prÃ©sence du paramÃ¨tre "filename". */
             if ( contentDisposition.trim().startsWith( "filename" ) ) {
                 /*
-                 * Si "filename" est présent, alors renvoi de sa valeur,
-                 * c'est-à-dire du nom de fichier sans guillemets.
+                 * Si "filename" est prÃ©sent, alors renvoi de sa valeur,
+                 * c'est-Ã -dire du nom de fichier sans guillemets.
                  */
                 return contentDisposition.substring( contentDisposition.indexOf( '=' ) + 1 ).trim().replace( "\"", "" );
             }
         }
-        /* Et pour terminer, si rien n'a été trouvé... */
+        /* Et pour terminer, si rien n'a Ã©tÃ© trouvÃ©... */
         return null;
     }
 
     /*
-     * Méthode utilitaire qui a pour but d'écrire le fichier passé en paramètre
-     * sur le disque, dans le répertoire donné et avec le nom donné.
+     * MÃ©thode utilitaire qui a pour but d'Ã©crire le fichier passÃ© en paramÃ¨tre
+     * sur le disque, dans le rÃ©pertoire donnÃ© et avec le nom donnÃ©.
      */
     private void ecrireFichier( InputStream contenuFichier, String nomFichier, String chemin )
-            throws FormValidationException {
-        /* Prépare les flux. */
+            throws Exception {
+        /* PrÃ©pare les flux. */
         BufferedInputStream entree = null;
         BufferedOutputStream sortie = null;
         try {
@@ -636,7 +621,7 @@ public class AdherentForm {
                     TAILLE_TAMPON );
 
             /*
-             * Lit le fichier reçu et écrit son contenu dans un fichier sur le
+             * Lit le fichier reÃ§u et Ã©crit son contenu dans un fichier sur le
              * disque.
              */
             byte[] tampon = new byte[TAILLE_TAMPON];
@@ -645,7 +630,7 @@ public class AdherentForm {
                 sortie.write( tampon, 0, longueur );
             }
         } catch ( Exception e ) {
-            throw new FormValidationException( "Erreur lors de l'écriture du fichier sur le disque." );
+            throw new Exception( "Erreur lors de l'Ã©criture du fichier sur le disque." );
         } finally {
             try {
                 sortie.close();

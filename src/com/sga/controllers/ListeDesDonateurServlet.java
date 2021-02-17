@@ -35,7 +35,6 @@ public class ListeDesDonateurServlet extends HttpServlet {
         HibernateDonneurPersister donneurPersister = new HibernateDonneurPersister();
         List<Donneur> donneurList = donneurPersister.getAll();
 
-
         request.setAttribute(ATT_DONATEURSLIST, donneurList);
 
         this.getServletContext().getRequestDispatcher( VUE_LISTE_DES_DONATEUR ).forward( request, response );

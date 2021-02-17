@@ -64,13 +64,13 @@
                   <td class="px-4 py-3">
                     <div class="flex items-center text-sm">
                       <div>
-                        <p class="font-semibold"><c:out value="${donateur.nomDonneurMorale}" /></p>
+                        <p class="font-semibold"><c:out value="${donateur.nom}" /></p>
                       </div>
                     </div>
                   </td>
-                  <td class="px-4 py-3 text-sm"><c:out value="${donateur.emailDonneurMorale}" /></td>
-                  <td class="px-4 py-3 text-sm"><c:out value="${donateur.telephoneDonneurMorale}" /></td>
-                  <td class="px-4 py-3 text-sm"><c:out value="${donateur.adresseDonneurMorale}" /></td>
+                  <td class="px-4 py-3 text-sm"><c:out value="${donateur.email}" /></td>
+                  <td class="px-4 py-3 text-sm"><c:out value="${donateur.telephone}" /></td>
+                  <td class="px-4 py-3 text-sm"><c:out value="${donateur.adresse}" /></td>
                   <td class="px-4 py-3">
                     <div class="flex items-center space-x-4 text-sm">
                       <button

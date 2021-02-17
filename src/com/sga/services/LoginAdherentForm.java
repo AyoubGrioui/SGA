@@ -93,7 +93,7 @@ public class LoginAdherentForm
 
     //Foction de validation du mot de passe
     private boolean validationMotDePasse( String motDePasse ,  Adherent adherent) throws Exception {
-        if ( motDePasse == null && motDePasse.length()<8 ) {
+        if ( motDePasse == null || motDePasse.length()<8 ) {
             throw new Exception( "Merci de saisir un mot de passe valide." );
         }
         else if ( adherent !=null)

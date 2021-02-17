@@ -43,7 +43,7 @@ public class LigneFonctionForm {
 		try {
 			validationDate(dateDebut);
 		}catch (Exception e) {
-			setErreurs(CHAMP_DATE_FIN, e.getMessage());
+			setErreurs(CHAMP_DATE_DEBUT, e.getMessage());
 		}
 		ligneFonction.setDateDebut(SGAUtil.StringToLocalDate(dateDebut));
 		
@@ -80,7 +80,7 @@ public LigneFonction modifierLigneFonction(HttpServletRequest request) {
 		try {
 			validationDate(dateDebut);
 		}catch (Exception e) {
-			setErreurs(CHAMP_DATE_FIN, e.getMessage());
+			setErreurs(CHAMP_DATE_DEBUT, e.getMessage());
 		}
 		ligneFonction.setDateDebut(SGAUtil.StringToLocalDate(dateDebut));
 		

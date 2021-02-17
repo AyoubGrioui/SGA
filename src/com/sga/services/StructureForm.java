@@ -2,6 +2,7 @@ package com.sga.services;
 
 import com.sga.entities.Structure;
 import com.sga.helpers.SGAUtil;
+import com.sga.repositories.HibernateStructurePersister;
 import com.sga.repositories.Repository;
 import com.sga.repositories.RepositoryFactory;
 
@@ -22,11 +23,13 @@ public class StructureForm {
 	
 	private Map<String,String> erreurs=new HashMap<String,String>();
 	
-	public Map<String, String> getErreurs() {
+	public Map<String, String> getErreurs() 
+	{
 		return erreurs;
 	}
 	
-	public Structure creerStructure(HttpServletRequest request) {
+	public Structure creerStructure(HttpServletRequest request) 
+	{
 		String nom = getValeurChamp(request,CHAMP_NOM);
 		String dateCreation = getValeurChamp(request,CHAMP_DATE_CREATION);
 		String email = getValeurChamp(request,CHAMP_EMAIL);
@@ -78,9 +81,12 @@ public class StructureForm {
         }
         structure.setObjectif( objectif );
 		
-		RepositoryFactory repFactory = new RepositoryFactory();
-		Repository rep = repFactory.getLigneFonctionRepository();
-		rep.create(structure);
+
+        if(getErreurs().isEmpty())
+        {	
+        	HibernateStructurePersister structurePers = new HibernateStructurePersister();
+        	structurePers.create(structure);
+        }
 		
 		return structure;
 	}
@@ -128,6 +134,10 @@ public class StructureForm {
 	    if ( email != null && !email.matches( "([^.@]+)(\\.[^.@]+)*@([^.@]+\\.)+([^.@]+)" ) ) {
 	        throw new Exception( "Merci de saisir une adresse mail valide." );
 	    }
+	    else if(email ==  null)
+	    {
+	        throw new Exception( "Merci de saisir une adresse mail." );
+	    }
 	}
 	
 	//fonction de validation de la fonction
@@ -143,8 +153,8 @@ public class StructureForm {
 		if(url == null)
 		{
 			throw new Exception("Merci de donner un url valide.");
+		}
 	}
-}
 	//fonction de la validation de l'adresse
 	private void validationAdresse( String adresse ) throws Exception {
 	    if ( adresse == null ) {

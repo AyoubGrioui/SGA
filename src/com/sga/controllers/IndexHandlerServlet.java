@@ -18,11 +18,11 @@ public class IndexHandlerServlet extends HttpServlet
     public static final String VUE_DASHBOARD_PRESIDENT = "/WEB-INF/indexPresident.jsp";
     public static final String VUE_DASHBOARD_SECRETAIRE = "/WEB-INF/indexSecretaire.jsp";
     public static final String VUE_DASHBOARD_DONATEUR = "/WEB-INF/indexDonateur.jsp";
-    public static final String VUE_LOGIN        = "/WEB-INF/homePage.jsp";
+    public static final String VUE_LOGIN        = "/homePage";
     public static final String ATT_SESSION_USER = "user";
 
 	@Override
-	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException 
+	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException 
 	{
 		HttpSession session=req.getSession();
 		Adherent user=(Adherent)session.getAttribute(ATT_SESSION_USER);
@@ -40,8 +40,7 @@ public class IndexHandlerServlet extends HttpServlet
 				this.getServletContext().getRequestDispatcher(VUE_DASHBOARD_DONATEUR).forward(req, resp);break;
 			}
 		}
-		
-		this.getServletContext().getRequestDispatcher(VUE_LOGIN).forward(req, resp);
+
 	}
 	
 }

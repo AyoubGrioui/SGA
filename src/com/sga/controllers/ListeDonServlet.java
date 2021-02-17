@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.sga.entities.Don;
 import com.sga.entities.DonneurPhysique;
+import com.sga.repositories.HibernateDonPersister;
 import com.sga.repositories.Repository;
 import com.sga.repositories.RepositoryFactory;
 
@@ -29,9 +30,8 @@ public class ListeDonServlet extends HttpServlet {
 
     protected void doGet( HttpServletRequest request, HttpServletResponse response )
             throws ServletException, IOException {
-        RepositoryFactory repositoryFactory =new RepositoryFactory();
-        Repository repository =repositoryFactory.getDepenseRepository();
-        List<Don> donList=repository.getAll();
+        HibernateDonPersister donPersister = new HibernateDonPersister();
+        List<Don> donList=donPersister.getAll();
 
         request.setAttribute(ATT_DONLIST, donList);
 

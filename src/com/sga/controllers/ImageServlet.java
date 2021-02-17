@@ -17,63 +17,63 @@ public class ImageServlet extends HttpServlet {
 
     public void doGet( HttpServletRequest request, HttpServletResponse response ) throws ServletException, IOException {
         /*
-         * Lecture du paramètre 'chemin' passé à la servlet via la déclaration
+         * Lecture du paramÃ¨tre 'chemin' passÃ© Ã  la servlet via la dÃ©claration
          * dans le web.xml
          */
         String chemin = this.getServletConfig().getInitParameter( "chemin" );
 
         /*
-         * Récupération du chemin du fichier demandé au sein de l'URL de la
-         * requête
+         * RÃ©cupÃ©ration du chemin du fichier demandÃ© au sein de l'URL de la
+         * requÃªte
          */
         String fichierRequis = request.getPathInfo();
 
-        /* Vérifie qu'un fichier a bien été fourni */
+        /* VÃ©rifie qu'un fichier a bien Ã©tÃ© fourni */
         if ( fichierRequis == null || "/".equals( fichierRequis ) ) {
             /*
              * Si non, alors on envoie une erreur 404, qui signifie que la
-             * ressource demandée n'existe pas
+             * ressource demandÃ©e n'existe pas
              */
             response.sendError( HttpServletResponse.SC_NOT_FOUND );
             return;
         }
 
         /*
-         * Décode le nom de fichier récupéré, susceptible de contenir des
-         * espaces et autres caractères spéciaux, et prépare l'objet File
+         * DÃ©code le nom de fichier rÃ©cupÃ©rÃ©, susceptible de contenir des
+         * espaces et autres caractÃ¨res spÃ©ciaux, et prÃ©pare l'objet File
          */
         fichierRequis = URLDecoder.decode( fichierRequis, "UTF-8" );
         File fichier = new File( chemin, fichierRequis );
 
-        /* Vérifie que le fichier existe bien */
+        /* VÃ©rifie que le fichier existe bien */
         if ( !fichier.exists() ) {
             /*
              * Si non, alors on envoie une erreur 404, qui signifie que la
-             * ressource demandée n'existe pas
+             * ressource demandÃ©e n'existe pas
              */
             response.sendError( HttpServletResponse.SC_NOT_FOUND );
             return;
         }
 
-        /* Récupère le type du fichier */
+        /* RÃ©cupÃ¨re le type du fichier */
         String type = getServletContext().getMimeType( fichier.getName() );
 
         /*
          * Si le type de fichier est inconnu, alors on initialise un type par
-         * défaut
+         * dÃ©faut
          */
         if ( type == null ) {
             type = "application/octet-stream";
         }
 
-        /* Initialise la réponse HTTP */
+        /* Initialise la rÃ©ponse HTTP */
         response.reset();
         response.setBufferSize( TAILLE_TAMPON );
         response.setContentType( type );
         response.setHeader( "Content-Length", String.valueOf( fichier.length() ) );
         response.setHeader( "Content-Disposition", "inline; filename=\"" + fichier.getName() + "\"" );
 
-        /* Prépare les flux */
+        /* PrÃ©pare les flux */
         BufferedInputStream entree = null;
         BufferedOutputStream sortie = null;
         try {
@@ -81,7 +81,7 @@ public class ImageServlet extends HttpServlet {
             entree = new BufferedInputStream( new FileInputStream( fichier ), TAILLE_TAMPON );
             sortie = new BufferedOutputStream( response.getOutputStream(), TAILLE_TAMPON );
 
-            /* Lit le fichier et écrit son contenu dans la réponse HTTP */
+            /* Lit le fichier et Ã©crit son contenu dans la rÃ©ponse HTTP */
             byte[] tampon = new byte[TAILLE_TAMPON];
             int longueur;
             while ( ( longueur = entree.read( tampon ) ) > 0 ) {

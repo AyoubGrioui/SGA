@@ -91,7 +91,7 @@ public class ModifierDonateurServlet extends HttpServlet {
     }
     
     /*
-     * Méthode utilitaire qui retourne null si un paramètre est vide, et son
+     * MÃ©thode utilitaire qui retourne null si un paramÃ¨tre est vide, et son
      * contenu sinon.
      */
     private static String getValeurParametre( HttpServletRequest request, String nomChamp ) {
