@@ -72,10 +72,11 @@ pageEncoding="UTF-8"%>
                       <td class="px-4 py-3 text-sm"><c:out value="${don.montant}"/></td>
                       <td class="px-4 py-3 text-sm">
                       	<c:choose>
-                      		<c:when test="${don instanceof com.sga.entities.DonCheque}"><c:out value="${chèque}" /> </c:when>
-                      		<c:when test="${don instanceof com.sga.entities.DonEspece}"><c:out value="${espece}" /> </c:when>
-                      		<c:when test="${don instanceof com.sga.entities.DonVersement}"><c:out value="${versement}" /> </c:when>
+                      		<c:when test="${don.getClass().getName() == 'com.sga.entities.DonCheque'}"><c:out value="chèque" /></c:when>
+                      		<c:when test="${don.getClass().getName() == 'com.sga.entities.DonEspece'}"><c:out value="espece" /></c:when>
+                      		<c:when test="${don.getClass().getName() == 'com.sga.entities.DonVersement'}"><c:out value="versement" /></c:when>
                       	</c:choose>
+                      	
                       </td>
                       <td class="px-4 py-3">
                         <div class="flex items-center space-x-4 text-sm">
