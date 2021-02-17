@@ -27,7 +27,7 @@
   <div class="flex flex-col flex-1">
     <c:import url="Menu/headerSecretaire.jsp"></c:import>
     <main class="h-full pb-16 overflow-y-auto">
-      <form methode="post" action="">
+      <form method="post" action="">
         <div class="container px-6 mx-auto grid">
           <h2
                   class="my-6 text-2xl font-semibold text-gray-700 dark:text-gray-200"
@@ -47,11 +47,13 @@
             <!--Debut formulaire d'une nouvelle dépense-->
             <label class="block mt-1 text-sm">
                   <span class="text-gray-700 font-medium dark:text-gray-400">
-                    <c:out value="structure.nomStructure" default="Nom de l'association" />
+					Nom Structure
                   </span>
               <input
+              		  name="nomStructure"
                       class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input"
                       placeholder="Nom de l'association"
+                      
               />
               <span class="text-xs text-red-600 dark:text-red-400">
                    <c:out value="${structureForm.erreurs['nomStructure']}" />
@@ -59,9 +61,10 @@
             </label>
             <label class="block mt-4 text-sm">
                   <span class="text-gray-700 font-medium dark:text-gray-400">
-                    <c:out value="${structure.dateCreationStructure}" default="Date de création" />
+                    Date de création
                   </span>
               <input
+              		  name="dateCreationStructure"
                       class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input"
                       type="date"
               />
@@ -71,11 +74,12 @@
             </label>
             <label class="block mt-4 text-sm">
                   <span class="text-gray-700 font-medium dark:text-gray-400">
-                    <c:out value="${structure.emailStructure}"  default="Email"/>
+                    Email
                   </span>
               <input
                       class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input"
                       placeholder="email"
+                      name="emailStructure"
               />
               <span class="text-xs text-red-600 dark:text-red-400">
                     <c:out value="${structureForm.erreurs['emailStructure']}" />
@@ -83,11 +87,12 @@
             </label>
             <label class="block mt-4 text-sm">
                   <span class="text-gray-700 font-medium dark:text-gray-400">
-                    <c:out value="${structure.adresseStructure}" default="Adresse de l'association" />
+                    Adresse de l'association
                   </span>
               <textarea
                       class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input"
                       placeholder="Adresse"
+                      name="adresseStructure"
               ></textarea>
               <span class="text-xs text-red-600 dark:text-red-400">
                     <c:out value="${structureForm.erreurs['adresseStructure']}" />
@@ -95,11 +100,12 @@
             </label>
             <label class="block mt-4 text-sm">
                   <span class="text-gray-700 font-medium dark:text-gray-400">
-                    <c:out value="structure.siteWeb" default="Site web" />
+                    Site web
                   </span>
               <input
                       class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input"
                       placeholder="www.test.com"
+                      name="siteWeb"
               />
               <span class="text-xs text-red-600 dark:text-red-400">
                    <c:out value="${structureForm.erreurs['siteWeb']}" />
@@ -107,11 +113,12 @@
             </label>
             <label class="block mt-4 text-sm">
                   <span class="text-gray-700 font-medium dark:text-gray-400">
-                    <c:out value="${structure.objectif}" default="Objectif" />
+                    Objectif
                   </span>
               <input
                       class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input"
                       placeholder="Objectif"
+                      name="objectif"
               />
               <span class="text-xs text-red-600 dark:text-red-400">
                     <c:out value="${structureForm.erreurs['objectif']}" />

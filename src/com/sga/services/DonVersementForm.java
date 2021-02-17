@@ -92,11 +92,6 @@ public class DonVersementForm {
 		}
 		donVersement.setDateDon(SGAUtil.StringToLocalDate(dateDon));
 
-		if (erreurs.isEmpty()) {
-			resultat = "succes de la creation du client";
-		} else {
-			resultat = "echec de la creation du client";
-		}
 
 		RepositoryFactory repFactory = new RepositoryFactory();
 		Repository rep = repFactory.getDonVersementRepository();

@@ -10,7 +10,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 
-public class LoginDonneurtForm {
+public class LoginDonneurForm {
 
     public static final String CHAMPS_EMAIL = "userEmail";
     public static final String CHAMPS_PASSWORD = "userPassword";
@@ -57,7 +57,8 @@ public class LoginDonneurtForm {
 
     // ajoute un message correspondant au champ specifie a la map des erreurs
 
-    private void setErreur(String champ, String message) {
+    private void setErreur(String champ, String message) 
+    {
         erreurs.put(champ, message);
     }
 
@@ -77,8 +78,8 @@ public class LoginDonneurtForm {
      * Valide l'adresse email saisie.
      */
     private Donneur validationEmail( String email ) throws Exception {
-        if ( email != null && email.matches( "([^.@]+)(\\.[^.@]+)*@([^.@]+\\.)+([^.@]+)" ) ) {
-
+        if ( email != null && email.matches( "([^.@]+)(\\.[^.@]+)*@([^.@]+\\.)+([^.@]+)" ) ) 
+        {
             Donneur donneur=donneurPersister.getByEmail(email);
             return  donneur;
         }
@@ -92,7 +93,7 @@ public class LoginDonneurtForm {
 
     //Foction de validation du mot de passe
     private boolean validationMotDePasse( String motDePasse ,  Donneur donneur) throws Exception {
-        if ( motDePasse == null && motDePasse.length()<8 ) {
+        if ( motDePasse == null || motDePasse.length()<8 ) {
             throw new Exception( "Merci de saisir un mot de passe valide." );
         }
         else if ( donneur !=null)

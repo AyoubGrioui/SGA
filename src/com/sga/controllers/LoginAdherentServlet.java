@@ -24,41 +24,37 @@ import java.util.List;
 @WebServlet( "/loginAdherent" )
 public class LoginAdherentServlet extends HttpServlet {
 
-    /**
-     * 
-     */
+
     private static final long  serialVersionUID = 1L;
     public static final String VUE_LOGIN        = "/WEB-INF/loginAdherent.jsp";
+    public static final String VUE_DASHBOARD_PRESIDENT = "/WEB-INF/indexPresident.jsp";
+    public static final String VUE_DASHBOARD_SECRETAIRE = "/WEB-INF/indexSecretaire.jsp";
     public static final String ATT_SESSION_USER = "user";
     public static final String  COOKIE_DERNIERE_CONNEXION = "derniereConnexion";
     public static final String  FORMAT_DATE               = "dd/MM/yyyy";
     public static final String  CHAMP_MEMOIRE             = "memoire";
     public static final int     COOKIE_MAX_AGE            = 60 * 60 * 24 * 365;  // 1 an
-	private static final String ATT_LOGIN_ADHERENT_FORM = "LoginAdherentForm";
+	private static final String ATT_LOGIN_ADHERENT_FORM = "loginAdherentForm";
 
 
     protected void doGet( HttpServletRequest request, HttpServletResponse response )
             throws ServletException, IOException {
             this.getServletContext().getRequestDispatcher(VUE_LOGIN).forward(request, response);
+            }
 
-    }
-
-	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException 
 	{
 		HttpSession session =req.getSession();
         Adherent user = (Adherent) session.getAttribute(ATT_SESSION_USER);
 
+        LoginAdherentForm loginAdherentForm = new LoginAdherentForm();
+        user = loginAdherentForm.creerAdherent(req);
 
-        LoginAdherentForm adherentForm = new LoginAdherentForm();
-        user = adherentForm.creerAdherent(req);
-
-        if(!adherentForm.getErreurs().isEmpty())
+        if(!loginAdherentForm.getErreurs().isEmpty())
             session.setAttribute(ATT_SESSION_USER,user);
         else
             session.setAttribute(ATT_SESSION_USER,null);
-
-
+        
         /* Si et seulement si la case du formulaire est cochée */
         if ( req.getParameter( CHAMP_MEMOIRE ) != null ) {
             /* Récupération de la date courante */
@@ -72,12 +68,25 @@ public class LoginAdherentServlet extends HttpServlet {
             /* Demande de suppression du cookie du navigateur */
             setCookie( resp, COOKIE_DERNIERE_CONNEXION, "", 0 );
         }
-
-        /* Stockage du formulaire et du bean dans l'objet request */
-        req.setAttribute( ATT_LOGIN_ADHERENT_FORM, adherentForm );
         
-        this.getServletContext().getRequestDispatcher("/indexHandler").forward(req, resp);
-
+        /* Stockage du formulaire et du bean dans l'objet request */
+        session.setAttribute( ATT_LOGIN_ADHERENT_FORM, loginAdherentForm );
+        
+        //this.getServletContext().getRequestDispatcher(INDEX_HANDLER).forward(req, resp);
+        
+        if(user !=  null)
+        {
+        	String role = user.getLigneFonction().getFonction().getRole();
+			switch (role)
+			{
+			case "Président(e)" : 
+				this.getServletContext().getRequestDispatcher(VUE_DASHBOARD_PRESIDENT).forward(req, resp);break;
+			case "Secretaire" : 
+				this.getServletContext().getRequestDispatcher(VUE_DASHBOARD_SECRETAIRE).forward(req, resp);break;
+			}        
+		}
+        
+        resp.sendRedirect( req.getContextPath() + "/loginAdherent" );
 	}
 
     /**

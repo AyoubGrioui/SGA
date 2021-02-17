@@ -3,7 +3,7 @@ package com.sga.controllers;
 import com.sga.entities.Adherent;
 import com.sga.entities.Donneur;
 import com.sga.services.LoginAdherentForm;
-import com.sga.services.LoginDonneurtForm;
+import com.sga.services.LoginDonneurForm;
 
 import java.io.IOException;
 import java.time.LocalDate;
@@ -29,7 +29,8 @@ public class LoginDonateurServlet extends HttpServlet {
     public static final String  FORMAT_DATE               = "dd/MM/yyyy";
     public static final String  CHAMP_MEMOIRE             = "memoire";
     public static final int     COOKIE_MAX_AGE            = 60 * 60 * 24 * 365;  // 1 an
-    private static final String ATT_LOGIN_DONNEUR_FORM = "LoginDonneurForm";
+    private static final String ATT_LOGIN_DONNEUR_FORM = "loginDonneurForm";
+    public static final String VUE_DASHBOARD_DONATEUR = "/WEB-INF/indexDonateur.jsp";
 
 
     protected void doGet( HttpServletRequest request, HttpServletResponse response )
@@ -45,10 +46,10 @@ public class LoginDonateurServlet extends HttpServlet {
         Donneur user = (Donneur) session.getAttribute(ATT_SESSION_USER);
 
 
-        LoginDonneurtForm donneurForm = new LoginDonneurtForm();
-        user = donneurForm.creerDonneur(req);
+        LoginDonneurForm loginDonneurForm = new LoginDonneurForm();
+        user = loginDonneurForm.creerDonneur(req);
 
-        if(!donneurForm.getErreurs().isEmpty())
+        if(!loginDonneurForm.getErreurs().isEmpty())
             session.setAttribute(ATT_SESSION_USER,user);
         else
             session.setAttribute(ATT_SESSION_USER,null);
@@ -69,10 +70,16 @@ public class LoginDonateurServlet extends HttpServlet {
         }
 
         /* Stockage du formulaire et du bean dans l'objet request */
-        req.setAttribute( ATT_LOGIN_DONNEUR_FORM, donneurForm );
+        session.setAttribute( ATT_LOGIN_DONNEUR_FORM, loginDonneurForm );
 
-        this.getServletContext().getRequestDispatcher("/indexHandler").forward(req, resp);
-
+        //this.getServletContext().getRequestDispatcher("/indexHandler").forward(req, resp);
+        
+        if(user !=  null)
+        {
+			this.getServletContext().getRequestDispatcher(VUE_DASHBOARD_DONATEUR).forward(req, resp);
+        }
+        
+        resp.sendRedirect( req.getContextPath() + "/loginDonateur" );
     }
 
     /**
