@@ -44,7 +44,7 @@ public class DonneurPhysiqueForm {
 
 
 		DonneurPhysique donneurPhysique = new DonneurPhysique();
-		
+		donneurPhysique.setMotDePasse("password");
 		try {
 			validationNom(nom);
 		} catch (Exception e) {
@@ -99,6 +99,10 @@ public class DonneurPhysiqueForm {
 			setErreurs( CHAMP_STRUCTURE,e.getMessage());
 		}
 		donneurPhysique.setStructure(structure);
+		
+		for(String element : erreurs.values()) {
+			System.out.print(element);
+		}
 
 		if(getErreurs().isEmpty())
 		{

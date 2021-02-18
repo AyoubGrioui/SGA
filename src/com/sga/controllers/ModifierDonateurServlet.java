@@ -21,7 +21,7 @@ import com.sga.repositories.HibernateStructurePersister;
 /**
  * Servlet implementation class DashBoardDonateurServlet
  */
-@WebServlet("/modifDonateur")
+@WebServlet("/modifierDonateur")
 public class ModifierDonateurServlet extends HttpServlet {
 
 	public static final String VUE_MODIF_DONATEUR = "/WEB-INF/modifDonateur.jsp";
@@ -61,7 +61,9 @@ public class ModifierDonateurServlet extends HttpServlet {
  		        this.getServletContext().getRequestDispatcher( VUE_MODIF_DONATEUR ).forward( request, response );
  			}
  		
-	        this.getServletContext().getRequestDispatcher( VUE ).forward( request, response );
+ 		else {
+ 			this.getServletContext().getRequestDispatcher( VUE ).forward( request, response );
+ 		}
 
     }
 

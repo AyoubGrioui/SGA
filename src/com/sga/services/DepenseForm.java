@@ -75,6 +75,8 @@ public class DepenseForm {
             setErreurs( CHAMP_STRUCTURE,e.getMessage());
         }
         depense.setStructure(structure);
+        
+        depense.setIdAdherent(1L);
 
         if(erreurs.isEmpty())
         {
@@ -133,6 +135,8 @@ public class DepenseForm {
             setErreurs( CHAMP_STRUCTURE,e.getMessage());
         }
         depense.setStructure(structure);
+        
+        depense.setIdAdherent(1L);
 
         if(erreurs.isEmpty())
         {

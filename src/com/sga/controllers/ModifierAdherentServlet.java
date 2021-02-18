@@ -61,7 +61,9 @@ public class ModifierAdherentServlet extends HttpServlet {
 		        this.getServletContext().getRequestDispatcher( VUE_AJOUTER_ADHERENT ).forward( request, response );
 				}
 		
-		this.getServletContext().getRequestDispatcher(VUE).forward(request,response);
+		else {
+			this.getServletContext().getRequestDispatcher(VUE).forward(request,response);
+		}
 
     }
 

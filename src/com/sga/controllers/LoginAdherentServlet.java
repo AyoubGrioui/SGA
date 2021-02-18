@@ -86,7 +86,11 @@ public class LoginAdherentServlet extends HttpServlet {
 			}        
 		}
         
-        resp.sendRedirect( req.getContextPath() + "/loginAdherent" );
+        else
+        {
+            resp.sendRedirect( req.getContextPath() + "/loginAdherent" );
+        }
+        
 	}
 
     /**

@@ -46,7 +46,9 @@ public class FonctionForm {
 		for (Fonction f : fonctionList)
 		{
 			if(role != null && role.equals(f.getRole()))
-				return f;
+				
+					return f;
+				
 		}
 
 

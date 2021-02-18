@@ -29,7 +29,7 @@ pageEncoding="UTF-8"%>
         <c:import url="Menu/headerSecretaire.jsp"></c:import>
 
         <main class="h-full pb-16 overflow-y-auto">
-          <form methode="" action="">
+          <form methode="POST" action="">
             <div class="container px-6 mx-auto grid">
               <h2
                 class="my-6 text-2xl font-semibold text-gray-700 dark:text-gray-200"

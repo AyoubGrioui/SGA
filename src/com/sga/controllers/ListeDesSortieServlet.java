@@ -22,7 +22,7 @@ public class ListeDesSortieServlet extends HttpServlet {
      * 
      */
     private static final long  serialVersionUID     = 1L;
-    public static final String VUE_LISTE_DEPENSE = "/WEB-INF/listeDesSorites.jsp";
+    public static final String VUE_LISTE_DEPENSE = "/WEB-INF/listeDesSorties.jsp";
     public static final String ATT_DEPENSELIST = "depenseList";
 
     protected void doGet( HttpServletRequest request, HttpServletResponse response )

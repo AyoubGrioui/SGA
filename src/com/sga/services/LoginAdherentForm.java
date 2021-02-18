@@ -99,7 +99,7 @@ public class LoginAdherentForm
         else if ( adherent !=null)
         {
             String encPassword = traiterMotsDePasse(motDePasse);
-            if(adherent.getMotDePasse().equals(encPassword))
+            if(adherent.getMotDePasse().equals(motDePasse))
                 return true;
         }
 

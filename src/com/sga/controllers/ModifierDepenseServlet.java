@@ -18,11 +18,11 @@ import com.sga.services.DepenseForm;
 /**
  * Servlet implementation class ModifierDepenseServlet
  */
-@WebServlet("/ModifierDepenseServlet")
+@WebServlet("/modifierDepense")
 public class ModifierDepenseServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
-    public static final String VUE_AJOUTER_DEPENSE = "/WEB-INF/ajouterDepensePage.jsp";
+    public static final String VUE_AJOUTER_DEPENSE = "/WEB-INF/modifierDepensePage.jsp";
     public static final String ATT_DEPENSEFORM = "depenseForm";
     public static final String ATT_DEPENSE = "depense";
     private static final String ATT_LIST_STRUCTURE = "structureList";
@@ -57,7 +57,9 @@ public class ModifierDepenseServlet extends HttpServlet {
  		        this.getServletContext().getRequestDispatcher( VUE_AJOUTER_DEPENSE ).forward( request, response );
  			}
  		
-	        this.getServletContext().getRequestDispatcher( VUE ).forward( request, response );
+ 		else 
+ 			{ this.getServletContext().getRequestDispatcher( VUE ).forward( request, response );
+ 		}
 
     }
 

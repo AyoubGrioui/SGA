@@ -56,7 +56,7 @@ public class LigneFonctionForm {
 
 		FonctionForm fonctionForm=new FonctionForm();
 		Fonction fonction=fonctionForm.creerFonction(request);
-
+		ligneFonction.setFonction(fonction);
 		erreurs.putAll(fonctionForm.getErreurs());
 		
 		if(getErreurs().isEmpty())

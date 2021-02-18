@@ -27,7 +27,7 @@ pageEncoding="UTF-8"%>
       <div class="flex flex-col flex-1">
         <c:import url="Menu/headerMenu.jsp" />
           <main class="h-full pb-16 overflow-y-auto">
-          <form method="post" action="" enctype="multipart/form-data">
+          <form method="POST" action="<c:url value = "/ajouterAdherent"/>" >
             <div class="container px-6 mx-auto grid">
               <!-------- Titre --------->
               <h2
@@ -233,6 +233,7 @@ pageEncoding="UTF-8"%>
                         class="text-purple-600 form-radio focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:focus:shadow-outline-gray"
                         name="sexeAdherent"
                         value="Femme"
+                        checked = "checked"
                       />
                       <span class="ml-2">Femme</span>
                     </label>

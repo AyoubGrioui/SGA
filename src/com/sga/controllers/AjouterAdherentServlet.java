@@ -44,6 +44,7 @@ public class AjouterAdherentServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
        
     	
+    	
     	HibernateStructurePersister structurePersister =new HibernateStructurePersister();
         List<Structure> structureList = structurePersister.getAll();
 
@@ -53,7 +54,7 @@ public class AjouterAdherentServlet extends HttpServlet {
     	
     	
     	AdherentForm adherentForm = new AdherentForm();
-        Adherent adherent = adherentForm.creerAdherent(request,chemin);
+        Adherent adherent = adherentForm.creerAdherent(request);
 
         Map<String, String> erreurs = adherentForm.getErreurs();
         request.setAttribute(ATT_ERREURS,erreurs);

@@ -3,9 +3,9 @@ package com.sga.services;
 
 import com.sga.entities.DonCheque;
 import com.sga.entities.DonEspece;
+import com.sga.entities.Donneur;
 import com.sga.helpers.SGAUtil;
-import com.sga.repositories.Repository;
-import com.sga.repositories.RepositoryFactory;
+import com.sga.repositories.*;
 import org.hibernate.validator.messageinterpolation.ResourceBundleMessageInterpolator;
 import org.hibernate.validator.resourceloading.PlatformResourceBundleLocator;
 
@@ -24,6 +24,7 @@ public class DonEspeceForm
     private static final String CHAMP_MONTANT="montant";
     private static final String CHAMP_DONNEUR="donneur";
 
+
     private Map<String,String> erreurs=new HashMap<String,String>();
 
     public Map<String, String> getErreurs() {
@@ -35,7 +36,8 @@ public class DonEspeceForm
     {
         String montant = getValeurChamp(request,CHAMP_MONTANT);
         String dateDon = getValeurChamp(request,CHAMP_DATE_DON);
-        String donneur = getValeurChamp(request,CHAMP_DONNEUR);
+        String idDonneur = getValeurChamp(request,CHAMP_DONNEUR);
+
 
         DonEspece donEspece = new DonEspece();
 
@@ -54,9 +56,14 @@ public class DonEspeceForm
         }
         donEspece.setDateDon(SGAUtil.StringToLocalDate(dateDon));
 
-        RepositoryFactory repFactory = new RepositoryFactory();
-        Repository rep = repFactory.getDonVersementRepository();
-        rep.create(donEspece);
+        Donneur donneur = (Donneur) request.getAttribute(CHAMP_DONNEUR);
+        donEspece.setDonneur(donneur);
+
+        if(getErreurs().isEmpty())
+        {
+            HibernateDonEspecePersister donEspecePersister=new HibernateDonEspecePersister();
+            donEspecePersister.create(donEspece);
+        }
 
         return donEspece;
 
@@ -66,7 +73,8 @@ public class DonEspeceForm
     {
         String montant = getValeurChamp(request,CHAMP_MONTANT);
         String dateDon = getValeurChamp(request,CHAMP_DATE_DON);
-        String donneur = getValeurChamp(request,CHAMP_DONNEUR);
+        String idDonneur = getValeurChamp(request,CHAMP_DONNEUR);
+
 
         DonEspece donEspece = new DonEspece();
 
@@ -85,9 +93,22 @@ public class DonEspeceForm
         }
         donEspece.setDateDon(SGAUtil.StringToLocalDate(dateDon));
 
-        RepositoryFactory repFactory = new RepositoryFactory();
-        Repository rep = repFactory.getDonVersementRepository();
-        rep.update(donEspece);
+        Donneur donneur=null;
+        try
+        {
+            donneur =validationDonneur(idDonneur);
+        }
+        catch ( Exception e )
+        {
+            setErreurs( CHAMP_DONNEUR,e.getMessage());
+        }
+        donEspece.setDonneur(donneur);
+
+        if(getErreurs().isEmpty())
+        {
+            HibernateDonEspecePersister donEspecePersister = new HibernateDonEspecePersister();
+            donEspecePersister.create(donEspece);
+        }
 
         return donEspece;
 
@@ -137,6 +158,33 @@ public class DonEspeceForm
             throw new Exception( "Merci d'entrer une date." );
         }
     }
-    
+
+    private Donneur validationDonneur(String id_donneur) throws Exception {
+        if(id_donneur == null)
+        {
+            throw new Exception( "Merci de choisir une Donneur");
+        }
+        else
+        {
+            try {
+                Long idDonneur = Long.parseLong(id_donneur);
+                HibernateDonneurPersister donneurPersister=new HibernateDonneurPersister();
+                Donneur donneur=donneurPersister.read(idDonneur);
+
+                if(donneur == null)
+                {
+                    throw new Exception("Donneur n'existe pas");
+                }
+
+                return donneur;
+
+            }
+            catch (NumberFormatException n)
+            {
+                throw new Exception( "Donneur invalid");
+            }
+
+        }
+    }
 
 }

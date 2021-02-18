@@ -63,19 +63,19 @@
                   <c:forEach items="${adherentList}" var="adherent" varStatus="boucle">
                     <tr class="text-gray-700 dark:text-gray-400">
                     <td class="px-4 py-3 text-sm">
-                        ${adherent.nomAdherent}
+                        ${adherent.nom}
                       </td>
                        <td class="px-4 py-3 text-sm">
-                        ${adherent.prenomAdherent}
+                        ${adherent.prenom}
                       </td> 
                       <td class="px-4 py-3 text-sm">
-                        ${adherent.emailAdherent}
+                        ${adherent.email}
                       </td>
                       <td class="px-4 py-3 text-sm">
-                        ${adherent.telephoneAdherent}
+                        ${adherent.telephone}
                       </td>
                       <td class="px-4 py-3 text-sm">
-                        ${adherent.cinAdherent}
+                        ${adherent.cin}
                       </td>
                       
                       <td class="px-4 py-3">
@@ -100,8 +100,9 @@
                           </button>
                          </a>
                           
+                          
                           <button
-                            @click="window.location='<c:url value="/detailAdherent"></c:url>'"
+                            @click="window.location='<c:url value="/detailAdherent" ><c:param name="adherentID" value="${adherent.idAdherent}" /></c:url>'"
                             class="flex items-center justify-between px-2 py-2 text-sm font-medium leading-5 text-purple-600 rounded-lg dark:text-gray-400 focus:outline-none focus:shadow-outline-gray"
                             aria-label="Details"
                           >

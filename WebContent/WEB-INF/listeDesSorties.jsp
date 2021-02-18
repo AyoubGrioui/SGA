@@ -51,7 +51,6 @@ pageEncoding="UTF-8"%>
                       <th class="px-4 py-3">Montant dépensé</th>
                       <th class="px-4 py-3">Date de dépense</th>
                       <th class="px-4 py-3">Type de dépense</th>
-                      <th class="px-4 py-3">Actions</th>
                     </tr>
                   </thead>
                   <tbody
@@ -68,10 +67,7 @@ pageEncoding="UTF-8"%>
                         </td>
                         <td class="px-4 py-3 text-sm"><c:out value="${depense.dateDepense}"/></td>
                         <td class="px-4 py-3 text-sm"><c:out value="${depense.typeDepense}"/></td>
-                        <td class="px-4 py-3">
-                          <div class="flex items-center space-x-4 text-sm">
-                          </div>
-                        </td>
+         
                       </tr>
                     </c:forEach>
                   </tbody>
