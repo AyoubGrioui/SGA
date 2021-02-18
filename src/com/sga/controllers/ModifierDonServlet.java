@@ -1,6 +1,7 @@
 package com.sga.controllers;
 
 import java.io.IOException;
+
 import java.util.List;
 
 import javax.servlet.ServletException;
@@ -24,8 +25,8 @@ import com.sga.services.DonVersementForm;
 /**
  * Servlet implementation class DashBoardDonateurServlet
  */
-@WebServlet("/modifDon")
-public class ModifDonServlet extends HttpServlet {
+@WebServlet("/modifierDon")
+public class ModifierDonServlet extends HttpServlet {
 
 	public static final String VUE_MODIF_DON        = "/WEB-INF/modifDon.jsp";
     public static final String ATT_DONFORM = "donForm";
@@ -64,7 +65,9 @@ public class ModifDonServlet extends HttpServlet {
  		        this.getServletContext().getRequestDispatcher( VUE_MODIF_DON ).forward( request, response );
  			}
  		
-	        this.getServletContext().getRequestDispatcher( VUE ).forward( request, response );
+ 		else {
+ 			this.getServletContext().getRequestDispatcher( VUE ).forward( request, response );
+ 		}
 
     }
 
