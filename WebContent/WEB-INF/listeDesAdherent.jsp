@@ -60,25 +60,29 @@
                   <tbody
                     class="bg-white divide-y dark:divide-gray-700 dark:bg-gray-800"
                   >
+                  <c:forEach items="${adherentList}" var="adherent" varStatus="boucle">
                     <tr class="text-gray-700 dark:text-gray-400">
                     <td class="px-4 py-3 text-sm">
-                        ${adherent.nomAdherent}
+                        ${adherent.nom}
                       </td>
                        <td class="px-4 py-3 text-sm">
-                        ${adherent.prenomAdherent}
+                        ${adherent.prenom}
                       </td> 
                       <td class="px-4 py-3 text-sm">
-                        ${adherent.emailAdherent}
+                        ${adherent.email}
                       </td>
                       <td class="px-4 py-3 text-sm">
-                        ${adherent.telephoneAdherent}
+                        ${adherent.telephone}
                       </td>
                       <td class="px-4 py-3 text-sm">
-                        ${adherent.cinAdherent}
+                        ${adherent.cin}
                       </td>
                       
                       <td class="px-4 py-3">
                         <div class="flex items-center space-x-4 text-sm">
+                        
+                       <a href="<c:url value="/modifierAdherent"><c:param name="adherentID" value="${adherent.idAdherent}" /></c:url>">
+                        
                           <button
                             class="flex items-center justify-between px-2 py-2 text-sm font-medium leading-5 text-purple-600 rounded-lg dark:text-gray-400 focus:outline-none focus:shadow-outline-gray"
                             aria-label="Edit"
@@ -94,19 +98,23 @@
                               ></path>
                             </svg>
                           </button>
+                         </a>
+                          
                           
                           <button
-                            @click="window.location='<c:url value="/detailAdherent"></c:url>'"
+                            @click="window.location='<c:url value="/detailAdherent" ><c:param name="adherentID" value="${adherent.idAdherent}" /></c:url>'"
                             class="flex items-center justify-between px-2 py-2 text-sm font-medium leading-5 text-purple-600 rounded-lg dark:text-gray-400 focus:outline-none focus:shadow-outline-gray"
                             aria-label="Details"
                           >
                           <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path></svg>
                           </button>
                           
-                          <button
+                         <a href="<c:url value="/supprimerAdherent"><c:param name="adherentID" value="${adherent.idAdherent}" /></c:url>">
+                         <button
                             class="flex items-center justify-between px-2 py-2 text-sm font-medium leading-5 text-purple-600 rounded-lg dark:text-gray-400 focus:outline-none focus:shadow-outline-gray"
-                            aria-label="Delete"
+                            aria-label="Delete" 
                           >
+                         
                             <svg
                               class="w-5 h-5"
                               aria-hidden="true"
@@ -120,9 +128,11 @@
                               ></path>
                             </svg>
                           </button>
+                          </a>
                         </div>
                       </td>
                     </tr>
+                    </c:forEach>
                   </tbody>
                 </table>
               </div>

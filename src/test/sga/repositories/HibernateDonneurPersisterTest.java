@@ -1,6 +1,6 @@
 package test.sga.repositories;
 
-import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.*;
 
 import java.time.LocalDate;
 import java.util.ArrayList;

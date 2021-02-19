@@ -1,7 +1,12 @@
 package com.sga.services;
 
 import com.sga.entities.Depense;
+import com.sga.entities.Structure;
 import com.sga.helpers.SGAUtil;
+import com.sga.repositories.HibernateDepensePersister;
+import com.sga.repositories.HibernateStructurePersister;
+import com.sga.repositories.Repository;
+import com.sga.repositories.RepositoryFactory;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
@@ -13,6 +18,7 @@ public class DepenseForm {
     public static final String CHAMP_MONTANT="montantDepense";
     public static final String CHAMP_DATE_DEPENSE="dateDepense";
     public static final String CHAMP_TYPE_DEPENSE="typeDepense";
+    private static final String CHAMP_STRUCTURE = "listStructure" ;
 
 
     private Map<String,String> erreurs=new HashMap<String,String>();
@@ -27,6 +33,8 @@ public class DepenseForm {
         String montant = getValeurChamp(request,CHAMP_MONTANT);
         String dateDepense = getValeurChamp(request,CHAMP_DATE_DEPENSE);
         String typedepense = getValeurChamp(request,CHAMP_TYPE_DEPENSE);
+        String idStructure = getValeurChamp(request,CHAMP_STRUCTURE);
+
 
         Depense depense = new Depense();
 
@@ -57,12 +65,84 @@ public class DepenseForm {
         }
         depense.setDateDepense(SGAUtil.StringToLocalDate(dateDepense));
 
-/*        if(erreurs.isEmpty())
+        Structure structure=null;
+        try
         {
-            RepositoryFactory repFactory = new RepositoryFactory();
-            Repository rep = repFactory.getDepenseRepository();
-            rep.create(depense);
-        }*/
+            structure =validationStructure(idStructure);
+        }
+        catch ( Exception e )
+        {
+            setErreurs( CHAMP_STRUCTURE,e.getMessage());
+        }
+        depense.setStructure(structure);
+        
+        depense.setIdAdherent(1L);
+
+        if(erreurs.isEmpty())
+        {
+            HibernateDepensePersister depensePersister =new HibernateDepensePersister();
+            depensePersister.create(depense);
+        }
+
+
+        return depense;
+    }
+    
+    public Depense modifierDepense(HttpServletRequest request) {
+
+        String montant = getValeurChamp(request,CHAMP_MONTANT);
+        String dateDepense = getValeurChamp(request,CHAMP_DATE_DEPENSE);
+        String typedepense = getValeurChamp(request,CHAMP_TYPE_DEPENSE);
+        String idStructure = getValeurChamp(request,CHAMP_STRUCTURE);
+
+
+        Depense depense = new Depense();
+
+        
+        double valeurMontant= 0;
+        try
+        {
+            valeurMontant=validationMontant(montant);
+        }
+        catch(Exception e) {
+            setErreurs(CHAMP_MONTANT, e.getMessage());
+        }
+        depense.setMontant(valeurMontant);
+
+        try
+        {
+           validationTypeDepense(typedepense);
+        }catch(Exception e) {
+            setErreurs(CHAMP_TYPE_DEPENSE, e.getMessage());
+        }
+
+        depense.setTypeDepense(typedepense);
+        
+        try {
+            validationDate( dateDepense );
+        } catch ( Exception e ) {
+            setErreurs( CHAMP_DATE_DEPENSE, e.getMessage() );
+        }
+        depense.setDateDepense(SGAUtil.StringToLocalDate(dateDepense));
+
+        Structure structure=null;
+        try
+        {
+            structure =validationStructure(idStructure);
+        }
+        catch ( Exception e )
+        {
+            setErreurs( CHAMP_STRUCTURE,e.getMessage());
+        }
+        depense.setStructure(structure);
+        
+        depense.setIdAdherent(1L);
+
+        if(erreurs.isEmpty())
+        {
+            HibernateDepensePersister depensePersister =new HibernateDepensePersister();
+            depensePersister.update(depense);
+        }
 
 
         return depense;
@@ -121,6 +201,27 @@ public class DepenseForm {
 
         if ( typeDepense == null ) {
             throw new Exception( "Merci d'entrer un type de depense." );    
+        }
+    }
+    private Structure validationStructure(String id_structure) throws Exception {
+        if (id_structure == null) {
+            throw new Exception("Merci de choisir une structure");
+        } else {
+            try {
+                Long idStructure = Long.parseLong(id_structure);
+                HibernateStructurePersister structurePersister = new HibernateStructurePersister();
+                Structure structure = structurePersister.read(idStructure);
+
+                if (structure == null) {
+                    throw new Exception("Structure n'existe pas");
+                }
+
+                return structure;
+
+            } catch (NumberFormatException n) {
+                throw new Exception("Structure invalid");
+            }
+
         }
     }
 }

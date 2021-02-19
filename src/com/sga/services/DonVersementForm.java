@@ -1,7 +1,10 @@
 package com.sga.services;
 
 import com.sga.entities.DonVersement;
+import com.sga.entities.Donneur;
 import com.sga.helpers.SGAUtil;
+import com.sga.repositories.HibernateDonVersementPersister;
+import com.sga.repositories.HibernateDonneurPersister;
 import com.sga.repositories.Repository;
 import com.sga.repositories.RepositoryFactory;
 
@@ -14,18 +17,16 @@ public class DonVersementForm {
 	private static final String CHAMP_NUMERO_DE_COMPTE = "numeroCompteBanqueDonVersement";
 	private static final String CHAMP_DATE_DON = "dateDon";
 	private static final String CHAMP_MONTANT = "montant";
+	private static final String CHAMP_DONNEUR="donneur";
+
 
 	private Map<String, String> erreurs = new HashMap<String, String>();
-	private String resultat;
 
 
 	public Map<String, String> getErreurs() {
 		return erreurs;
 	}
 
-	public String getResultat() {
-		return resultat;
-	}
 
 
 	public DonVersement creerDonVersement(HttpServletRequest request) {
@@ -33,6 +34,8 @@ public class DonVersementForm {
 		String numCompte = getValeurChamp(request, CHAMP_NUMERO_DE_COMPTE);
 		String dateDon = getValeurChamp(request, CHAMP_DATE_DON);
 		String montant = getValeurChamp(request, CHAMP_MONTANT);
+		String idDonneur = getValeurChamp(request,CHAMP_DONNEUR);
+
 
 		DonVersement donVersement = new DonVersement();
 
@@ -58,15 +61,74 @@ public class DonVersementForm {
 		}
 		donVersement.setDateDon(SGAUtil.StringToLocalDate(dateDon));
 
-		if (erreurs.isEmpty()) {
-			resultat = "succes de la creation du client";
-		} else {
-			resultat = "echec de la creation du client";
+		Donneur donneur=null;
+		try
+		{
+			donneur =validationDonneur(idDonneur);
+		}
+		catch ( Exception e )
+		{
+			setErreurs( CHAMP_DONNEUR,e.getMessage());
+		}
+		donVersement.setDonneur(donneur);
+
+		if(getErreurs().isEmpty())
+		{
+			HibernateDonVersementPersister donVersementPersister=new HibernateDonVersementPersister();
+			donVersementPersister.create(donVersement);
 		}
 
-		RepositoryFactory repFactory = new RepositoryFactory();
-		Repository rep = repFactory.getDonVersementRepository();
-		rep.create(donVersement);
+		return donVersement;
+	}
+	
+	public DonVersement modifierDonVersement(HttpServletRequest request) {
+
+		String numCompte = getValeurChamp(request, CHAMP_NUMERO_DE_COMPTE);
+		String dateDon = getValeurChamp(request, CHAMP_DATE_DON);
+		String montant = getValeurChamp(request, CHAMP_MONTANT);
+		String idDonneur = getValeurChamp(request,CHAMP_DONNEUR);
+
+
+		DonVersement donVersement = new DonVersement();
+
+		try {
+			validationNumCompte(numCompte);
+		} catch (Exception e) {
+			setErreurs(CHAMP_NUMERO_DE_COMPTE, e.getMessage());
+		}
+		donVersement.setNumeroCompteBanque(numCompte);
+
+		double valeurMontant = -1;
+		try {
+			valeurMontant = validationMontant(montant);
+		} catch (Exception e) {
+			setErreurs(CHAMP_MONTANT, e.getMessage());
+		}
+		donVersement.setMontant(valeurMontant);
+
+		try {
+			validationDate(CHAMP_DATE_DON);
+		} catch (Exception e) {
+			setErreurs(CHAMP_DATE_DON, e.getMessage());
+		}
+		donVersement.setDateDon(SGAUtil.StringToLocalDate(dateDon));
+
+		Donneur donneur=null;
+		try
+		{
+			donneur =validationDonneur(idDonneur);
+		}
+		catch ( Exception e )
+		{
+			setErreurs( CHAMP_DONNEUR,e.getMessage());
+		}
+		donVersement.setDonneur(donneur);
+
+		if(getErreurs().isEmpty())
+		{
+			HibernateDonVersementPersister donVersementPersister=new HibernateDonVersementPersister();
+			donVersementPersister.create(donVersement);
+		}
 
 		return donVersement;
 	}
@@ -131,5 +193,33 @@ public class DonVersementForm {
 				return valeur;
 			}
 		}
+
+	private Donneur validationDonneur(String id_donneur) throws Exception {
+		if(id_donneur == null)
+		{
+			throw new Exception( "Merci de choisir une Donneur");
+		}
+		else
+		{
+			try {
+				Long idDonneur = Long.parseLong(id_donneur);
+				HibernateDonneurPersister donneurPersister=new HibernateDonneurPersister();
+				Donneur donneur=donneurPersister.read(idDonneur);
+
+				if(donneur == null)
+				{
+					throw new Exception("Donneur n'existe pas");
+				}
+
+				return donneur;
+
+			}
+			catch (NumberFormatException n)
+			{
+				throw new Exception( "Donneur invalid");
+			}
+
+		}
+	}
 }
 

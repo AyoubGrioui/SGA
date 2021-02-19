@@ -8,9 +8,10 @@ import javax.validation.MessageInterpolator;
 import javax.validation.Validation;
 import javax.validation.Validator;
 
+import com.sga.entities.Donneur;
+import com.sga.entities.Structure;
 import com.sga.helpers.SGAUtil;
-import com.sga.repositories.Repository;
-import com.sga.repositories.RepositoryFactory;
+import com.sga.repositories.*;
 import org.hibernate.validator.messageinterpolation.ResourceBundleMessageInterpolator;
 import org.hibernate.validator.resourceloading.PlatformResourceBundleLocator;
 
@@ -42,6 +43,8 @@ public class DonChequeForm {
 		String nomBanque = getValeurChamp(request,CHAMP_NOM_BANQUE);
 		String montant = getValeurChamp(request,CHAMP_MONTANT);
 		String dateDon =getValeurChamp(request,CHAMP_DATE_DON);
+		String idDonneur = getValeurChamp(request,CHAMP_DONNEUR);
+
 
 		DonCheque donCheque = new DonCheque();
 
@@ -88,14 +91,103 @@ public class DonChequeForm {
         	setErreurs(CHAMP_NUMERO_COMPTE_BANQUE,e.getMessage());
         }
         donCheque.setNumeroCompteBanque(numeroCompteBanque);
-		
 
-		RepositoryFactory repFactory = new RepositoryFactory();
-		Repository rep = repFactory.getDonVersementRepository();
-		rep.create(donCheque);
+		Donneur donneur=null;
+		try
+		{
+			donneur =validationDonneur(idDonneur);
+		}
+		catch ( Exception e )
+		{
+			setErreurs( CHAMP_DONNEUR,e.getMessage());
+		}
+		donCheque.setDonneur(donneur);
+
+		if(getErreurs().isEmpty())
+		{
+			HibernateDonChequePersister donChequePersister = new HibernateDonChequePersister();
+			donChequePersister.create(donCheque);
+		}
 
 		return donCheque;
 	}
+	
+	public DonCheque modifierDonCheque(HttpServletRequest request) {
+		String numeroCompteBanque = getValeurChamp(request,CHAMP_NUMERO_COMPTE_BANQUE);
+		String dateCheque = getValeurChamp(request,CHAMP_DATE_CHEQUE);
+		String dateDepot = getValeurChamp(request,CHAMP_DATE_DEPOT);
+		String nomBanque = getValeurChamp(request,CHAMP_NOM_BANQUE);
+		String montant = getValeurChamp(request,CHAMP_MONTANT);
+		String dateDon =getValeurChamp(request,CHAMP_DATE_DON);
+		String idDonneur = getValeurChamp(request,CHAMP_DONNEUR);
+
+
+		DonCheque donCheque = new DonCheque();
+
+
+		double valeurMontant=-1;
+		try {
+			valeurMontant=validationMontant(montant);
+		}catch(Exception e) {
+			setErreurs(CHAMP_MONTANT, e.getMessage());
+		}
+		donCheque.setMontant(valeurMontant);
+
+        try {
+        	validationDate( dateCheque );
+        } catch ( Exception e ) {
+            setErreurs( CHAMP_DATE_CHEQUE, e.getMessage() );
+        }
+        donCheque.setDateCheque(SGAUtil.StringToLocalDate(dateCheque));
+		
+        try {
+        	validationDate( dateDepot );
+        } catch ( Exception e ) {
+            setErreurs( CHAMP_DATE_DEPOT, e.getMessage() );
+        }
+        donCheque.setDateDepot( SGAUtil.StringToLocalDate(dateDepot) );
+		
+        try {
+        	validationDate( dateDon );
+        } catch ( Exception e ) {
+            setErreurs( CHAMP_DATE_DON, e.getMessage() );
+        }
+        donCheque.setDateDon(SGAUtil.StringToLocalDate(dateDon));
+        
+        try {
+            validationNomBanque(nomBanque);
+        } catch ( Exception e ) {
+            setErreurs( CHAMP_NOM_BANQUE, e.getMessage() );
+        }
+        donCheque.setNomBanque( nomBanque );
+        
+        try {
+        	validationNumBanque(numeroCompteBanque);
+        }catch(Exception e) {
+        	setErreurs(CHAMP_NUMERO_COMPTE_BANQUE,e.getMessage());
+        }
+        donCheque.setNumeroCompteBanque(numeroCompteBanque);
+
+		Donneur donneur=null;
+		try
+		{
+			donneur =validationDonneur(idDonneur);
+		}
+		catch ( Exception e )
+		{
+			setErreurs( CHAMP_DONNEUR,e.getMessage());
+		}
+		donCheque.setDonneur(donneur);
+
+		if(getErreurs().isEmpty())
+		{
+			HibernateDonChequePersister donChequePersister = new HibernateDonChequePersister();
+			donChequePersister.create(donCheque);
+		}
+
+		return donCheque;
+	}
+	
 	//validation du montant
 	private double validationMontant( String montant ) throws Exception {
 		double temp;
@@ -162,6 +254,35 @@ public class DonChequeForm {
 	    if ( nom == null ) {	   
 	        throw new Exception( "Merci d'entrer le nom de la banque" );
 	    }
+	}
+
+
+	private Donneur validationDonneur(String id_donneur) throws Exception {
+		if(id_donneur == null)
+		{
+			throw new Exception( "Merci de choisir une Donneur");
+		}
+		else
+		{
+			try {
+				Long idDonneur = Long.parseLong(id_donneur);
+				HibernateDonneurPersister donneurPersister=new HibernateDonneurPersister();
+				Donneur donneur=donneurPersister.read(idDonneur);
+
+				if(donneur == null)
+				{
+					throw new Exception("Donneur n'existe pas");
+				}
+
+				return donneur;
+
+			}
+			catch (NumberFormatException n)
+			{
+				throw new Exception( "Donneur invalid");
+			}
+
+		}
 	}
 
 }

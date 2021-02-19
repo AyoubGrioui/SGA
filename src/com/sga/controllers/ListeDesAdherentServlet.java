@@ -1,6 +1,7 @@
 package com.sga.controllers;
 
 import com.sga.entities.Adherent;
+import com.sga.repositories.HibernateAdherentPersister;
 import com.sga.repositories.Repository;
 import com.sga.repositories.RepositoryFactory;
 
@@ -27,9 +28,8 @@ public class ListeDesAdherentServlet extends HttpServlet {
 
     protected void doGet( HttpServletRequest request, HttpServletResponse response )
             throws ServletException, IOException {
-        RepositoryFactory repositoryFactory =new RepositoryFactory();
-        Repository repository =repositoryFactory.getAdherentRepository();
-        List<Adherent> adherentList= repository.getAll();
+        HibernateAdherentPersister adherentPersister = new HibernateAdherentPersister();
+        List<Adherent> adherentList= adherentPersister.getAll();
 
         request.setAttribute(ATT_ADHERENTLIST,adherentList);
 
