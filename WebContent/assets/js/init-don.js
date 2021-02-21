@@ -28,7 +28,7 @@ window.onload = function load() {
         physiqueListeDiv.style.display = "block";
     }
 }
-  const typeDonateur = (element) => {
+  const typeDonateurFunction = (element) => {
       var moraleDiv = document.getElementById("morale");
       var physiqueDiv = document.getElementById("physique");
       if(element.value === 'morale'){

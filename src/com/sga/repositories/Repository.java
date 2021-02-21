@@ -24,18 +24,21 @@ public abstract class Repository<DataObject> {
 		return getSessionFactory().openSession();
 	}
 
-	public void create(DataObject data) {
+	public Long create(DataObject data) {
+		Long id = null;
 		try {
 			sf = getSessionFactory();
 			session = sf.openSession();
 			session.beginTransaction();
-			session.save(data);
+			id = (Long) session.save(data);
 			session.getTransaction().commit();
+			return id;
 		} catch (Exception e) {
 			e.printStackTrace();
 			if (session.getTransaction() != null) {
 				session.getTransaction().rollback();
 			}
+			return null;
 		} finally {
 			if (session != null)
 				session.close();
@@ -43,7 +46,6 @@ public abstract class Repository<DataObject> {
 				sf.close();
 		}
 	}
-
 	public void delete(DataObject data) {
 		try {
 			sf = getSessionFactory();

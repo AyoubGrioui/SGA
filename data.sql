@@ -29,7 +29,6 @@ CREATE TABLE Adherents(
     lieuNaissance text NOT NULL,
     dateAdhesion DATE NOT NULL,
     profession text NOT NULL,
-    photo text NOT NULL,
     sexe text NOT NULL,
     motDePasse text NOT NULL,
     telephone text NOT NULL,

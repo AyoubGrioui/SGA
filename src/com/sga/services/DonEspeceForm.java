@@ -23,6 +23,7 @@ public class DonEspeceForm
     private static final String CHAMP_DATE_DON="dateDon";
     private static final String CHAMP_MONTANT="montant";
     private static final String CHAMP_DONNEUR="donneur";
+    public static final String INTERNAL_ID_DON = "idDon";
 
 
     private Map<String,String> erreurs=new HashMap<String,String>();
@@ -75,8 +76,9 @@ public class DonEspeceForm
         String dateDon = getValeurChamp(request,CHAMP_DATE_DON);
         String idDonneur = getValeurChamp(request,CHAMP_DONNEUR);
 
-
-        DonEspece donEspece = new DonEspece();
+        Long id=Long.parseLong(getValeurChamp(request,INTERNAL_ID_DON));
+        HibernateDonEspecePersister donEspecePersister = new HibernateDonEspecePersister();
+        DonEspece donEspece =donEspecePersister.read(id);
 
         double valeurMontant=-1;
         try {
@@ -93,21 +95,10 @@ public class DonEspeceForm
         }
         donEspece.setDateDon(SGAUtil.StringToLocalDate(dateDon));
 
-        Donneur donneur=null;
-        try
-        {
-            donneur =validationDonneur(idDonneur);
-        }
-        catch ( Exception e )
-        {
-            setErreurs( CHAMP_DONNEUR,e.getMessage());
-        }
-        donEspece.setDonneur(donneur);
 
         if(getErreurs().isEmpty())
         {
-            HibernateDonEspecePersister donEspecePersister = new HibernateDonEspecePersister();
-            donEspecePersister.create(donEspece);
+            donEspecePersister.update(donEspece);
         }
 
         return donEspece;
@@ -156,34 +147,6 @@ public class DonEspeceForm
         if ( date == null )
         {
             throw new Exception( "Merci d'entrer une date." );
-        }
-    }
-
-    private Donneur validationDonneur(String id_donneur) throws Exception {
-        if(id_donneur == null)
-        {
-            throw new Exception( "Merci de choisir une Donneur");
-        }
-        else
-        {
-            try {
-                Long idDonneur = Long.parseLong(id_donneur);
-                HibernateDonneurPersister donneurPersister=new HibernateDonneurPersister();
-                Donneur donneur=donneurPersister.read(idDonneur);
-
-                if(donneur == null)
-                {
-                    throw new Exception("Donneur n'existe pas");
-                }
-
-                return donneur;
-
-            }
-            catch (NumberFormatException n)
-            {
-                throw new Exception( "Donneur invalid");
-            }
-
         }
     }
 

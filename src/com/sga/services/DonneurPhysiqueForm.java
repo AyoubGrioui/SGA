@@ -1,12 +1,15 @@
 package com.sga.services;
 
-import com.sga.entities.DonneurPhysique;
-import com.sga.entities.Structure;
-import com.sga.repositories.*;
-
-import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+
+import com.sga.entities.DonneurPhysique;
+import com.sga.entities.Structure;
+import com.sga.repositories.HibernateDonneurPhysiquePersister;
+import com.sga.repositories.HibernateStructurePersister;
 
 public class DonneurPhysiqueForm {
 
@@ -17,10 +20,12 @@ public class DonneurPhysiqueForm {
 	private static final String CHAMP_TELEPHONE = "telephoneDonneurMorale";
 	private static final String CHAMP_ADRESSE = "adresseDonneurMorale";
 	private static final String CHAMP_MOT_DE_PASSE = "motDePasseDonneurMorale";
-	private static final String CHAMP_STRUCTURE = "listStructure";
+	public static final String ATT_STRUCTURE = "structure";
+	public static final String INTERNAL_ID_DONATEUR = "idDonneur";
 
 	private Map<String,String> erreurs = new HashMap<String,String>();
 	private String resultat;
+	private String errorMessage;
 	
 	
 	public Map<String, String> getErreurs() {
@@ -40,10 +45,10 @@ public class DonneurPhysiqueForm {
 		String telephone = getValeurChamp(request,CHAMP_TELEPHONE);
 		String adresse = getValeurChamp(request,CHAMP_ADRESSE);
 		String motDePasse = getValeurChamp(request,CHAMP_MOT_DE_PASSE);
-		String idStructure = getValeurChamp(request,CHAMP_STRUCTURE);
 
 
 		DonneurPhysique donneurPhysique = new DonneurPhysique();
+		
 		donneurPhysique.setMotDePasse("password");
 		try {
 			validationNom(nom);
@@ -87,32 +92,27 @@ public class DonneurPhysiqueForm {
 		}
 		donneurPhysique.setAdresse(adresse);
 
+			HttpSession session=request.getSession();
+	        Structure structure=(Structure)session.getAttribute(ATT_STRUCTURE);
+	        
+	        if(structure == null )
+	        {
+	        	errorMessage = "Merci de Creer une structure pour l'Association";
+	        	setErreurs(ATT_STRUCTURE, errorMessage);
+	        }
 
-
-		Structure structure=null;
-		try
-		{
-			structure =validationStructure(idStructure);
-		}
-		catch ( Exception e )
-		{
-			setErreurs( CHAMP_STRUCTURE,e.getMessage());
-		}
+		
 		donneurPhysique.setStructure(structure);
 		
-		for(String element : erreurs.values()) {
-			System.out.print(element);
-		}
 
 		if(getErreurs().isEmpty())
 		{
 			HibernateDonneurPhysiquePersister donneurPhysiquePersister = new HibernateDonneurPhysiquePersister();
-			donneurPhysiquePersister.create(donneurPhysique);
+			long id = donneurPhysiquePersister.create(donneurPhysique);
+			donneurPhysique.setIdDonneur(id);
 		}
-		
 		return donneurPhysique;
 	}
-	
 public DonneurPhysique modifierDonneurPhysique(HttpServletRequest request) {
 		
 		String nom = getValeurChamp(request, CHAMP_NOM);
@@ -122,10 +122,11 @@ public DonneurPhysique modifierDonneurPhysique(HttpServletRequest request) {
 		String telephone = getValeurChamp(request,CHAMP_TELEPHONE);
 		String adresse = getValeurChamp(request,CHAMP_ADRESSE);
 		String motDePasse = getValeurChamp(request,CHAMP_MOT_DE_PASSE);
-		String idStructure = getValeurChamp(request,CHAMP_STRUCTURE);
 
 
-		DonneurPhysique donneurPhysique = new DonneurPhysique();
+        Long id = Long.parseLong(getValeurChamp(request,INTERNAL_ID_DONATEUR));
+        HibernateDonneurPhysiquePersister donneurPhysiquePers= new HibernateDonneurPhysiquePersister();
+        DonneurPhysique donneurPhysique =donneurPhysiquePers.read(id);
 		
 		try {
 			validationNom(nom);
@@ -171,17 +172,6 @@ public DonneurPhysique modifierDonneurPhysique(HttpServletRequest request) {
 
 
 
-		Structure structure=null;
-		try
-		{
-			structure =validationStructure(idStructure);
-		}
-		catch ( Exception e )
-		{
-			setErreurs( CHAMP_STRUCTURE,e.getMessage());
-		}
-		donneurPhysique.setStructure(structure);
-
 		if(getErreurs().isEmpty())
 		{
 			HibernateDonneurPhysiquePersister donneurPhysiquePersister = new HibernateDonneurPhysiquePersister();
@@ -191,33 +181,6 @@ public DonneurPhysique modifierDonneurPhysique(HttpServletRequest request) {
 		return donneurPhysique;
 	}
 
-	private Structure validationStructure(String id_structure) throws Exception {
-		if(id_structure == null)
-		{
-			throw new Exception( "Merci de choisir une structure");
-		}
-		else
-		{
-			try {
-				Long idStructure = Long.parseLong(id_structure);
-				HibernateStructurePersister structurePersister = new HibernateStructurePersister();
-				Structure structure =structurePersister.read(idStructure);
-
-				if(structure == null)
-				{
-					throw new Exception("Structure n'existe pas");
-				}
-
-				return structure;
-
-			}
-			catch (NumberFormatException n)
-			{
-				throw new Exception( "Structure invalid");
-			}
-
-		}
-	}
 
 	// Fonction de validation du nom
     private void validationNom( String nom ) throws Exception {
@@ -256,6 +219,10 @@ public DonneurPhysique modifierDonneurPhysique(HttpServletRequest request) {
         if ( email != null && !email.matches( "([^.@]+)(\\.[^.@]+)*@([^.@]+\\.)+([^.@]+)" ) ) {
             throw new Exception( "Merci de saisir une adresse mail valide." );
         }
+        else if( email == null )
+	    {
+	        throw new Exception( "Merci de saisir une adresse mail." );
+	    }
     }
 	
 /*Fonction de validation de numero de telephone */

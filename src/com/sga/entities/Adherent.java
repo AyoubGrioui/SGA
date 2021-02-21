@@ -28,7 +28,6 @@ public class Adherent implements Serializable {
 	private String lieuNaissance;
 	private LocalDate dateAdhesion;
 	private String profession;
-	private String photo;
 	private String sexe;
 	private String motDePasse;
 	private String telephone;

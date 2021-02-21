@@ -46,7 +46,6 @@ class HibernateAdherentPersisterTest {
 		obj.setTelephone("0610238438");
 		obj.setLieuNaissance("Test");
 		obj.setMotDePasse("********");
-		obj.setPhoto("img.png");
 		obj.setPrenom("Test");
 		obj.setProfession("Test");
 		obj.setSexe("Homme");
@@ -92,7 +91,6 @@ class HibernateAdherentPersisterTest {
 		obj.setTelephone("0610238438");
 		obj.setLieuNaissance("Test");
 		obj.setMotDePasse("********");
-		obj.setPhoto("img.png");
 		obj.setPrenom("Test");
 		obj.setProfession("Test");
 		obj.setSexe("Homme");
@@ -140,7 +138,6 @@ class HibernateAdherentPersisterTest {
 		obj.setTelephone("0610238438");
 		obj.setLieuNaissance("Test");
 		obj.setMotDePasse("********");
-		obj.setPhoto("img.png");
 		obj.setPrenom("Test");
 		obj.setProfession("Test");
 		obj.setSexe("Homme");
@@ -187,7 +184,6 @@ class HibernateAdherentPersisterTest {
 		obj.setTelephone("0610238438");
 		obj.setLieuNaissance("Test");
 		obj.setMotDePasse("********");
-		obj.setPhoto("img.png");
 		obj.setPrenom("Test");
 		obj.setProfession("Test");
 		obj.setSexe("Homme");

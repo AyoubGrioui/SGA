@@ -1,5 +1,6 @@
 package com.sga.services;
 
+import com.sga.entities.Adherent;
 import com.sga.entities.Depense;
 import com.sga.entities.Structure;
 import com.sga.helpers.SGAUtil;
@@ -9,6 +10,8 @@ import com.sga.repositories.Repository;
 import com.sga.repositories.RepositoryFactory;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -18,12 +21,21 @@ public class DepenseForm {
     public static final String CHAMP_MONTANT="montantDepense";
     public static final String CHAMP_DATE_DEPENSE="dateDepense";
     public static final String CHAMP_TYPE_DEPENSE="typeDepense";
-    private static final String CHAMP_STRUCTURE = "listStructure" ;
+	public static final String ATT_STRUCTURE = "structure";
+	public static final String ATT_USER = "user";
+    public static final String INTERNAL_ID_DEPENSE = "idDepense";
+    
 
 
     private Map<String,String> erreurs=new HashMap<String,String>();
+	private String errorMessage=null;
+	private String errorMessage2;
+		
+    public String getErrorMessage() {
+		return errorMessage;
+	}
 
-    public Map<String, String> getErreurs()
+	public Map<String, String> getErreurs()
     {
         return erreurs;
     }
@@ -33,7 +45,6 @@ public class DepenseForm {
         String montant = getValeurChamp(request,CHAMP_MONTANT);
         String dateDepense = getValeurChamp(request,CHAMP_DATE_DEPENSE);
         String typedepense = getValeurChamp(request,CHAMP_TYPE_DEPENSE);
-        String idStructure = getValeurChamp(request,CHAMP_STRUCTURE);
 
 
         Depense depense = new Depense();
@@ -64,20 +75,27 @@ public class DepenseForm {
             setErreurs( CHAMP_DATE_DEPENSE, e.getMessage() );
         }
         depense.setDateDepense(SGAUtil.StringToLocalDate(dateDepense));
-
-        Structure structure=null;
-        try
-        {
-            structure =validationStructure(idStructure);
-        }
-        catch ( Exception e )
-        {
-            setErreurs( CHAMP_STRUCTURE,e.getMessage());
-        }
-        depense.setStructure(structure);
         
-        depense.setIdAdherent(1L);
-
+        HttpSession session=request.getSession();
+        Structure structure=(Structure)session.getAttribute(ATT_STRUCTURE);
+        
+        if(structure == null )
+        {
+        	errorMessage = "Merci de Creer une structure pour l'Association";
+        	setErreurs(ATT_STRUCTURE, errorMessage);
+        }
+        
+        depense.setStructure(structure);  
+        
+        Adherent user=(Adherent) session.getAttribute(ATT_USER);
+        if(user == null )
+        {
+        	errorMessage2 = "user n'existes pas";
+        	setErreurs(ATT_USER, errorMessage2);
+        }
+        
+        depense.setIdAdherent(user.getIdAdherent());
+        
         if(erreurs.isEmpty())
         {
             HibernateDepensePersister depensePersister =new HibernateDepensePersister();
@@ -93,11 +111,12 @@ public class DepenseForm {
         String montant = getValeurChamp(request,CHAMP_MONTANT);
         String dateDepense = getValeurChamp(request,CHAMP_DATE_DEPENSE);
         String typedepense = getValeurChamp(request,CHAMP_TYPE_DEPENSE);
-        String idStructure = getValeurChamp(request,CHAMP_STRUCTURE);
 
 
-        Depense depense = new Depense();
-
+        Long id = Long.parseLong(getValeurChamp(request,INTERNAL_ID_DEPENSE));
+        
+        HibernateDepensePersister depensePers = new HibernateDepensePersister();
+        Depense depense = depensePers.read(id);
         
         double valeurMontant= 0;
         try
@@ -124,27 +143,14 @@ public class DepenseForm {
             setErreurs( CHAMP_DATE_DEPENSE, e.getMessage() );
         }
         depense.setDateDepense(SGAUtil.StringToLocalDate(dateDepense));
-
-        Structure structure=null;
-        try
-        {
-            structure =validationStructure(idStructure);
-        }
-        catch ( Exception e )
-        {
-            setErreurs( CHAMP_STRUCTURE,e.getMessage());
-        }
-        depense.setStructure(structure);
-        
-        depense.setIdAdherent(1L);
-
+              
+                
         if(erreurs.isEmpty())
         {
-            HibernateDepensePersister depensePersister =new HibernateDepensePersister();
-            depensePersister.update(depense);
+	         HibernateDepensePersister depensePersister =new HibernateDepensePersister();
+	         depensePersister.update(depense);        	
         }
-
-
+        
         return depense;
     }
 
@@ -203,25 +209,5 @@ public class DepenseForm {
             throw new Exception( "Merci d'entrer un type de depense." );    
         }
     }
-    private Structure validationStructure(String id_structure) throws Exception {
-        if (id_structure == null) {
-            throw new Exception("Merci de choisir une structure");
-        } else {
-            try {
-                Long idStructure = Long.parseLong(id_structure);
-                HibernateStructurePersister structurePersister = new HibernateStructurePersister();
-                Structure structure = structurePersister.read(idStructure);
-
-                if (structure == null) {
-                    throw new Exception("Structure n'existe pas");
-                }
-
-                return structure;
-
-            } catch (NumberFormatException n) {
-                throw new Exception("Structure invalid");
-            }
-
-        }
-    }
+   
 }

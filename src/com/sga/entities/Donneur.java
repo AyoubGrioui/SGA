@@ -38,11 +38,11 @@ public class Donneur implements Serializable {
 	private String adresse;
 	private String motDePasse;
 
-	@OneToMany(targetEntity = Don.class, cascade = CascadeType.ALL)
-	@JoinColumn(name = "idDonneur")
+	@OneToMany(targetEntity = Don.class,mappedBy = "donneur", cascade = CascadeType.ALL)
+	//@JoinColumn(name = "idDonneur")
 	private List<Don> donList = new ArrayList<>();
 
-	@ManyToOne(targetEntity = Structure.class, cascade = CascadeType.ALL)
+	@ManyToOne(targetEntity = Structure.class)
 	@JoinColumn(name = "idStructure")
 	private Structure structure;
 

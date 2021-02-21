@@ -6,7 +6,7 @@ pageEncoding="UTF-8"%>
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Ajouter une dépense</title>
+    <title>Modifier une dépense</title>
     <link
       href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
       rel="stylesheet"
@@ -28,6 +28,18 @@ pageEncoding="UTF-8"%>
         <c:import url="Menu/headerSecretaire.jsp"></c:import>
 
         <main class="h-full pb-16 overflow-y-auto">
+		<c:if test="${successMsg !=null}">
+	        	<div class="bg-green-100 border-l-4 border-green-500 text-green-700 p-4" role="alert">
+				  <p class="font-bold">Succès</p>
+				  <p><c:out value="${successMsg}"/> </p>
+				</div>
+	      	</c:if>
+	      	<c:if test="${erreurMsg != null}">
+	        	<div class="bg-red-100 border-l-4 border-red-500 text-red-700 p-4" role="alert">
+				  <p class="font-bold">Erreur</p>
+				  <p><c:out value="${erreurMsg}"/></p>
+				</div>
+		</c:if>        	
           <form method="post" action="<c:url value="/modifierDepense"/>">
             <div class="container px-6 mx-auto grid">
               <h2
@@ -45,11 +57,18 @@ pageEncoding="UTF-8"%>
               <div
                 class="px-4 py-3 mb-8 bg-white rounded-lg shadow-md dark:bg-gray-800"
               >
+              <input
+                    type="text"
+                    hidden = "hidden"
+                    name="idDepense"
+                    value="<c:out value="${depense.idDepense}"/>"
+                  />
                 <!--Debut formulaire d'une nouvelle d�pense-->
                 <label class="block mt-1 text-sm">
                   <span class="text-gray-700 font-medium dark:text-gray-400">
                     Montant dépensé
                   </span>
+                  
                   <input
                     class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input"
                     placeholder="Montant dépensé"
@@ -87,22 +106,7 @@ pageEncoding="UTF-8"%>
                   <span class="text-xs text-red-600 dark:text-red-400">
                     <c:out value="${depenseForm.erreurs['typeDepense']}" />
                   </span>
-                </label>
-                <label class="block mt-4 text-sm">
-    <span class="text-gray-700 font-medium dark:text-gray-400">
-      Structure
-    </span>
-                  <select
-                          class="block w-full mt-1 text-sm dark:text-gray-300 dark:border-gray-600 dark:bg-gray-700 form-select focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:focus:shadow-outline-gray"
-                          name="listStructure"
-                  >
-
-                    <c:forEach items="${structureList}" var="structure" varStatus="boucle">
-                      <option value="${structure.idStructure}"><c:out value="${structure.nom}"/> </option>
-                    </c:forEach>
-
-                  </select>
-                </label>
+                </label>             
               </div>
               <div class="mb-8">
                 <input

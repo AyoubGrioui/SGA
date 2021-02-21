@@ -45,7 +45,7 @@ pageEncoding="UTF-8"%>
               Page introuvable. Veuillez vérifier l'adresse ou
               <a
                 class="text-purple-600 hover:underline dark:text-purple-300"
-                href="#"
+                href="<c:url value="/homePage"/>"
               >
                 revenir en arrière
               </a>

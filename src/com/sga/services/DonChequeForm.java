@@ -28,6 +28,7 @@ public class DonChequeForm {
 	public static final String CHAMP_DATE_CHEQUE="dateChequeDonCheque";
 	public static final String CHAMP_DATE_DEPOT="dateDepotDonCheque";
 	public static final String CHAMP_NOM_BANQUE="nomBanqueDonCheque";
+	public static final String INTERNAL_ID_DON = "idDon";
 	
 	
 	private Map<String,String> erreurs=new HashMap<String,String>();
@@ -92,15 +93,7 @@ public class DonChequeForm {
         }
         donCheque.setNumeroCompteBanque(numeroCompteBanque);
 
-		Donneur donneur=null;
-		try
-		{
-			donneur =validationDonneur(idDonneur);
-		}
-		catch ( Exception e )
-		{
-			setErreurs( CHAMP_DONNEUR,e.getMessage());
-		}
+        Donneur donneur = (Donneur) request.getAttribute(CHAMP_DONNEUR);
 		donCheque.setDonneur(donneur);
 
 		if(getErreurs().isEmpty())
@@ -119,11 +112,11 @@ public class DonChequeForm {
 		String nomBanque = getValeurChamp(request,CHAMP_NOM_BANQUE);
 		String montant = getValeurChamp(request,CHAMP_MONTANT);
 		String dateDon =getValeurChamp(request,CHAMP_DATE_DON);
-		String idDonneur = getValeurChamp(request,CHAMP_DONNEUR);
 
 
-		DonCheque donCheque = new DonCheque();
-
+		Long id=Long.parseLong(getValeurChamp(request,INTERNAL_ID_DON));
+		HibernateDonChequePersister donChequePersister=new HibernateDonChequePersister();
+		DonCheque donCheque = donChequePersister.read(id);
 
 		double valeurMontant=-1;
 		try {
@@ -168,21 +161,9 @@ public class DonChequeForm {
         }
         donCheque.setNumeroCompteBanque(numeroCompteBanque);
 
-		Donneur donneur=null;
-		try
-		{
-			donneur =validationDonneur(idDonneur);
-		}
-		catch ( Exception e )
-		{
-			setErreurs( CHAMP_DONNEUR,e.getMessage());
-		}
-		donCheque.setDonneur(donneur);
-
 		if(getErreurs().isEmpty())
 		{
-			HibernateDonChequePersister donChequePersister = new HibernateDonChequePersister();
-			donChequePersister.create(donCheque);
+			donChequePersister.update(donCheque);
 		}
 
 		return donCheque;
@@ -254,35 +235,6 @@ public class DonChequeForm {
 	    if ( nom == null ) {	   
 	        throw new Exception( "Merci d'entrer le nom de la banque" );
 	    }
-	}
-
-
-	private Donneur validationDonneur(String id_donneur) throws Exception {
-		if(id_donneur == null)
-		{
-			throw new Exception( "Merci de choisir une Donneur");
-		}
-		else
-		{
-			try {
-				Long idDonneur = Long.parseLong(id_donneur);
-				HibernateDonneurPersister donneurPersister=new HibernateDonneurPersister();
-				Donneur donneur=donneurPersister.read(idDonneur);
-
-				if(donneur == null)
-				{
-					throw new Exception("Donneur n'existe pas");
-				}
-
-				return donneur;
-
-			}
-			catch (NumberFormatException n)
-			{
-				throw new Exception( "Donneur invalid");
-			}
-
-		}
 	}
 
 }

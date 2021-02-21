@@ -18,6 +18,7 @@ public class DonVersementForm {
 	private static final String CHAMP_DATE_DON = "dateDon";
 	private static final String CHAMP_MONTANT = "montant";
 	private static final String CHAMP_DONNEUR="donneur";
+	public static final String INTERNAL_ID_DON = "idDon";
 
 
 	private Map<String, String> erreurs = new HashMap<String, String>();
@@ -34,8 +35,6 @@ public class DonVersementForm {
 		String numCompte = getValeurChamp(request, CHAMP_NUMERO_DE_COMPTE);
 		String dateDon = getValeurChamp(request, CHAMP_DATE_DON);
 		String montant = getValeurChamp(request, CHAMP_MONTANT);
-		String idDonneur = getValeurChamp(request,CHAMP_DONNEUR);
-
 
 		DonVersement donVersement = new DonVersement();
 
@@ -61,35 +60,26 @@ public class DonVersementForm {
 		}
 		donVersement.setDateDon(SGAUtil.StringToLocalDate(dateDon));
 
-		Donneur donneur=null;
-		try
-		{
-			donneur =validationDonneur(idDonneur);
-		}
-		catch ( Exception e )
-		{
-			setErreurs( CHAMP_DONNEUR,e.getMessage());
-		}
+		Donneur donneur = (Donneur) request.getAttribute(CHAMP_DONNEUR);
 		donVersement.setDonneur(donneur);
 
 		if(getErreurs().isEmpty())
 		{
 			HibernateDonVersementPersister donVersementPersister=new HibernateDonVersementPersister();
-			donVersementPersister.create(donVersement);
+			donVersement.setIdDon(donVersementPersister.create(donVersement));
 		}
 
 		return donVersement;
-	}
-	
+	}	
 	public DonVersement modifierDonVersement(HttpServletRequest request) {
 
 		String numCompte = getValeurChamp(request, CHAMP_NUMERO_DE_COMPTE);
 		String dateDon = getValeurChamp(request, CHAMP_DATE_DON);
 		String montant = getValeurChamp(request, CHAMP_MONTANT);
-		String idDonneur = getValeurChamp(request,CHAMP_DONNEUR);
 
-
-		DonVersement donVersement = new DonVersement();
+		Long id=Long.parseLong(getValeurChamp(request,INTERNAL_ID_DON));
+		HibernateDonVersementPersister donVersementPersister = new HibernateDonVersementPersister();
+		DonVersement donVersement =donVersementPersister.read(id);
 
 		try {
 			validationNumCompte(numCompte);
@@ -113,21 +103,10 @@ public class DonVersementForm {
 		}
 		donVersement.setDateDon(SGAUtil.StringToLocalDate(dateDon));
 
-		Donneur donneur=null;
-		try
-		{
-			donneur =validationDonneur(idDonneur);
-		}
-		catch ( Exception e )
-		{
-			setErreurs( CHAMP_DONNEUR,e.getMessage());
-		}
-		donVersement.setDonneur(donneur);
 
 		if(getErreurs().isEmpty())
 		{
-			HibernateDonVersementPersister donVersementPersister=new HibernateDonVersementPersister();
-			donVersementPersister.create(donVersement);
+			donVersementPersister.update(donVersement);
 		}
 
 		return donVersement;
@@ -194,32 +173,5 @@ public class DonVersementForm {
 			}
 		}
 
-	private Donneur validationDonneur(String id_donneur) throws Exception {
-		if(id_donneur == null)
-		{
-			throw new Exception( "Merci de choisir une Donneur");
-		}
-		else
-		{
-			try {
-				Long idDonneur = Long.parseLong(id_donneur);
-				HibernateDonneurPersister donneurPersister=new HibernateDonneurPersister();
-				Donneur donneur=donneurPersister.read(idDonneur);
-
-				if(donneur == null)
-				{
-					throw new Exception("Donneur n'existe pas");
-				}
-
-				return donneur;
-
-			}
-			catch (NumberFormatException n)
-			{
-				throw new Exception( "Donneur invalid");
-			}
-
-		}
-	}
 }
 

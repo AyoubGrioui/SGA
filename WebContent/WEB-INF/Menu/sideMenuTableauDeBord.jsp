@@ -16,7 +16,7 @@
           <h1
             class="ml-6 text-lg font-bold text-gray-800 dark:text-gray-200"
           >
-            Nom Association
+            <c:out value="${structure.nom }"/>
           </h1>
           <!--------------------- tableau de bord -------------------->
           <ul class="mt-6">

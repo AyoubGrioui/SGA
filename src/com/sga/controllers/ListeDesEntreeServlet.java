@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.sga.entities.Don;
+import com.sga.repositories.HibernateDonPersister;
 import com.sga.repositories.Repository;
 import com.sga.repositories.RepositoryFactory;
 
@@ -28,9 +29,8 @@ public class ListeDesEntreeServlet extends HttpServlet {
 
     protected void doGet( HttpServletRequest request, HttpServletResponse response )
             throws ServletException, IOException {
-        RepositoryFactory repositoryFactory =new RepositoryFactory();
-        Repository repository =repositoryFactory.getDepenseRepository();
-        List<Don> donList=repository.getAll();
+        HibernateDonPersister donPers=new HibernateDonPersister();
+        List<Don> donList=donPers.getAll();
 
         request.setAttribute(ATT_DONLIST, donList);
 

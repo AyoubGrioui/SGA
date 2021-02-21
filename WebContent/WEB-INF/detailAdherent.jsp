@@ -28,12 +28,7 @@ pageEncoding="UTF-8"%>
         <div class="flex flex-col overflow-y-auto md:flex-row">
           <div class="flex items-center justify-center p-6 sm:p-12 md:w-1/2">
             <div class="w-full">
-              <img
-                class="object-cover mb-4 w-16 h-16"
-                src="https://images.unsplash.com/photo-1502378735452-bc7d86632805?ixlib=rb-0.3.5&q=80&fm=jpg&crop=entropy&cs=tinysrgb&w=200&fit=max&s=aa3a807e1bbdfd4364d1f449eaa96d82"
-                alt=""
-                aria-hidden="true"
-              />
+              
               <div class="mb-4">
                 <span class="text-gray-700 dark:text-gray-400">Nom : </span
                 ><c:out value="${adherent.nom}" />

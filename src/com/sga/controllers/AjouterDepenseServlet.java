@@ -22,16 +22,12 @@ public class AjouterDepenseServlet extends HttpServlet {
     public static final String VUE_AJOUTER_DEPENSE = "/WEB-INF/ajouterDepensePage.jsp";
     public static final String ATT_DEPENSEFORM = "depenseForm";
     public static final String ATT_DEPENSE = "depense";
-    private static final String ATT_LIST_STRUCTURE = "structureList";
+    private static final String SUCCESS_MSG = "successMsg";
+    private static final String ERREUR_MSG = "erreurMsg";
 
     protected void doGet( HttpServletRequest request, HttpServletResponse response )
             throws ServletException, IOException
     {
-
-        HibernateStructurePersister structurePersister =new HibernateStructurePersister();
-        List<Structure> structureList = structurePersister.getAll();
-
-        request.setAttribute(ATT_LIST_STRUCTURE,structureList);
         this.getServletContext().getRequestDispatcher( VUE_AJOUTER_DEPENSE ).forward( request, response );
     }
 
@@ -40,6 +36,19 @@ public class AjouterDepenseServlet extends HttpServlet {
     {
         DepenseForm depenseForm = new DepenseForm();
         Depense depense = depenseForm.creerDepense(request);
+        
+        String successMsg = null;
+        String erreurMsg = null;
+        
+        if(depenseForm.getErreurs().isEmpty())
+        {
+        	successMsg ="La dépense a été bien enregistré.";
+        }else {
+        	erreurMsg = "Veuillez vérifier les champs saisies.";
+        }
+        
+        request.setAttribute(ERREUR_MSG, erreurMsg);
+        request.setAttribute(SUCCESS_MSG, successMsg);
         
         request.setAttribute(ATT_DEPENSEFORM,depenseForm);
         request.setAttribute(ATT_DEPENSE,depense);

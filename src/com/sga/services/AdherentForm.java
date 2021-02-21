@@ -14,6 +14,7 @@ import java.util.Map;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import javax.servlet.http.Part;
 
 import org.jasypt.util.password.ConfigurablePasswordEncryptor;
@@ -37,20 +38,25 @@ public class AdherentForm {
 	public static final String CHAMP_LIEU_NAISSANCE="lieuNaissanceAdherent"; 
 	public static final String CHAMP_DATE_ADHESION="dateadhesionAdherent";
 	public static final String CHAMP_PROFESSION="professionAdherent";
-	public static final String CHAMP_PHOTO="photoAdherent";
 	public static final String CHAMP_SEXE="sexeAdherent";
 	public static final String CHAMP_MOT_DE_PASSE="motDePasseAdherent";
 	public static final String CHAMP_TELEPHONE="telephoneAdherent";
 	public static final String CHAMP_ADRESSE="adresseAdherent";
 	public static final String CHAMP_EMAIL="emailAdherent";
-	public static final String CHAMP_STRUCTURE = "listStructure";
+	public static final String ATT_STRUCTURE = "structure";
+	public static final String INTERNAL_ID_ADHERENT = "idAdherent";
 	private static final String ALGO_CHIFFREMENT = "SHA-256";
 
     private static final int    TAILLE_TAMPON   = 10240;                        // 10ko
 
 	
 	private Map<String,String> erreurs=new HashMap<String,String>();
-	
+	private String errorMessage=null;
+		
+	public String getErrorMessage() {
+		return errorMessage;
+	}
+
 	public Map<String, String> getErreurs() {
 		return erreurs;
 	}
@@ -68,8 +74,7 @@ public class AdherentForm {
 		String telephone = getValeurChamp(request,CHAMP_TELEPHONE);
 		String adresse = getValeurChamp(request,CHAMP_ADRESSE);
 		String email = getValeurChamp(request,CHAMP_EMAIL);
-		String idStructure = getValeurChamp(request,CHAMP_STRUCTURE);
-		String photo = null;
+		
 				
 		
 		Adherent adherent = new Adherent();
@@ -157,27 +162,18 @@ public class AdherentForm {
         }
         adherent.setMotDePasse( motDePasse );
 
-        Structure structure=null;
-        try
-		{
-			structure =validationStructure(idStructure);
-		}
-		catch ( Exception e )
-		{
-			setErreurs( CHAMP_STRUCTURE,e.getMessage());
-		}
+        HttpSession session=request.getSession();
+        Structure structure=(Structure)session.getAttribute(ATT_STRUCTURE);
+        
+        if(structure == null )
+        {
+        	errorMessage = "Merci de Creer une structure pour l'Association";
+        	setErreurs(ATT_STRUCTURE, errorMessage);
+        }
+                
         adherent.setStructure(structure);
 
         
- /*       try {
-        		photo = validationImage(request,chemin);
-        } catch(Exception e) {
-        	setErreurs(CHAMP_PHOTO, e.getMessage());
-        }
-        adherent.setPhoto(photo); */
-        
-        adherent.setPhoto("photoString");
-
 
 		LigneFonctionForm ligneFonctionForm = new LigneFonctionForm();
 		LigneFonction ligneFonction = ligneFonctionForm.creerLigneFonction(request);
@@ -188,16 +184,12 @@ public class AdherentForm {
 
 		
 		//Persistance des DonnnÃ©e
-		for(String element : erreurs.values()) {
-			System.out.println(element);
-		}
 		if(getErreurs().isEmpty())
 		{
-			System.out.println("hello2");
 			HibernateAdherentPersister adherentPersister = new HibernateAdherentPersister();
 			adherentPersister.create(adherent);
-		}
-		
+		}		
+				
 		return adherent;
 	}
 	
@@ -209,16 +201,18 @@ public class AdherentForm {
 		String lieuNaissance = getValeurChamp(request,CHAMP_LIEU_NAISSANCE);
 		String dateAdhesion = getValeurChamp(request,CHAMP_DATE_ADHESION);
 		String profession = getValeurChamp(request,CHAMP_PROFESSION);
-		String photo = getValeurChamp(request,CHAMP_PHOTO);
 		String sexe = getValeurChamp(request,CHAMP_SEXE);
 		String motDePasse = getValeurChamp(request,CHAMP_MOT_DE_PASSE);
+		System.out.println(motDePasse);
 		String telephone = getValeurChamp(request,CHAMP_TELEPHONE);
 		String adresse = getValeurChamp(request,CHAMP_ADRESSE);
 		String email = getValeurChamp(request,CHAMP_EMAIL);
-		String idStructure = getValeurChamp(request,CHAMP_STRUCTURE);
+		String idStructure = getValeurChamp(request,ATT_STRUCTURE);
 		
 		Adherent adherent = new Adherent();
-
+		
+		adherent.setIdAdherent(Long.parseLong(getValeurChamp(request, INTERNAL_ID_ADHERENT)));
+		
 		String password = null;
 		
 		
@@ -271,14 +265,7 @@ public class AdherentForm {
             setErreurs( CHAMP_PROFESSION, e.getMessage() );
         }
         adherent.setProfession( profession );
-		
-        try {
-            validationPhoto(photo);
-        } catch ( Exception e ) {
-            setErreurs( CHAMP_PHOTO, e.getMessage() );
-        }
-        adherent.setPhoto( photo );
-		
+		      
         adherent.setSexe( sexe );
         
         try {
@@ -307,19 +294,19 @@ public class AdherentForm {
         } catch ( Exception e ) {
             setErreurs( CHAMP_MOT_DE_PASSE, e.getMessage() );
         }
-        adherent.setMotDePasse( password );
+        adherent.setMotDePasse( motDePasse );
 
-        Structure structure=null;
-        try
-		{
-			structure =validationStructure(idStructure);
-		}
-		catch ( Exception e )
-		{
-			setErreurs( CHAMP_STRUCTURE,e.getMessage());
-		}
+        HttpSession session=request.getSession();
+        Structure structure=(Structure)session.getAttribute(ATT_STRUCTURE);
+        
+        if(structure == null )
+        {
+        	errorMessage = "Merci de Creer une structure pour l'Association";
+        	setErreurs(ATT_STRUCTURE, errorMessage);
+        }
+                
         adherent.setStructure(structure);
-
+        
 
 		LigneFonctionForm ligneFonctionForm = new LigneFonctionForm();
 		LigneFonction ligneFonction = ligneFonctionForm.modifierLigneFonction(request);
@@ -330,13 +317,19 @@ public class AdherentForm {
 
 		
 		//Persistance des DonnnÃ©e
+		
+		for(String er : getErreurs().values())
+		{
+			System.out.println(er);
+		}
+
 
 		if(getErreurs().isEmpty())
 		{
 			HibernateAdherentPersister adherentPersister = new HibernateAdherentPersister();
 			adherentPersister.update(adherent);
 		}
-		
+				
 		return adherent;
 	}
 	
@@ -482,175 +475,6 @@ public class AdherentForm {
 
 		return motDePasseChiffre;
 
-	}
-//-----------------------------------------------------------------------------------------------------------------
-	//----------------------------------------------------------------------------------------------------
-	private String validationImage( HttpServletRequest request, String chemin ) throws Exception {
-        /*
-         * Récupération du contenu du champ image du formulaire. Il faut ici
-         * utiliser la méthode getPart().
-         */
-        String nomFichier = null;
-        InputStream contenuFichier = null;
-        try {
-            Part part = request.getPart( CHAMP_PHOTO );
-            nomFichier = getNomFichier( part );
-
-            /*
-             * Si la méthode getNomFichier() a renvoyé quelque chose, il s'agit
-             * donc d'un champ de type fichier (input type="file").
-             */
-            if ( nomFichier != null && !nomFichier.isEmpty() ) {
-                /*
-                 * Antibug pour Internet Explorer, qui transmet pour une raison
-                 * mystique le chemin du fichier local à la machine du client...
-                 * 
-                 * Ex : C:/dossier/sous-dossier/fichier.ext
-                 * 
-                 * On doit donc faire en sorte de ne sélectionner que le nom et
-                 * l'extension du fichier, et de se débarrasser du superflu.
-                 */
-                nomFichier = nomFichier.substring( nomFichier.lastIndexOf( '/' ) + 1 )
-                        .substring( nomFichier.lastIndexOf( '\\' ) + 1 );
-
-                /* Récupération du contenu du fichier */
-                contenuFichier = part.getInputStream();
-
-                /* Extraction du type MIME du fichier depuis l'InputStream */
-                MimeUtil.registerMimeDetector( "eu.medsea.mimeutil.detector.MagicMimeMimeDetector" );
-                Collection<?> mimeTypes = MimeUtil.getMimeTypes( contenuFichier );
-
-                /*
-                 * Si le fichier est bien une image, alors son en-tête MIME
-                 * commence par la chaîne "image"
-                 */
-                if ( mimeTypes.toString().startsWith( "image" ) ) {
-                    /* Ecriture du fichier sur le disque */
-                    ecrireFichier( contenuFichier, nomFichier, chemin );
-                } else {
-                    throw new Exception( "Le fichier envoyé doit être une image." );
-                }
-            }
-        } catch ( IllegalStateException e ) {
-            /*
-             * Exception retournée si la taille des données dépasse les limites
-             * définies dans la section <multipart-config> de la déclaration de
-             * notre servlet d'upload dans le fichier web.xml
-             */
-            e.printStackTrace();
-            throw new Exception( "Le fichier envoyé ne doit pas dépasser 1Mo." );
-        } catch ( IOException e ) {
-            /*
-             * Exception retournée si une erreur au niveau des répertoires de
-             * stockage survient (répertoire inexistant, droits d'accès
-             * insuffisants, etc.)
-             */
-            e.printStackTrace();
-            throw new Exception( "Erreur de configuration du serveur." );
-        } catch ( ServletException e ) {
-            /*
-             * Exception retournée si la requête n'est pas de type
-             * multipart/form-data.
-             */
-            e.printStackTrace();
-            throw new Exception(
-                    "Ce type de requête n'est pas supporté, merci d'utiliser le formulaire prévu pour envoyer votre fichier." );
-        }
-
-        return nomFichier;
-    }
-
-	/*
-     * Méthode utilitaire qui a pour unique but d'analyser l'en-tête
-     * "content-disposition", et de vérifier si le paramètre "filename" y est
-     * présent. Si oui, alors le champ traité est de type File et la méthode
-     * retourne son nom, sinon il s'agit d'un champ de formulaire classique et
-     * la méthode retourne null.
-     */
-    private static String getNomFichier( Part part ) {
-        /* Boucle sur chacun des paramètres de l'en-tête "content-disposition". */
-        for ( String contentDisposition : part.getHeader( "content-disposition" ).split( ";" ) ) {
-            /* Recherche de l'éventuelle présence du paramètre "filename". */
-            if ( contentDisposition.trim().startsWith( "filename" ) ) {
-                /*
-                 * Si "filename" est présent, alors renvoi de sa valeur,
-                 * c'est-à-dire du nom de fichier sans guillemets.
-                 */
-                return contentDisposition.substring( contentDisposition.indexOf( '=' ) + 1 ).trim().replace( "\"", "" );
-            }
-        }
-        /* Et pour terminer, si rien n'a été trouvé... */
-        return null;
-    }
-
-    /*
-     * Méthode utilitaire qui a pour but d'écrire le fichier passé en paramètre
-     * sur le disque, dans le répertoire donné et avec le nom donné.
-     */
-    private void ecrireFichier( InputStream contenuFichier, String nomFichier, String chemin )
-            throws Exception {
-        /* Prépare les flux. */
-        BufferedInputStream entree = null;
-        BufferedOutputStream sortie = null;
-        try {
-            /* Ouvre les flux. */
-            entree = new BufferedInputStream( contenuFichier, TAILLE_TAMPON );
-            sortie = new BufferedOutputStream( new FileOutputStream( new File( chemin + nomFichier ) ),
-                    TAILLE_TAMPON );
-
-            /*
-             * Lit le fichier reçu et écrit son contenu dans un fichier sur le
-             * disque.
-             */
-            byte[] tampon = new byte[TAILLE_TAMPON];
-            int longueur = 0;
-            while ( ( longueur = entree.read( tampon ) ) > 0 ) {
-                sortie.write( tampon, 0, longueur );
-            }
-        } catch ( Exception e ) {
-            throw new Exception( "Erreur lors de l'écriture du fichier sur le disque." );
-        } finally {
-            try {
-                sortie.close();
-            } catch ( IOException ignore ) {
-            }
-            try {
-                entree.close();
-            } catch ( IOException ignore ) {
-            }
-        }
-    }
-    
-    //----------------------------------------------------------------------------------------------
-    //--------------------------------------------------------------------------------------------
-    
-
-	private Structure validationStructure(String id_structure) throws Exception {
-		if(id_structure == null)
-		{
-			throw new Exception( "Merci de choisir une structure");
-		}
-		else
-		{
-			try {
-				Long idStructure = Long.parseLong(id_structure);
-				HibernateStructurePersister structurePersister = new HibernateStructurePersister();
-				Structure structure =structurePersister.read(idStructure);
-
-				if(structure == null)
-				{
-					throw new Exception("Structure n'existe pas");
-				}
-
-				return structure;
-
-			}
-			catch (NumberFormatException n)
-			{
-				throw new Exception( "Structure invalid");
-			}
-
-		}
 	}
 
 	

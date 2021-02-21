@@ -8,6 +8,8 @@ import com.sga.repositories.Repository;
 import com.sga.repositories.RepositoryFactory;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -19,10 +21,13 @@ public class DonneurMoraleForm {
 	private static final String CHAMP_TELEPHONE = "telephoneDonneurMorale";
 	private static final String CHAMP_ADRESSE = "adresseDonneurMorale";
 	private static final String CHAMP_MOT_DE_PASSE = "motDePasseDonneurMorale";
-	private static final String CHAMP_STRUCTURE = "listStructure";
+	private static final String ATT_STRUCTURE = "structure";
+	public static final String INTERNAL_ID_DONATEUR = "idDonneur";
+
 
 	private Map<String,String> erreurs = new HashMap<String,String>();
 	private String resultat;
+	private String errorMessage;
 	
 	
 	
@@ -35,6 +40,7 @@ public class DonneurMoraleForm {
 	}
 	
 	
+
 	public DonneurMoral creerDonneurMorale(HttpServletRequest request) {
 		
 		String nom = getValeurChamp(request, CHAMP_NOM);
@@ -42,7 +48,6 @@ public class DonneurMoraleForm {
 		String telephone = getValeurChamp(request,CHAMP_TELEPHONE);
 		String adresse = getValeurChamp(request,CHAMP_ADRESSE);
 		String motDePasse = getValeurChamp(request,CHAMP_MOT_DE_PASSE);
-		String idStructure = getValeurChamp(request,CHAMP_STRUCTURE);
 		
 		DonneurMoral donneurMorale = new DonneurMoral();
 		
@@ -83,24 +88,25 @@ public class DonneurMoraleForm {
 			resultat= "echec de la creation de donneur morale";
 		}
 
-		Structure structure=null;
-		try
-		{
-			structure =validationStructure(idStructure);
-		}
-		catch ( Exception e )
-		{
-			setErreurs( CHAMP_STRUCTURE,e.getMessage());
-		}
+		 HttpSession session=request.getSession();
+	        Structure structure=(Structure)session.getAttribute(ATT_STRUCTURE);
+	        
+	        if(structure == null )
+	        {
+	        	errorMessage = "Merci de Creer une structure pour l'Association";
+	        	setErreurs(ATT_STRUCTURE, errorMessage);
+	        }
 		donneurMorale.setStructure(structure);
 
+		donneurMorale.setMotDePasse("test");
 		if(getErreurs().isEmpty())
 		{
 			HibernateDonneurMoralPersister donneurMoralPersister = new HibernateDonneurMoralPersister();
-			donneurMoralPersister.create(donneurMorale);
+			long id = donneurMoralPersister.create(donneurMorale);
+			donneurMorale.setIdDonneur(id);
 		}
 		return donneurMorale;
-	}
+	}	
 	
 public DonneurMoral modifierDonneurMorale(HttpServletRequest request) {
 		
@@ -109,10 +115,11 @@ public DonneurMoral modifierDonneurMorale(HttpServletRequest request) {
 		String telephone = getValeurChamp(request,CHAMP_TELEPHONE);
 		String adresse = getValeurChamp(request,CHAMP_ADRESSE);
 		String motDePasse = getValeurChamp(request,CHAMP_MOT_DE_PASSE);
-		String idStructure = getValeurChamp(request,CHAMP_STRUCTURE);
 		
-		DonneurMoral donneurMorale = new DonneurMoral();
-		
+        Long id = Long.parseLong(getValeurChamp(request,INTERNAL_ID_DONATEUR));
+        HibernateDonneurMoralPersister donneurMoralePers = new HibernateDonneurMoralPersister();
+        DonneurMoral donneurMorale = donneurMoralePers.read(id);
+        
 		try {
 			validationNom(nom);
 		} catch (Exception e) {
@@ -142,25 +149,6 @@ public DonneurMoral modifierDonneurMorale(HttpServletRequest request) {
 		donneurMorale.setAdresse(adresse);
 		
 		
-		
-		if(erreurs.isEmpty()) {
-			resultat = "succes de la creation de donneur";
-		}
-		else {
-			resultat= "echec de la creation de donneur morale";
-		}
-
-		Structure structure=null;
-		try
-		{
-			structure =validationStructure(idStructure);
-		}
-		catch ( Exception e )
-		{
-			setErreurs( CHAMP_STRUCTURE,e.getMessage());
-		}
-		donneurMorale.setStructure(structure);
-
 		if(getErreurs().isEmpty())
 		{
 			HibernateDonneurMoralPersister donneurMoralPersister = new HibernateDonneurMoralPersister();
@@ -175,6 +163,10 @@ public DonneurMoral modifierDonneurMorale(HttpServletRequest request) {
         if ( email != null && !email.matches( "([^.@]+)(\\.[^.@]+)*@([^.@]+\\.)+([^.@]+)" ) ) {
             throw new Exception( "Merci de saisir une adresse mail valide." );
         }
+        else if( email == null )
+	    {
+	        throw new Exception( "Merci de saisir une adresse mail." );
+	    }
     }
 	
 /*Fonction de validation de numero de telephone */
@@ -222,34 +214,7 @@ public DonneurMoral modifierDonneurMorale(HttpServletRequest request) {
   	    }
   	}
 
-	private Structure validationStructure(String id_structure) throws Exception {
-		if(id_structure == null)
-		{
-			throw new Exception( "Merci de choisir une structure");
-		}
-		else
-		{
-			try {
-				Long idStructure = Long.parseLong(id_structure);
-				HibernateStructurePersister structurePersister = new HibernateStructurePersister();
-				Structure structure =structurePersister.read(idStructure);
-
-				if(structure == null)
-				{
-					throw new Exception("Structure n'existe pas");
-				}
-
-				return structure;
-
-			}
-			catch (NumberFormatException n)
-			{
-				throw new Exception( "Structure invalid");
-			}
-
-		}
-	}
-    
+  
     /* ajoute un message correspondant au champ specifie a la map des erreurs */
 	
 	private void setErreurs(String champ, String message) {

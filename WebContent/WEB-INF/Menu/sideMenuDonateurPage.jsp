@@ -17,7 +17,7 @@ prefix="c" %>
         <h1
           class="ml-6 text-lg font-bold text-gray-800 dark:text-gray-200"
         >
-          Nom association
+            <c:out value="${structure.nom }"/>
         </h1>
         <ul class="mt-6">
           <!-- Menu bar -->

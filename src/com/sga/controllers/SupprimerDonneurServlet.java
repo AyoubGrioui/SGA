@@ -44,16 +44,18 @@ public class SupprimerDonneurServlet extends HttpServlet {
 			
 			Long id = Long.parseLong(idDonneur);
 
-				//suppression de l'adherent de la BD
+				//suppression du donneur de la BD
 			Donneur donneur = donneurPersister.read(id);
+			System.out.println("delete 00");
+
 			donneurPersister.delete(donneur);
+
 		}
-				
-				/* Redirection vers la fiche récapitulative */
+				/* Redirection vers la fiche rÃ©capitulative */
 		        response.sendRedirect( request.getContextPath() + VUE );
 	}
     /*
-     * Méthode utilitaire qui retourne null si un paramètre est vide, et son
+     * MÃ©thode utilitaire qui retourne null si un paramÃ¨tre est vide, et son
      * contenu sinon.
      */
     private static String getValeurParametre( HttpServletRequest request, String nomChamp ) {

@@ -46,14 +46,17 @@ public class LoginAdherentServlet extends HttpServlet {
 	{
 		HttpSession session =req.getSession();
         Adherent user = (Adherent) session.getAttribute(ATT_SESSION_USER);
+    	LoginAdherentForm loginAdherentForm = new LoginAdherentForm();
 
-        LoginAdherentForm loginAdherentForm = new LoginAdherentForm();
-        user = loginAdherentForm.creerAdherent(req);
-
-        if(!loginAdherentForm.getErreurs().isEmpty())
-            session.setAttribute(ATT_SESSION_USER,user);
-        else
-            session.setAttribute(ATT_SESSION_USER,null);
+        if(user==null)
+        {
+            user = loginAdherentForm.creerAdherent(req);
+            
+            if(loginAdherentForm.getErreurs().isEmpty())
+                session.setAttribute(ATT_SESSION_USER,user);
+            else
+                session.setAttribute(ATT_SESSION_USER,null);
+        }
         
         /* Si et seulement si la case du formulaire est cochée */
         if ( req.getParameter( CHAMP_MEMOIRE ) != null ) {
@@ -71,19 +74,18 @@ public class LoginAdherentServlet extends HttpServlet {
         
         /* Stockage du formulaire et du bean dans l'objet request */
         session.setAttribute( ATT_LOGIN_ADHERENT_FORM, loginAdherentForm );
-        
+        System.out.println(user.getIdAdherent());
+
         //this.getServletContext().getRequestDispatcher(INDEX_HANDLER).forward(req, resp);
-        
         if(user !=  null)
         {
         	String role = user.getLigneFonction().getFonction().getRole();
-			switch (role)
-			{
-			case "Président(e)" : 
-				this.getServletContext().getRequestDispatcher(VUE_DASHBOARD_PRESIDENT).forward(req, resp);break;
-			case "Secretaire" : 
-				this.getServletContext().getRequestDispatcher(VUE_DASHBOARD_SECRETAIRE).forward(req, resp);break;
-			}        
+        	
+			if(role.equals( "Président(e)")) 
+				resp.sendRedirect(req.getContextPath() + "/indexSecretaire");
+			if(role.equals("Secretaire")) 
+				resp.sendRedirect(req.getContextPath() + "/indexSecretaire");
+			       
 		}
         
         else

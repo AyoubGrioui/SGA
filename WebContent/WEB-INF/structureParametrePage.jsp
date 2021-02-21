@@ -45,6 +45,11 @@
                   class="px-4 py-3 mb-8 bg-white rounded-lg shadow-md dark:bg-gray-800"
           >
             <!--Debut formulaire d'une nouvelle dépense-->
+                          <input
+              		  name="idStructure"
+                      value="<c:out value="${structure.idStructure }"/>"
+                      hidden                      
+              />
             <label class="block mt-1 text-sm">
                   <span class="text-gray-700 font-medium dark:text-gray-400">
 					Nom Structure
@@ -53,6 +58,7 @@
               		  name="nomStructure"
                       class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input"
                       placeholder="Nom de l'association"
+                      value="<c:out value="${structure.nom }"/>"
                       
               />
               <span class="text-xs text-red-600 dark:text-red-400">
@@ -67,6 +73,7 @@
               		  name="dateCreationStructure"
                       class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input"
                       type="date"
+                      value="<c:out value="${structure.dateCreation }"/>"
               />
               <span class="text-xs text-red-600 dark:text-red-400">
                     <c:out value="${structureForm.erreurs['dateCreationStructure']}" />
@@ -80,6 +87,7 @@
                       class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input"
                       placeholder="email"
                       name="emailStructure"
+                      value="<c:out value="${structure.email }"/>"
               />
               <span class="text-xs text-red-600 dark:text-red-400">
                     <c:out value="${structureForm.erreurs['emailStructure']}" />
@@ -93,7 +101,7 @@
                       class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input"
                       placeholder="Adresse"
                       name="adresseStructure"
-              ></textarea>
+              ><c:out value="${structure.adresse }"/></textarea>
               <span class="text-xs text-red-600 dark:text-red-400">
                     <c:out value="${structureForm.erreurs['adresseStructure']}" />
                   </span>
@@ -106,6 +114,7 @@
                       class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input"
                       placeholder="www.test.com"
                       name="siteWeb"
+                      value="<c:out value="${structure.siteWeb }"/>"
               />
               <span class="text-xs text-red-600 dark:text-red-400">
                    <c:out value="${structureForm.erreurs['siteWeb']}" />
@@ -119,12 +128,15 @@
                       class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input"
                       placeholder="Objectif"
                       name="objectif"
+                      value="<c:out value="${structure.objectif }"/>"
+                      
               />
               <span class="text-xs text-red-600 dark:text-red-400">
                     <c:out value="${structureForm.erreurs['objectif']}" />
                   </span>
             </label>
-          </div>
+           
+             </div>
           <div class="mb-8">
             <input
                     type="submit"

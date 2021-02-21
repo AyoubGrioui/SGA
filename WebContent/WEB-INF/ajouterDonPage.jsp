@@ -29,6 +29,18 @@ pageEncoding="UTF-8"%>
         <c:import url="Menu/headerSecretaire.jsp"></c:import>
 
         <main class="h-full pb-16 overflow-y-auto">
+        	      <c:if test="${successMsg !=null}">
+	        	<div class="bg-green-100 border-l-4 border-green-500 text-green-700 p-4" role="alert">
+				  <p class="font-bold">Succès</p>
+				  <p><c:out value="${successMsg}"/> </p>
+				</div>
+	      </c:if>
+	      <c:if test="${erreurMsg != null}">
+	        	<div class="bg-red-100 border-l-4 border-red-500 text-red-700 p-4" role="alert">
+				  <p class="font-bold">Erreur</p>
+				  <p><c:out value="${erreurMsg}"/></p>
+				</div>
+	      </c:if>
           <form method="post" action="">
             <div class="container px-6 mx-auto grid">
               <h2
@@ -86,7 +98,7 @@ pageEncoding="UTF-8"%>
                     </span>
                     <select
                       class="block w-full mt-1 text-sm dark:text-gray-300 dark:border-gray-600 dark:bg-gray-700 form-select focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:focus:shadow-outline-gray"
-                      onchange="typeDonateur(this)"
+                      onchange="typeDonateurFunction(this)"
                       name="typeDonateur"
                     >
                       <option value="physique">Physique</option>
@@ -102,10 +114,10 @@ pageEncoding="UTF-8"%>
                         class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input"
                         placeholder="Nom"
                         name="nomDonneurMorale"
-                    	value="<c:out value="${donneur.nom}" />"
+                    	value="<c:out value="" />"
                       />
                       <span class="text-xs text-red-600 dark:text-red-400">
-                        <c:out value="${donneurForm.erreurs['nomDonneurMorale']}" />
+                        <c:out value="${donneurMoraleForm.erreurs['nomDonneurMorale']}" />
                       </span>
                     </label>
                   </div>
@@ -118,10 +130,10 @@ pageEncoding="UTF-8"%>
                         class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input"
                         placeholder="Last name"
                         name="nomDonneurPhysique"
-                    	value="<c:out value="${donneur.nom}" />"
+                    	value="<c:out value="" />"
                       />
                       <span class="text-xs text-red-600 dark:text-red-400">
-                       <c:out value="${donneurForm.erreurs['nomDonneurPhysique']}" />
+                       <c:out value="${donneurPhysiqueForm.erreurs['nomDonneurPhysique']}" />
                       </span>
                     </label>
                     <label class="mt-4 block text-sm">
@@ -132,10 +144,10 @@ pageEncoding="UTF-8"%>
                         class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input"
                         placeholder="First name"
                         name="prenomDonneurPhysique"
-                    	value="<c:out value="${donneur.prenom}" />"
+                    	value="<c:out value="" />"
                       />
                       <span class="text-xs text-red-600 dark:text-red-400">
-                        <c:out value="${donneurForm.erreurs['prenomDonneurPhysique']}"/>
+                        <c:out value="${donneurPhysiqueForm.erreurs['prenomDonneurPhysique']}"/>
                       </span>
                     </label>
                     <label class="mt-4 block text-sm">
@@ -146,10 +158,10 @@ pageEncoding="UTF-8"%>
                         class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input"
                         placeholder="CIN"
                         name="cinDonneurPhysique"
-                    	value="<c:out value="${donneur.cin}" />"
+                    	value="<c:out value="" />"
                       />
                       <span class="text-xs text-red-600 dark:text-red-400">
-                        <c:out value="${donneurForm.erreurs['cinDonneurPhysique']}" />
+                        <c:out value="${donneurPhysiqueForm.erreurs['cinDonneurPhysique']}" />
                       </span>
                     </label>
                   </div>
@@ -162,10 +174,16 @@ pageEncoding="UTF-8"%>
                       class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input"
                       placeholder="Email"
                       name="emailDonneurMorale"
-                      value="<c:out value="${donneur.email}" />"
+                      value="<c:out value="" />"
                     />
                     <span class="text-xs text-red-600 dark:text-red-400">
-                      <c:out value="${donneurForm.erreurs['emailDonneurMorale']}" />
+	                    <c:if test="${donneurMoraleForm.erreurs['emailDonneurMorale'] != null}">
+	                  		<c:out value="${donneurMoraleForm.erreurs['emailDonneurMorale']}" />
+	                  	</c:if>
+	                  	<c:if test="${donneurPhysiqueForm.erreurs['emailDonneurMorale'] != null}">
+	                  		<c:out value="${donneurPhysiqueForm.erreurs['emailDonneurMorale']}" />
+	                  	</c:if>
+                      <c:out value="" />
                     </span>
                   </label>
                   <label class="mt-4 block text-sm">
@@ -176,10 +194,16 @@ pageEncoding="UTF-8"%>
                       class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input"
                       placeholder="Telephone"
                       name="telephoneDonneurMorale"
-                      value="<c:out value="${donneur.telephone}" />"
+                      value="<c:out value="" />"
                     />
                     <span class="text-xs text-red-600 dark:text-red-400">
-                      <c:out value="${ donneurForm.erreurs['telephoneDonneurMorale']}" />
+                    <c:if test="${donneurMoraleForm.erreurs['telephoneDonneurMorale'] != null}">
+                  		<c:out value="${ donneurMoraleForm.erreurs['telephoneDonneurMorale']}" />
+                  	</c:if>
+                  	<c:if test="${donneurPhysiqueForm.erreurs['telephoneDonneurMorale'] != null}">
+                  		<c:out value="${donneurPhysiqueForm.erreurs['telephoneDonneurMorale']}" />
+                  	</c:if>
+                      
                     </span>
                   </label>
                   <label class="block mt-4 text-sm">
@@ -191,28 +215,18 @@ pageEncoding="UTF-8"%>
                       rows="3"
                       placeholder="Adresse"
                       name="adresseDonneurMorale"
-                      value="<c:out value="${donneur.adresse}" />"
+                      value="<c:out value="" />"
                     ></textarea>
                     <span class="text-xs text-red-600 dark:text-red-400">
-                      <c:out value="${donneurForm.erreurs['adresseDonneurMorale']}" />
+                      <c:if test="${donneurMoraleForm.erreurs['adresseDonneurMorale'] != null}">
+                  		<c:out value="${donneurMoraleForm.erreurs['adresseDonneurMorale']}" />
+                  	</c:if>
+                  	<c:if test="${donneurPhysiqueForm.erreurs['adresseDonneurMorale'] != null}">
+                  		<c:out value="${donneurPhysiqueForm.erreurs['adresseDonneurMorale']}" />
+                  	</c:if>
                     </span>
                   </label>
                   
-                  <label class="bl ock mt-4 text-sm">
-    				<span class="text-gray-700 font-medium dark:text-gray-400">
-     					 Structure
-    				</span>
-                  <select
-                          class="block w-full mt-1 text-sm dark:text-gray-300 dark:border-gray-600 dark:bg-gray-700 form-select focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:focus:shadow-outline-gray"
-                          name="listStructure"
-                  >
-
-					<c:forEach items="${structureList}" var="structure" varStatus="boucle">
-                      <option value="${structure.idStructure}"><c:out value="${structure.nom}"/> </option>
-                    </c:forEach>
-
-                  </select>
-                </label>
                 </div>
                 <!--Fin formulair d'un nouveau donateur-->
                 <div id="ancienDonateur">
@@ -224,47 +238,45 @@ pageEncoding="UTF-8"%>
                           <select
                                   class="block w-full mt-1 text-sm dark:text-gray-300 dark:border-gray-600 dark:bg-gray-700 form-select focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:focus:shadow-outline-gray"
                                   onchange="listeDesDonateurs(this)"
-                                  name=""
+                                  name="choixDonneur"
                           >
                               <option value="physique">Physique</option>
                               <option value="morale">Morale</option>
                           </select>
                       </label>
-                      <div id="listeMorale" style="display: none">
-                          <label class="block mt-4 text-sm">
-                    <span class="text-gray-700 dark:text-gray-400">
-                      Liste des donateurs
-                    </span>
-                              <select
-                                      class="block w-full mt-1 text-sm dark:text-gray-300 dark:border-gray-600 dark:bg-gray-700 form-multiselect focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:focus:shadow-outline-gray"
-                                      multiple
-                                      name="listAncienDonneur"
-                              >
-								
-						<c:forEach items="${donneurMoraleList}" var="monDonateur" varStatus="boucle">
-                      		<option>${monDonateur.nom}</option>
-						</c:forEach>
-								
-                              </select>
-                          </label>
-                      </div>
-                      <div id="listePhysique">
-                          <label class="block mt-4 text-sm">
-                    <span class="text-gray-700 dark:text-gray-400">
-                      Liste des donateurs
-                    </span>
-                              <select
-                                      class="block w-full mt-1 text-sm dark:text-gray-300 dark:border-gray-600 dark:bg-gray-700 form-multiselect focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:focus:shadow-outline-gray"
-                                      multiple
-                                      name="listAncienDonneur"
-                              >
-                              
-                             <c:forEach items="${donneurPhysiqueList}" var="donateur" varStatus="boucle">
-                      			<option value=""><c:out value="${donateur.nom}" /></option>
-                      		 </c:forEach> 
-                      		
-                              </select>
-                          </label>
+                 <div id="listeMorale" style="display: none">
+                   <label class="block mt-4 text-sm">
+    				<span class="text-gray-700 font-medium dark:text-gray-400">
+     					 Liste des donateurs
+    				</span>
+                  <select
+                          class="block w-full mt-1 text-sm dark:text-gray-300 dark:border-gray-600 dark:bg-gray-700 form-select focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:focus:shadow-outline-gray"
+                          name="listAncienDonneurMorale" multiple
+                  >
+
+					<c:forEach items="${donneurMoralelist}" var="donateurMorale" varStatus="boucle">
+	                      	<option  value="${donateurMorale.idDonneur}"><c:out value="${donateurMorale.nom}"/></option>	
+					</c:forEach>
+
+                  </select>
+                </label>
+               </div>
+                <div id="listePhysique">
+                    <label class="block mt-4 text-sm">
+    				<span class="text-gray-700 font-medium dark:text-gray-400">
+     					 Liste des donateurs
+    				</span>
+                  <select
+                          class="block w-full mt-1 text-sm dark:text-gray-300 dark:border-gray-600 dark:bg-gray-700 form-select focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:focus:shadow-outline-gray"
+                          name="listAncienDonneurPhysique" multiple
+                  >
+
+					<c:forEach items="${donneurPhysiquelist}" var="donateurPhysique" varStatus="boucle">
+	                      	<option  value="${donateurPhysique.idDonneur}"><c:out value="${donateurPhysique.nom}"/></option>	
+					</c:forEach>
+
+                  </select>
+                </label>
                       </div>
                   </div>
                   <!--fin ancien donateur-->
@@ -287,10 +299,18 @@ pageEncoding="UTF-8"%>
                     class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input"
                     type="date"
                     name="dateDon"
-                    value="<c:out value="${don.dateDon}" />"
+                    value=""
                   />
                   <span class="text-xs text-red-600 dark:text-red-400">
-                    <c:out value="${donForm.erreurs['dateDon']}" />
+                  	<c:if test="${donVersementForm.erreurs['dateDon'] != null}">
+                  		<c:out value="${donVersementForm.erreurs['dateDon']}" />
+                  	</c:if>
+                  	<c:if test="${donChequeForm.erreurs['dateDon'] != null}">
+                  		<c:out value="${donChequeForm.erreurs['dateDon']}" />
+                  	</c:if>
+                  	<c:if test="${donEspeceForm.erreurs['dateDon'] != null}">
+                  		<c:out value="${donEspeceForm.erreurs['dateDon']}" />
+                  	</c:if>
                   </span>
                 </label>
 
@@ -317,10 +337,10 @@ pageEncoding="UTF-8"%>
                       class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input"
                       placeholder="Numéro du compte banquaire"
                       name="numeroCompteBanqueDonVersement"
-                      value="<c:out value="${don.numeroCompteBanque}" />"
+                      value=""
                     />
                     <span class="text-xs text-red-600 dark:text-red-400">
-                      <c:out value="${donForm.erreurs['numeroCompteBanqueDonVersement']}" />
+                      <c:out value="${donVersementForm.erreurs['numeroCompteBanqueDonVersement']}" />
                     </span>
                   </label>
                 </div>
@@ -333,10 +353,10 @@ pageEncoding="UTF-8"%>
                       class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input"
                       placeholder="Numéro du compte banquaire"
                       name="numeroCompteBanqueDonCheque"
-                      value="<c:out value="${don.numeroCompteBanque}" />"
+                      value=""
                     />
                     <span class="text-xs text-red-600 dark:text-red-400">
-                      <c:out value="${donForm.erreurs['numeroCompteBanqueDonCheque']}" />
+                      <c:out value="${donChequeForm.erreurs['numeroCompteBanqueDonCheque']}" />
                     </span>
                   </label>
                   <label class="mt-4 block text-sm">
@@ -347,10 +367,10 @@ pageEncoding="UTF-8"%>
                       class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input"
                       type="date"
                       name="dateChequeDonCheque"
-                      value="<c:out value="${don.dateCheque}" />"
+                      value=""
                     />
                     <span class="text-xs text-red-600 dark:text-red-400">
-                      <c:out value="${donForm.erreurs['dateChequeDonCheque']}" />
+                      <c:out value="${donChequeForm.erreurs['dateChequeDonCheque']}" />
                     </span>
                   </label>
                   <label class="mt-4 block text-sm">
@@ -361,10 +381,10 @@ pageEncoding="UTF-8"%>
                       class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input"
                       type="date"
                       name="dateDepotDonCheque"
-                      value="<c:out value="${don.dateDepot}" />"
+                      value="<c:out value="" />"
                     />
                     <span class="text-xs text-red-600 dark:text-red-400">
-                      <c:out value="${donForm.erreurs['dateDepotDonCheque']}" />
+                      <c:out value="${donChequeForm.erreurs['dateDepotDonCheque']}" />
                     </span>
                   </label>
                   <label class="mt-4 block text-sm">
@@ -375,10 +395,10 @@ pageEncoding="UTF-8"%>
                       class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input"
                       placeholder="nom banque"
                       name="nomBanqueDonCheque"
-                      value="<c:out value="${don.nomBanque}" />"
+                      value="<c:out value="" />"
                     />
                     <span class="text-xs text-red-600 dark:text-red-400">
-                      <c:out value="${donForm.erreurs['nomBanqueDonCheque']}" />
+                      <c:out value="${donChequeForm.erreurs['nomBanqueDonCheque']}" />
                     </span>
                   </label>
                 </div>
@@ -389,10 +409,18 @@ pageEncoding="UTF-8"%>
                   <input
                     class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input"
                   	name="montant"
-                    value="<c:out value="${don.montant}" />"
+                    value="<c:out value="" />"
                   />
                   <span class="text-xs text-red-600 dark:text-red-400">
-                    <c:out value="${donForm.erreurs['montant']}" />
+                    <c:if test="${donVersementForm.erreurs['montant'] != null}">
+                  		<c:out value="${donVersementForm.erreurs['montant']}" />
+                  	</c:if>
+                  	<c:if test="${donChequeForm.erreurs['montant'] != null}">
+                  		<c:out value="${donChequeForm.erreurs['montant']}" />
+                  	</c:if>
+                  	<c:if test="${donEspeceForm.erreurs['montant'] != null}">
+                  		<c:out value="${donEspeceForm.erreurs['montant']}" />
+                  	</c:if>
                   </span>
                 </label>
               </div>

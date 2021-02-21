@@ -6,7 +6,7 @@ pageEncoding="UTF-8"%>
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Ajouter Adhérent</title>
+    <title>Modifier Adhérent</title>
     <link
       href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
       rel="stylesheet"
@@ -27,8 +27,8 @@ pageEncoding="UTF-8"%>
       <div class="flex flex-col flex-1">
         <c:import url="Menu/headerMenu.jsp" />
           <main class="h-full pb-16 overflow-y-auto">
-          <form method="POST" action="<c:url value = "/ajouterAdherent"/>" >
-             <c:if test="${successMsg !=null}">
+          <form method="POST" action="<c:url value="/modifierAdherent"/>" >
+           <c:if test="${successMsg !=null}">
 	        	<div class="bg-green-100 border-l-4 border-green-500 text-green-700 p-4" role="alert">
 				  <p class="font-bold">Succès</p>
 				  <p><c:out value="${successMsg}"/> </p>
@@ -45,7 +45,7 @@ pageEncoding="UTF-8"%>
               <h2
                 class="my-6 text-2xl font-semibold text-gray-700 dark:text-gray-200"
               >
-                Ajouter un adhérent
+                Modifier un adhérent
               </h2>
 
               <!-- ------------ -->
@@ -58,6 +58,12 @@ pageEncoding="UTF-8"%>
               <div
                 class="px-4 py-3 mb-8 bg-white rounded-lg shadow-md dark:bg-gray-800"
               >
+                <input
+                    type="text"
+                    hidden = "hidden"
+                    name="idAdherent"
+                    value="<c:out value="${adherent.idAdherent}"/>"
+                  />
                 <label class="block mt-3 text-sm">
                   <span class="text-gray-700 dark:text-gray-400">Nom</span>
                   <input
@@ -109,6 +115,7 @@ pageEncoding="UTF-8"%>
                     name="motDePasseAdherent"
                     class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input"
                     placeholder=""
+                    value="<c:out value="${adherent.motDePasse}"/>"
                   />
                   <span class="text-xs text-red-600 dark:text-red-400">
                     <c:out value="${erreurs['motDePasseAdherent']}"/>
@@ -223,7 +230,16 @@ pageEncoding="UTF-8"%>
                   </span>
                 </label>
 
-               
+                <label class="block mt-4 text-sm">
+                  <span class="text-gray-700 dark:text-gray-400">Image</span>
+                  <input
+                    type="file"
+                    name="photoAdherent"
+                    class="block mt-2"
+                    placeholder=""
+
+                  />
+                </label>
 
                 <div class="mt-4 mb-4 text-sm">
                   <span class="text-gray-700 dark:text-gray-400"> Sexe </span>
@@ -264,15 +280,22 @@ pageEncoding="UTF-8"%>
               <div
                 class="px-4 py-3 mb-8 bg-white rounded-lg shadow-md dark:bg-gray-800"
               >
+              <input
+                    type="text"
+                    hidden = "hidden"
+                    name="idLigneFonction"
+                    value="<c:out value="${adherent.ligneFonction.idLigneFonction}"/>"
+                  />
                 <label class="block mt-4 text-sm">
                   <span class="text-gray-700 dark:text-gray-400"> Role </span>
                   <select
                     name="roleFonction"
                     class="block w-full mt-1 text-sm dark:text-gray-300 dark:border-gray-600 dark:bg-gray-700 form-select focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:focus:shadow-outline-gray"
                   >
-                    <option>Président(e)</option>
+                    <option><c:out value="${adherent.ligneFonction.fonction.role}"/></option>
+                    <option>President(e)</option>
+                    <option>Tresorier</option>
                     <option>Secretaire</option>
-                    <option>Trésorier/Trésorière</option>
                     <option>Autre</option>
                   </select>
                   <span class="text-xs text-red-600 dark:text-red-400">
@@ -308,7 +331,8 @@ pageEncoding="UTF-8"%>
                   <span class="text-xs text-red-600 dark:text-red-400">
                     <c:out value="${erreurs['dateFinLigneFonction']}"/>
                   </span>
-                </label>               
+                </label>
+                <label class="bl ock mt-4 text-sm">
               </div>
 
               <div class="mb-8">

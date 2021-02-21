@@ -38,7 +38,6 @@ public class SupprimerDonServlet extends HttpServlet {
 		/*Recuperation du param */
 		String idDon = getValeurParametre(request, PARAMETRE_ID_DON);
 		
-		
 		// si l'id et la map ne sont pas vides 
 		
 		if(idDon != null ) {
@@ -50,11 +49,11 @@ public class SupprimerDonServlet extends HttpServlet {
 				Don don = donPersister.read(id);
 				donPersister.delete(don);
 		}
-				/* Redirection vers la fiche récapitulative */
+				/* Redirection vers la fiche rÃ©capitulative */
 		        response.sendRedirect( request.getContextPath() + VUE );
 	}
     /*
-     * Méthode utilitaire qui retourne null si un paramètre est vide, et son
+     * MÃ©thode utilitaire qui retourne null si un paramÃ¨tre est vide, et son
      * contenu sinon.
      */
     private static String getValeurParametre( HttpServletRequest request, String nomChamp ) {

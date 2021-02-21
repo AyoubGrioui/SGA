@@ -16,7 +16,7 @@
           <h1
             class="ml-6 text-lg font-bold text-gray-800 dark:text-gray-200"
           >
-            Nom Association
+            <c:out value="${structure.nom }"/>
           </h1>
           <ul class="mt-6">
             <li class="relative px-6 py-3">
@@ -137,7 +137,11 @@
                 @click="togglePagesMenu2"
                 aria-haspopup="true"
               >
-                <span class="inline-flex items-center">
+                <span
+                class="absolute inset-y-0 left-0 w-1 bg-purple-600 rounded-tr-lg rounded-br-lg"
+                aria-hidden="true"
+              ></span>
+              <span class="inline-flex items-center">
                   <svg
                     class="w-5 h-5"
                     aria-hidden="true"
@@ -347,6 +351,10 @@
                 @click="togglePagesMenu2"
                 aria-haspopup="true"
               >
+              <span
+                class="absolute inset-y-0 left-0 w-1 bg-purple-600 rounded-tr-lg rounded-br-lg"
+                aria-hidden="true"
+              ></span>
                 <span class="inline-flex items-center">
                   <svg
                     class="w-5 h-5"
