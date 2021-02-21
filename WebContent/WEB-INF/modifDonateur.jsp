@@ -29,7 +29,7 @@ pageEncoding="UTF-8"%>
         <c:import url="Menu/headerSecretaire.jsp"></c:import>
 
         <main class="h-full pb-16 overflow-y-auto">
-          <form methode="POST" action="">
+          <form method="POST" action="<c:url value="/modifierDonateur"/>">
             <div class="container px-6 mx-auto grid">
               <h2
                 class="my-6 text-2xl font-semibold text-gray-700 dark:text-gray-200"
@@ -46,6 +46,12 @@ pageEncoding="UTF-8"%>
               <div
                 class="px-4 py-3 mb-8 bg-white rounded-lg shadow-md dark:bg-gray-800"
               >
+              <input
+                    type="text"
+                    hidden = "hidden"
+                    name="idDonneur"
+                    value="<c:out value="${donneur.idDonneur}"/>"
+                  />
                 <div class="mt-1 text-sm">
                   <div class="mt-2">
                   <div id="nouveauDonateur">
@@ -57,7 +63,7 @@ pageEncoding="UTF-8"%>
                     <select
                       class="block w-full mt-1 text-sm dark:text-gray-300 dark:border-gray-600 dark:bg-gray-700 form-select focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:focus:shadow-outline-gray"
                       onchange="typeDonateur(this)"
-                      name=""
+                      name="typeDonateur"
                     >
                       <option value="physique">Physique</option>
                       <option value="morale">Morale</option>
@@ -71,11 +77,11 @@ pageEncoding="UTF-8"%>
                       <input
                         class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input"
                         placeholder="Nom"
-                        name=""
-                    	value=""
+                        name="nomDonneurMorale"
+                    	value="<c:out value="${donneur.nom}" />"
                       />
                       <span class="text-xs text-red-600 dark:text-red-400">
-                        Champ invalide (erreur exemple)
+                        <c:out value="${donneurForm.erreurs['nomDonneurMorale']}" />
                       </span>
                     </label>
                   </div>
@@ -87,11 +93,11 @@ pageEncoding="UTF-8"%>
                       <input
                         class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input"
                         placeholder="Last name"
-                        name=""
-                    	value=""
+                        name="nomDonneurPhysique"
+                    	value="<c:out value="${donneur.nom}" />"
                       />
                       <span class="text-xs text-red-600 dark:text-red-400">
-                        Champ invalide (erreur exemple)
+                        <c:out value="${donneurForm.erreurs['nomDonneurPhysique']}" />
                       </span>
                     </label>
                     <label class="mt-4 block text-sm">
@@ -101,11 +107,11 @@ pageEncoding="UTF-8"%>
                       <input
                         class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input"
                         placeholder="First name"
-                        name=""
-                    	value=""
+                        name="prenomDonneurPhysique"
+                    	value="<c:out value="${donneur.prenom}" />"
                       />
                       <span class="text-xs text-red-600 dark:text-red-400">
-                        Champ invalide (erreur exemple)
+                        <c:out value="${donneurForm.erreurs['prenomDonneurPhysique']}"/>
                       </span>
                     </label>
                     <label class="mt-4 block text-sm">
@@ -115,11 +121,11 @@ pageEncoding="UTF-8"%>
                       <input
                         class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input"
                         placeholder="CIN"
-                        name=""
-                    	value=""
+                        name="cinDonneurPhysique"
+                    	value="<c:out value="${donneur.cin}" />"
                       />
                       <span class="text-xs text-red-600 dark:text-red-400">
-                        Champ invalide (erreur exemple)
+                        <c:out value="${donneurForm.erreurs['cinDonneurPhysique']}" />
                       </span>
                     </label>
                   </div>
@@ -131,11 +137,11 @@ pageEncoding="UTF-8"%>
                     <input
                       class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input"
                       placeholder="Email"
-                      name=""
-                      value=""
+                      name="emailDonneurMorale"
+                      value="<c:out value="${donneur.email}" />"
                     />
                     <span class="text-xs text-red-600 dark:text-red-400">
-                      Champ invalide (erreur exemple)
+                      <c:out value="${donneurForm.erreurs['emailDonneurMorale']}" />
                     </span>
                   </label>
                   <label class="mt-4 block text-sm">
@@ -145,11 +151,11 @@ pageEncoding="UTF-8"%>
                     <input
                       class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input"
                       placeholder="Telephone"
-                      name=""
-                      value=""
+                      name="telephoneDonneurMorale"
+                      value="<c:out value="${donneur.telephone}" />"
                     />
                     <span class="text-xs text-red-600 dark:text-red-400">
-                      Champ invalide (erreur exemple)
+                      <c:out value="${ donneurForm.erreurs['telephoneDonneurMorale']}" />
                     </span>
                   </label>
                   <label class="block mt-4 text-sm">
@@ -160,11 +166,11 @@ pageEncoding="UTF-8"%>
                       class="block w-full mt-1 text-sm dark:text-gray-300 dark:border-gray-600 dark:bg-gray-700 form-textarea focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:focus:shadow-outline-gray"
                       rows="3"
                       placeholder="Adresse"
-                      name=""
-                      value=""
+                      name="adresseDonneurMorale"
+                      value="<c:out value="${donneur.adresse}" />"
                     ></textarea>
                     <span class="text-xs text-red-600 dark:text-red-400">
-                      Champ invalide (erreur exemple)
+                      <c:out value="${donneurForm.erreurs['adresseDonneurMorale']}" />
                     </span>
                   </label>
                 </div>

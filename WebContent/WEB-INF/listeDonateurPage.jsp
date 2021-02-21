@@ -72,6 +72,8 @@
                   <td class="px-4 py-3 text-sm"><c:out value="${donateur.adresse}" /></td>
                   <td class="px-4 py-3">
                     <div class="flex items-center space-x-4 text-sm">
+                  <a href="<c:url value="/modifierDonateur"><c:param name="depenseID" value="${donateur.idDonneur}" /></c:url>">
+                    
                       <button
                               class="flex items-center justify-between px-2 py-2 text-sm font-medium leading-5 text-purple-600 rounded-lg dark:text-gray-400 focus:outline-none focus:shadow-outline-gray"
                               aria-label="Edit"
@@ -87,7 +89,7 @@
                           ></path>
                         </svg>
                       </button>
-                      <a href="<c:url value="/supprimerDesDonneurs"><c:param name="donneurID" value="${donateur.idDonneur}" /></c:url>">
+                      <a href="<c:url value="/supprimerDonneur"><c:param name="donneurID" value="${donateur.idDonneur}" /></c:url>">
                       
                       <button
                               class="flex items-center justify-between px-2 py-2 text-sm font-medium leading-5 text-purple-600 rounded-lg dark:text-gray-400 focus:outline-none focus:shadow-outline-gray"

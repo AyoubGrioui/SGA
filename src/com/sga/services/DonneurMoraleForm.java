@@ -20,6 +20,8 @@ public class DonneurMoraleForm {
 	private static final String CHAMP_ADRESSE = "adresseDonneurMorale";
 	private static final String CHAMP_MOT_DE_PASSE = "motDePasseDonneurMorale";
 	private static final String CHAMP_STRUCTURE = "listStructure";
+	public static final String INTERNAL_ID_DONATEUR = "idDonneur";
+
 
 	private Map<String,String> erreurs = new HashMap<String,String>();
 	private String resultat;
@@ -112,6 +114,7 @@ public DonneurMoral modifierDonneurMorale(HttpServletRequest request) {
 		String idStructure = getValeurChamp(request,CHAMP_STRUCTURE);
 		
 		DonneurMoral donneurMorale = new DonneurMoral();
+		donneurMorale.setIdDonneur(Long.parseLong(getValeurChamp(request, INTERNAL_ID_DONATEUR)));
 		
 		try {
 			validationNom(nom);

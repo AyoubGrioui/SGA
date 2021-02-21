@@ -44,11 +44,12 @@ public class SupprimerDonneurServlet extends HttpServlet {
 			
 			Long id = Long.parseLong(idDonneur);
 
-				//suppression de l'adherent de la BD
+				//suppression du donneur de la BD
 			Donneur donneur = donneurPersister.read(id);
+
 			donneurPersister.delete(donneur);
+
 		}
-				
 				/* Redirection vers la fiche récapitulative */
 		        response.sendRedirect( request.getContextPath() + VUE );
 	}

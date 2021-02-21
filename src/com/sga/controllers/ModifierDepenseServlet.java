@@ -8,6 +8,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import com.sga.entities.Depense;
 import com.sga.entities.Structure;
@@ -22,15 +23,17 @@ import com.sga.services.DepenseForm;
 public class ModifierDepenseServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
-    public static final String VUE_AJOUTER_DEPENSE = "/WEB-INF/modifierDepensePage.jsp";
+    public static final String VUE_MODIFIER_DEPENSE = "/WEB-INF/modifierDepensePage.jsp";
     public static final String ATT_DEPENSEFORM = "depenseForm";
     public static final String ATT_DEPENSE = "depense";
     private static final String ATT_LIST_STRUCTURE = "structureList";
-    
+	//public static final String INTERNAL_ID_DEPENSE = "ID";
+    public static final String INTERNAL_ID_DEPENSE = "idDepense";
+
 	public static final String PARAMETRE_ID_DEPENSE = "depenseID";
 	
 	public static final String VUE = "/listeDepense";
-
+	
     protected void doGet( HttpServletRequest request, HttpServletResponse response )
             throws ServletException, IOException{
     	
@@ -45,7 +48,9 @@ public class ModifierDepenseServlet extends HttpServlet {
  		if(idDepense != null) {
  			
  			Long id = Long.parseLong(idDepense);
-
+ 			System.out.println(id);
+ 			
+ 		//	HttpSession session = request.getSession();
  				//suppression de l'adherent de la BD
  				Depense depense = depensePersister.read(id);
  				request.setAttribute(ATT_DEPENSE, depense);
@@ -54,7 +59,9 @@ public class ModifierDepenseServlet extends HttpServlet {
  		        List<Structure> structureList = structurePersister.getAll();
 
  		        request.setAttribute(ATT_LIST_STRUCTURE,structureList);
- 		        this.getServletContext().getRequestDispatcher( VUE_AJOUTER_DEPENSE ).forward( request, response );
+ 		 //       session.setAttribute(INTERNAL_ID_DEPENSE, id);
+ 		        
+ 		        this.getServletContext().getRequestDispatcher( VUE_MODIFIER_DEPENSE ).forward( request, response );
  			}
  		
  		else 
@@ -73,7 +80,7 @@ public class ModifierDepenseServlet extends HttpServlet {
         request.setAttribute(ATT_DEPENSE,depense);
 
         
-        this.getServletContext().getRequestDispatcher( VUE_AJOUTER_DEPENSE ).forward( request, response );
+        this.getServletContext().getRequestDispatcher( VUE_MODIFIER_DEPENSE ).forward( request, response );
 
     }
     

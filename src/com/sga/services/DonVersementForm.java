@@ -18,6 +18,7 @@ public class DonVersementForm {
 	private static final String CHAMP_DATE_DON = "dateDon";
 	private static final String CHAMP_MONTANT = "montant";
 	private static final String CHAMP_DONNEUR="donneur";
+	public static final String INTERNAL_ID_DON = "idDon";
 
 
 	private Map<String, String> erreurs = new HashMap<String, String>();
@@ -90,7 +91,9 @@ public class DonVersementForm {
 
 
 		DonVersement donVersement = new DonVersement();
+		donVersement.setIdDon(Long.parseLong(getValeurChamp(request,INTERNAL_ID_DON)));
 
+		
 		try {
 			validationNumCompte(numCompte);
 		} catch (Exception e) {

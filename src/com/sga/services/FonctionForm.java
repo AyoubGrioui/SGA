@@ -54,7 +54,8 @@ public class FonctionForm {
 
 		if(getErreurs().isEmpty())
 		{
-			fonctionPersister.create(fonction);
+			fonction.setIdFonction(fonctionPersister.create(fonction));
+			
 		}
 		
 		return fonction;
@@ -64,7 +65,6 @@ public class FonctionForm {
 	
 	private void validationRole(String role) throws Exception
 	{
-		ArrayList<String> roles = new ArrayList<String>();
 		//inserer
 	if (role != null) {
 			if(role.length()< 2) {

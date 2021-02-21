@@ -6,7 +6,7 @@ pageEncoding="UTF-8"%>
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Ajouter une dépense</title>
+    <title>Modifier une dépense</title>
     <link
       href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
       rel="stylesheet"
@@ -45,11 +45,18 @@ pageEncoding="UTF-8"%>
               <div
                 class="px-4 py-3 mb-8 bg-white rounded-lg shadow-md dark:bg-gray-800"
               >
+              <input
+                    type="text"
+                    hidden = "hidden"
+                    name="idDepense"
+                    value="<c:out value="${depense.idDepense}"/>"
+                  />
                 <!--Debut formulaire d'une nouvelle d�pense-->
                 <label class="block mt-1 text-sm">
                   <span class="text-gray-700 font-medium dark:text-gray-400">
                     Montant dépensé
                   </span>
+                  
                   <input
                     class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input"
                     placeholder="Montant dépensé"

@@ -29,7 +29,7 @@ pageEncoding="UTF-8"%>
         <c:import url="Menu/headerSecretaire.jsp"></c:import>
 
         <main class="h-full pb-16 overflow-y-auto">
-          <form methode="" action="">
+          <form method="POST" action="<c:url value="/modifierDon"/>">
             <div class="container px-6 mx-auto grid">
               <h2
                 class="my-6 text-2xl font-semibold text-gray-700 dark:text-gray-200"
@@ -45,12 +45,18 @@ pageEncoding="UTF-8"%>
               <div
                 class="px-4 py-3 mb-8 bg-white rounded-lg shadow-md dark:bg-gray-800"
               >
+              <input
+                    type="text"
+                    hidden = "hidden"
+                    name="idDon"
+                    value="<c:out value="${don.idDon}"/>"
+                  />
               <label class="mt-2 block text-sm">
                   <span class="text-gray-700 font-medium dark:text-gray-400"
                     >Nom du donateur : 
                   </span>
                   <span class="text-gray-700 font-bold dark:text-gray-100"
-                    >Test nom donateur 
+                    ><c:out value="${don.donneur.nom}" /> 
                   </span>
                 </label>
                 <label class="mt-4 block text-sm">
@@ -60,28 +66,14 @@ pageEncoding="UTF-8"%>
                   <input
                     class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input"
                     type="date"
-                    name=""
-                    value=""
+                    name="dateDon"
+                    value="<c:out value="${don.dateDon}" />"
                   />
                   <span class="text-xs text-red-600 dark:text-red-400">
-                    Champ invalide (erreur exemple)
+                    <c:out value="${donForm.erreurs['dateDon']}" />
                   </span>
                 </label>
-                <label class="block mt-4 text-sm">
-                  <span class="text-gray-700 font-medium dark:text-gray-400"
-                    >Description</span
-                  >
-                  <textarea
-                    class="block w-full mt-1 text-sm dark:text-gray-300 dark:border-gray-600 dark:bg-gray-700 form-textarea focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:focus:shadow-outline-gray"
-                    rows="3"
-                    placeholder="Description"
-                    name=""
-                    value=""
-                  ></textarea>
-                  <span class="text-xs text-red-600 dark:text-red-400">
-                    Champ invalide (erreur exemple)
-                  </span>
-                </label>
+                
                 <label class="block mt-4 text-sm">
                   <span class="text-gray-700 font-medium dark:text-gray-400">
                     Type de paiement
@@ -89,7 +81,7 @@ pageEncoding="UTF-8"%>
                   <select
                     class="block w-full mt-1 text-sm dark:text-gray-300 dark:border-gray-600 dark:bg-gray-700 form-select focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:focus:shadow-outline-gray"
                     onchange="typePaiement(this)"
-                    name=""
+                    name="typeDon"
                   >
                     <option value="espece">Espèce</option>
                     <option value="cheque">Chèque</option>
@@ -104,11 +96,11 @@ pageEncoding="UTF-8"%>
                     <input
                       class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input"
                       placeholder="Numéro du compte banquaire"
-                      name=""
-                      value=""
+                      name="numeroCompteBanqueDonVersement"
+                      value="<c:out value="${don.numeroCompteBanque}" />"
                     />
                     <span class="text-xs text-red-600 dark:text-red-400">
-                      Champ invalide (erreur exemple)
+                      <c:out value="${donForm.erreurs['numeroCompteBanqueDonVersement']}" />
                     </span>
                   </label>
                 </div>
@@ -120,11 +112,11 @@ pageEncoding="UTF-8"%>
                     <input
                       class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input"
                       placeholder="Numéro du compte banquaire"
-                      name=""
-                      value=""
+                      name="numeroCompteBanqueDonCheque"
+                      value="<c:out value="${don.numeroCompteBanque}" />"
                     />
                     <span class="text-xs text-red-600 dark:text-red-400">
-                      Champ invalide (erreur exemple)
+                      <c:out value="${donForm.erreurs['numeroCompteBanqueDonCheque']}" />
                     </span>
                   </label>
                   <label class="mt-4 block text-sm">
@@ -134,11 +126,11 @@ pageEncoding="UTF-8"%>
                     <input
                       class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input"
                       type="date"
-                      name=""
-                      value=""
+                      name="dateChequeDonCheque"
+                      value="<c:out value="${don.dateCheque}" />"
                     />
                     <span class="text-xs text-red-600 dark:text-red-400">
-                      Champ invalide (erreur exemple)
+                      <c:out value="${donForm.erreurs['dateChequeDonCheque']}" />
                     </span>
                   </label>
                   <label class="mt-4 block text-sm">
@@ -148,11 +140,11 @@ pageEncoding="UTF-8"%>
                     <input
                       class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input"
                       type="date"
-                      name=""
-                      value=""
+                      name="dateDepotDonCheque"
+                      value="<c:out value="${don.dateDepot}" />"
                     />
                     <span class="text-xs text-red-600 dark:text-red-400">
-                      Champ invalide (erreur exemple)
+                      <c:out value="${donForm.erreurs['dateDepotDonCheque']}" />
                     </span>
                   </label>
                   <label class="mt-4 block text-sm">
@@ -162,11 +154,11 @@ pageEncoding="UTF-8"%>
                     <input
                       class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input"
                       placeholder="nom banque"
-                      name=""
-                      value=""
+                      name="nomBanqueDonCheque"
+                      value="<c:out value="${don.nomBanque}" />"
                     />
                     <span class="text-xs text-red-600 dark:text-red-400">
-                      Champ invalide (erreur exemple)
+                      <c:out value="${donForm.erreurs['nomBanqueDonCheque']}" />
                     </span>
                   </label>
                 </div>
@@ -176,11 +168,11 @@ pageEncoding="UTF-8"%>
                   </span>
                   <input
                     class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input"
-                  	name=""
-                    value=""
+                  	name="montant"
+                    value="<c:out value="${don.montant}" />"
                   />
                   <span class="text-xs text-red-600 dark:text-red-400">
-                    Champ invalide (erreur exemple)
+                    <c:out value="${donForm.erreurs['montant']}" />
                   </span>
                 </label>
                 

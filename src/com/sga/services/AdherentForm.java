@@ -14,6 +14,7 @@ import java.util.Map;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import javax.servlet.http.Part;
 
 import org.jasypt.util.password.ConfigurablePasswordEncryptor;
@@ -45,6 +46,10 @@ public class AdherentForm {
 	public static final String CHAMP_EMAIL="emailAdherent";
 	public static final String CHAMP_STRUCTURE = "listStructure";
 	private static final String ALGO_CHIFFREMENT = "SHA-256";
+	//public static final String INTERNAL_ID_ADHERENT = "ID";
+    public static final String INTERNAL_ID_ADHERENT = "idAdherent";
+
+
 
     private static final int    TAILLE_TAMPON   = 10240;                        // 10ko
 
@@ -69,11 +74,12 @@ public class AdherentForm {
 		String adresse = getValeurChamp(request,CHAMP_ADRESSE);
 		String email = getValeurChamp(request,CHAMP_EMAIL);
 		String idStructure = getValeurChamp(request,CHAMP_STRUCTURE);
+		
 		String photo = null;
 				
 		
 		Adherent adherent = new Adherent();
-
+		
 		String password = null;
 		
 		
@@ -217,7 +223,15 @@ public class AdherentForm {
 		String email = getValeurChamp(request,CHAMP_EMAIL);
 		String idStructure = getValeurChamp(request,CHAMP_STRUCTURE);
 		
+		
 		Adherent adherent = new Adherent();
+		adherent.setIdAdherent(Long.parseLong(getValeurChamp(request, INTERNAL_ID_ADHERENT)));
+		
+	//	HttpSession session = request.getSession();
+
+   //     Long id=(Long) session.getAttribute(INTERNAL_ID_ADHERENT);
+        
+   //     adherent.setIdAdherent(id);
 
 		String password = null;
 		
@@ -307,7 +321,7 @@ public class AdherentForm {
         } catch ( Exception e ) {
             setErreurs( CHAMP_MOT_DE_PASSE, e.getMessage() );
         }
-        adherent.setMotDePasse( password );
+        adherent.setMotDePasse( motDePasse);
 
         Structure structure=null;
         try
@@ -319,10 +333,13 @@ public class AdherentForm {
 			setErreurs( CHAMP_STRUCTURE,e.getMessage());
 		}
         adherent.setStructure(structure);
-
+        
+        System.out.println("avant insert");
 
 		LigneFonctionForm ligneFonctionForm = new LigneFonctionForm();
 		LigneFonction ligneFonction = ligneFonctionForm.modifierLigneFonction(request);
+
+        System.out.println("apres insert");
 
 		adherent.setLigneFonction(ligneFonction);
 
@@ -330,12 +347,14 @@ public class AdherentForm {
 
 		
 		//Persistance des Donnnée
-
 		if(getErreurs().isEmpty())
 		{
 			HibernateAdherentPersister adherentPersister = new HibernateAdherentPersister();
 			adherentPersister.update(adherent);
 		}
+		
+        System.out.println("apres apres insert");
+
 		
 		return adherent;
 	}

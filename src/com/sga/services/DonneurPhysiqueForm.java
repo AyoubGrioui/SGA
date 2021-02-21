@@ -18,6 +18,8 @@ public class DonneurPhysiqueForm {
 	private static final String CHAMP_ADRESSE = "adresseDonneurMorale";
 	private static final String CHAMP_MOT_DE_PASSE = "motDePasseDonneurMorale";
 	private static final String CHAMP_STRUCTURE = "listStructure";
+	public static final String INTERNAL_ID_DONATEUR = "idDonneur";
+
 
 	private Map<String,String> erreurs = new HashMap<String,String>();
 	private String resultat;
@@ -126,6 +128,7 @@ public DonneurPhysique modifierDonneurPhysique(HttpServletRequest request) {
 
 
 		DonneurPhysique donneurPhysique = new DonneurPhysique();
+		donneurPhysique.setIdDonneur(Long.parseLong(getValeurChamp(request,INTERNAL_ID_DONATEUR)));
 		
 		try {
 			validationNom(nom);

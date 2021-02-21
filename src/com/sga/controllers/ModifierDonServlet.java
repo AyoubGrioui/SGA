@@ -9,6 +9,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import com.sga.entities.Don;
 import com.sga.entities.DonCheque;
@@ -33,6 +34,8 @@ public class ModifierDonServlet extends HttpServlet {
     public static final String ATT_DON = "don";
     private static final String ATT_LIST_STRUCTURE = "structureList";
     public static final String PARAM_TYPEDON = "typeDon";
+	public static final String INTERNAL_ID_DON = "idDon";
+
 
     
 	public static final String PARAMETRE_ID_DON = "donID";
@@ -54,6 +57,7 @@ public class ModifierDonServlet extends HttpServlet {
  			
  			Long id = Long.parseLong(idDon);
 
+ 				HttpSession session = request.getSession();
  				//suppression de l'adherent de la BD
  				Don don = donPersister.read(id);
  				request.setAttribute(ATT_DON, don);
@@ -62,6 +66,9 @@ public class ModifierDonServlet extends HttpServlet {
  		        List<Structure> structureList = structurePersister.getAll();
 
  		        request.setAttribute(ATT_LIST_STRUCTURE,structureList);
+ 		        session.setAttribute(INTERNAL_ID_DON, id);
+
+ 		        
  		        this.getServletContext().getRequestDispatcher( VUE_MODIF_DON ).forward( request, response );
  			}
  		
@@ -98,7 +105,6 @@ public class ModifierDonServlet extends HttpServlet {
             request.setAttribute(ATT_DON,don);
         }
 
-        
         this.getServletContext().getRequestDispatcher( VUE_MODIF_DON).forward( request, response );
 
     }

@@ -28,7 +28,8 @@ public class DonChequeForm {
 	public static final String CHAMP_DATE_CHEQUE="dateChequeDonCheque";
 	public static final String CHAMP_DATE_DEPOT="dateDepotDonCheque";
 	public static final String CHAMP_NOM_BANQUE="nomBanqueDonCheque";
-	
+	public static final String INTERNAL_ID_DON = "idDon";
+
 	
 	private Map<String,String> erreurs=new HashMap<String,String>();
 	
@@ -123,6 +124,7 @@ public class DonChequeForm {
 
 
 		DonCheque donCheque = new DonCheque();
+		donCheque.setIdDon(Long.parseLong(getValeurChamp(request,INTERNAL_ID_DON)));
 
 
 		double valeurMontant=-1;

@@ -17,7 +17,7 @@ import com.sga.repositories.HibernateDonneurPersister;
 public class SupprimerDesDonneursServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
-public static final String PARAMETRE_ID_DONNEUR = "donneurID";
+	public static final String PARAMETRE_ID_DONNEUR = "donneurID";
 	
 	public static final String VUE = "/listeDesDonateurs";
 	

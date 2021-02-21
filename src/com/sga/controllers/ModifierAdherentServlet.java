@@ -9,6 +9,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import com.sga.entities.Adherent;
 import com.sga.entities.Structure;
@@ -23,10 +24,13 @@ import com.sga.services.AdherentForm;
 public class ModifierAdherentServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
-    public static final String VUE_AJOUTER_ADHERENT = "/WEB-INF/ajouterAdherent.jsp";
+    public static final String VUE_MODIFIER_ADHERENT = "/WEB-INF/modifierAdherentPage.jsp";
     public static final String ATT_ERREURS ="erreurs";
     public static final String ATT_ADHERENT="adherent";
     public static final String ATT_LIST_STRUCTURE ="StructureList";
+	//public static final String INTERNAL_ID_ADHERENT = "ID";
+    public static final String INTERNAL_ID_ADHERENT = "idAdherent";
+
     
     public static final String PARAMETRE_ID_ADHERENT = "adherentID";
 	
@@ -49,6 +53,8 @@ public class ModifierAdherentServlet extends HttpServlet {
 		if(idAdherent != null ) {
 				
 				Long id = Long.parseLong(idAdherent);
+				
+ 			//	HttpSession session = request.getSession();
 				//suppression de l'adherent de la BD
 				Adherent adherent = adherentPersister.read(id);
 				request.setAttribute(ATT_ADHERENT, adherent);
@@ -57,8 +63,8 @@ public class ModifierAdherentServlet extends HttpServlet {
 		        List<Structure> structureList = structurePersister.getAll();
 
 		        request.setAttribute(ATT_LIST_STRUCTURE,structureList);
-		        
-		        this.getServletContext().getRequestDispatcher( VUE_AJOUTER_ADHERENT ).forward( request, response );
+ 		    //    session.setAttribute(INTERNAL_ID_ADHERENT, id);
+		        this.getServletContext().getRequestDispatcher( VUE_MODIFIER_ADHERENT ).forward( request, response );
 				}
 		
 		else {
@@ -69,7 +75,8 @@ public class ModifierAdherentServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        AdherentForm adherentForm = new AdherentForm();
+    	
+    	AdherentForm adherentForm = new AdherentForm();
         Adherent adherent = adherentForm.modifierAdherent(request);
 
         Map<String, String> erreurs = adherentForm.getErreurs();
@@ -77,7 +84,7 @@ public class ModifierAdherentServlet extends HttpServlet {
         request.setAttribute(ATT_ADHERENT,adherent);
 
 
-        this.getServletContext().getRequestDispatcher(VUE).forward( request , response );
+        this.getServletContext().getRequestDispatcher(VUE_MODIFIER_ADHERENT).forward( request , response );
     }
     
     /*

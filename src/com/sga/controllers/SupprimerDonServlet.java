@@ -38,7 +38,6 @@ public class SupprimerDonServlet extends HttpServlet {
 		/*Recuperation du param */
 		String idDon = getValeurParametre(request, PARAMETRE_ID_DON);
 		
-		
 		// si l'id et la map ne sont pas vides 
 		
 		if(idDon != null ) {

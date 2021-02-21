@@ -8,6 +8,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import com.sga.entities.Donneur;
 import com.sga.entities.DonneurMoral;
@@ -26,9 +27,11 @@ public class ModifierDonateurServlet extends HttpServlet {
 
 	public static final String VUE_MODIF_DONATEUR = "/WEB-INF/modifDonateur.jsp";
     public static final String ATT_DONATEURFORM = "donneurForm";
-    public static final String ATT_DONATEUR = "donateur";
+    public static final String ATT_DONATEUR = "donneur";
     private static final String ATT_LIST_STRUCTURE = "structureList";
     public static final String PARAM_TYPEDONATEUR = "typeDonateur";
+	//public static final String INTERNAL_ID_DONATEUR = "ID";
+	public static final String INTERNAL_ID_DONATEUR = "idDonneur";
 
     
 	public static final String PARAMETRE_ID_DONATEUR = "donneurID";
@@ -50,6 +53,7 @@ public class ModifierDonateurServlet extends HttpServlet {
  			
  			Long id = Long.parseLong(idDonneur);
 
+ 			HttpSession session = request.getSession();
  				//suppression de l'adherent de la BD
  				Donneur donneur = donneurPersister.read(id);
  				request.setAttribute(ATT_DONATEUR, donneur);
@@ -58,6 +62,9 @@ public class ModifierDonateurServlet extends HttpServlet {
  		        List<Structure> structureList = structurePersister.getAll();
 
  		        request.setAttribute(ATT_LIST_STRUCTURE,structureList);
+ 		        session.setAttribute(INTERNAL_ID_DONATEUR, id);
+
+ 		        
  		        this.getServletContext().getRequestDispatcher( VUE_MODIF_DONATEUR ).forward( request, response );
  			}
  		

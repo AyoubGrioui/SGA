@@ -18,6 +18,8 @@ public class LigneFonctionForm {
 
 	private static final String CHAMP_DATE_DEBUT = "dateDebutLigneFonction";
 	private static final String CHAMP_DATE_FIN = "dateFinLigneFonction";
+	private static final String CHAMP_ID_LIGNE_FONCTION = "idLigneFonction";
+
 
 	private Map<String,String> erreurs = new HashMap<String,String>();
 	private String resultat;
@@ -73,9 +75,11 @@ public LigneFonction modifierLigneFonction(HttpServletRequest request) {
 		
 		String dateDebut = getValeurChamp(request, CHAMP_DATE_DEBUT);
 		String dateFin = getValeurChamp(request, CHAMP_DATE_FIN);
+		long id = Long.parseLong(getValeurChamp(request, CHAMP_ID_LIGNE_FONCTION));
+
 
 		LigneFonction ligneFonction = new LigneFonction();
-		
+		ligneFonction.setIdLigneFonction(id);
 
 		try {
 			validationDate(dateDebut);
@@ -93,7 +97,8 @@ public LigneFonction modifierLigneFonction(HttpServletRequest request) {
 
 		FonctionForm fonctionForm=new FonctionForm();
 		Fonction fonction=fonctionForm.creerFonction(request);
-
+		
+		ligneFonction.setFonction(fonction);
 		erreurs.putAll(fonctionForm.getErreurs());
 		
 		if(getErreurs().isEmpty())

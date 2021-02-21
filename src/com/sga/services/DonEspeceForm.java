@@ -23,6 +23,7 @@ public class DonEspeceForm
     private static final String CHAMP_DATE_DON="dateDon";
     private static final String CHAMP_MONTANT="montant";
     private static final String CHAMP_DONNEUR="donneur";
+	public static final String INTERNAL_ID_DON = "idDon";
 
 
     private Map<String,String> erreurs=new HashMap<String,String>();
@@ -77,6 +78,7 @@ public class DonEspeceForm
 
 
         DonEspece donEspece = new DonEspece();
+		donEspece.setIdDon(Long.parseLong(getValeurChamp(request,INTERNAL_ID_DON)));
 
         double valeurMontant=-1;
         try {

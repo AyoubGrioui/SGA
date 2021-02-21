@@ -9,6 +9,8 @@ import com.sga.repositories.Repository;
 import com.sga.repositories.RepositoryFactory;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -19,6 +21,10 @@ public class DepenseForm {
     public static final String CHAMP_DATE_DEPENSE="dateDepense";
     public static final String CHAMP_TYPE_DEPENSE="typeDepense";
     private static final String CHAMP_STRUCTURE = "listStructure" ;
+	public static final String PARAMETRE_ID_DEPENSE = "depenseID";
+	public static final String INTERNAL_ID_DEPENSE = "idDepense";
+
+
 
 
     private Map<String,String> erreurs=new HashMap<String,String>();
@@ -34,11 +40,10 @@ public class DepenseForm {
         String dateDepense = getValeurChamp(request,CHAMP_DATE_DEPENSE);
         String typedepense = getValeurChamp(request,CHAMP_TYPE_DEPENSE);
         String idStructure = getValeurChamp(request,CHAMP_STRUCTURE);
+        
 
 
         Depense depense = new Depense();
-
-        
         double valeurMontant= 0;
         try
         {
@@ -97,8 +102,13 @@ public class DepenseForm {
 
 
         Depense depense = new Depense();
+        depense.setIdDepense(Long.parseLong(getValeurChamp(request,INTERNAL_ID_DEPENSE)));
 
+	//	HttpSession session = request.getSession();
+
+   //     Long id=(Long) session.getAttribute(INTERNAL_ID_DEPENSE);
         
+     //   depense.setIdDepense(id);
         double valeurMontant= 0;
         try
         {
