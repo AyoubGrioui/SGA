@@ -30,6 +30,8 @@ public class StructureParametreServlet extends HttpServlet {
     public static final String VUE_STRUCTURE_PARAMETRE = "/WEB-INF/structureParametrePage.jsp";
     public static final String ATT_STRUCTURE="structure";
     public static final String ATT_STRUCTURE_FORM="structureForm";
+    private static final String SUCCESS_MSG = "successMsg";
+    private static final String ERREUR_MSG = "erreurMsg";
     
     protected void doGet( HttpServletRequest request, HttpServletResponse response )
             throws ServletException, IOException 
@@ -40,6 +42,8 @@ public class StructureParametreServlet extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		HttpSession session =req.getSession();
 		Structure structure = (Structure) session.getAttribute(ATT_STRUCTURE);
+        String successMsg = null;
+        String erreurMsg = null;
     	
         StructureForm structureForm=new StructureForm();
         
@@ -51,6 +55,18 @@ public class StructureParametreServlet extends HttpServlet {
         {
         	structure = structureForm.creerStructure(req);
         }
+        
+        if(structureForm.getErreurs().isEmpty())
+        {
+        	successMsg ="La structure de l'association a été bien enregistré.";
+        }else {
+        	erreurMsg = "Veuillez vérifier les champs saisies.";
+        }
+        
+        req.setAttribute(ERREUR_MSG, erreurMsg);
+        req.setAttribute(SUCCESS_MSG, successMsg);
+        
+        
 
         req.setAttribute(ATT_STRUCTURE_FORM, structureForm);
         session.setAttribute(ATT_STRUCTURE,structure);

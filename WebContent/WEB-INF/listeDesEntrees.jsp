@@ -49,16 +49,16 @@
                       class="text-xs font-semibold tracking-wide text-left text-gray-500 uppercase border-b dark:border-gray-700 bg-gray-50 dark:text-gray-400 dark:bg-gray-800"
                     >
                       <th class="px-4 py-3">Donateur</th>
-                      <th class="px-4 py-3">Date de récéption</th>                      
-                      <th class="px-4 py-3">Montant</th>
-                      <th class="px-4 py-3">type de Paiement</th>
+		                <th class="px-4 py-3">Date</th>
+		                <th class="px-4 py-3">Montant</th>
+		                <th class="px-4 py-3">Type de paiement</th>                    
                     </tr>
                   </thead>
 
                   <tbody
                     class="bg-white divide-y dark:divide-gray-700 dark:bg-gray-800"
                   >
-			<c:forEach items="${donList}" var="don" varStatus="boucle" >
+              <c:forEach items="${donList}" var="don" varStatus="boucle" >
                 <tr class="text-gray-700 dark:text-gray-400">
                   <td class="px-4 py-3">
                     <div class="flex items-center text-sm">
@@ -76,13 +76,20 @@
                       		<c:when test="${don.getClass().getName() == 'com.sga.entities.DonVersement'}"><c:out value="versement" /></c:when>
                       	</c:choose>
                   </td>
-                </tr>			   
+                </tr>
               </c:forEach>
+                  
                   </tbody>
                 </table>
-              </div> 		
-          </div>
-          	<script src="assets/js/imprimer.js"></script>
+              </div>
+              <div
+                class="grid px-4 py-3 text-xs font-semibold tracking-wide text-gray-500 uppercase border-t dark:border-gray-700 bg-gray-50 sm:grid-cols-9 dark:text-gray-400 dark:bg-gray-800"
+              >
+                             
+            </div>
+            </div>
+            <script src="assets/js/imprimer.js"></script>
+			<div class="mb-8 mt-2">
 			<button
 			                onclick="printDiv('listeDesEntrees')"
 			                value="imprimer"
@@ -90,9 +97,11 @@
 			              >
 			                Imprimer
 			</button>
+          </div>
+			
+          </div>
         </main>
       </div>
-    </div>
-       
+    </div>   
   </body>
 </html>

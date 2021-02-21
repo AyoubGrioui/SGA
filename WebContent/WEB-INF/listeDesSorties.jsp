@@ -76,9 +76,13 @@ pageEncoding="UTF-8"%>
               </div>
               <div
                 class="grid px-4 py-3 text-xs font-semibold tracking-wide text-gray-500 uppercase border-t dark:border-gray-700 bg-gray-50 sm:grid-cols-9 dark:text-gray-400 dark:bg-gray-800"
-              ></div>
+              >
+              </div>
             </div>
+
+          
             <script src="assets/js/imprimer.js"></script>
+			<div class="mb-8 mt-2">
 			<button
 			                onclick="printDiv('listeDesSorties')"
 			                value="imprimer"
@@ -86,6 +90,7 @@ pageEncoding="UTF-8"%>
 			              >
 			                Imprimer
 			</button>
+          </div>
           </div>
         </main>
       </div>

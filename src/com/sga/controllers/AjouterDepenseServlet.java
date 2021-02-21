@@ -1,8 +1,6 @@
 package com.sga.controllers;
 
 import com.sga.entities.Depense;
-import com.sga.entities.Structure;
-import com.sga.repositories.HibernateStructurePersister;
 import com.sga.services.DepenseForm;
 
 import javax.servlet.ServletException;
@@ -11,7 +9,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.List;
 
 @WebServlet( "/ajouterDepense" )
 public class AjouterDepenseServlet extends HttpServlet {

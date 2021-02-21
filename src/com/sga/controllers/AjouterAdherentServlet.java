@@ -1,7 +1,6 @@
 package com.sga.controllers;
 
 import java.io.IOException;
-import java.util.List;
 import java.util.Map;
 
 import javax.servlet.ServletException;
@@ -11,8 +10,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.sga.entities.Adherent;
-import com.sga.entities.Structure;
-import com.sga.repositories.HibernateStructurePersister;
 import com.sga.services.AdherentForm;
 
 
@@ -22,10 +19,8 @@ public class AjouterAdherentServlet extends HttpServlet {
      * 
      */
     private static final long  serialVersionUID     = 1L;
-    public static final String CHEMIN = "chemin";
     public static final String VUE_AJOUTER_ADHERENT = "/WEB-INF/ajouterAdherent.jsp";
     public static final String ATT_ERREURS ="erreurs";
-    public static final String ATT_ADHERENT_FORM ="adherentForm";
     public static final String ATT_ADHERENT="adherent";
     private static final String SUCCESS_MSG = "successMsg";
     private static final String ERREUR_MSG = "erreurMsg";
@@ -39,10 +34,7 @@ public class AjouterAdherentServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-       
-    	    	        
-    	String chemin = this.getServletConfig().getInitParameter(CHEMIN);
-    	
+
     	
     	AdherentForm adherentForm = new AdherentForm();
         Adherent adherent = adherentForm.creerAdherent(request);

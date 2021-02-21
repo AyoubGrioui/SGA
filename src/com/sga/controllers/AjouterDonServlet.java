@@ -9,10 +9,8 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 @WebServlet( "/ajouterDon" )
@@ -23,7 +21,6 @@ public class AjouterDonServlet extends HttpServlet {
      */
     private static final long  serialVersionUID = 1L;
     public static final String VUE_AJOUTER_DON  = "/WEB-INF/ajouterDonPage.jsp";
-    public static final String ATT_SESSION_USER  = "user";
     public static final String ATT_DONNEUR_MORALE_LIST = "donneurMoralelist";
     public static final String ATT_DONNEUR_PHYSIQUE_LIST = "donneurPhysiquelist";
     public static final String ATT_DONNEUR = "donneur";

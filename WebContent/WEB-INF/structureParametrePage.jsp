@@ -27,6 +27,18 @@
   <div class="flex flex-col flex-1">
     <c:import url="Menu/headerSecretaire.jsp"></c:import>
     <main class="h-full pb-16 overflow-y-auto">
+    	<c:if test="${successMsg !=null}">
+		     <div class="bg-green-100 border-l-4 border-green-500 text-green-700 p-4" role="alert">
+				<p class="font-bold">Succès</p>
+				<p><c:out value="${successMsg}"/> </p>
+			</div>
+		</c:if>
+		<c:if test="${erreurMsg != null}">
+		      <div class="bg-red-100 border-l-4 border-red-500 text-red-700 p-4" role="alert">
+				 <p class="font-bold">Erreur</p>
+				 <p><c:out value="${erreurMsg}"/></p>
+			  </div>
+		</c:if> 
       <form method="post" action="">
         <div class="container px-6 mx-auto grid">
           <h2
