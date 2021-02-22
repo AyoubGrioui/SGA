@@ -129,9 +129,8 @@ public class StructureForm {
 		String objectif = getValeurChamp(request,CHAMP_OBJECTIF);
 		String id = getValeurChamp(request,CHAMP_ID_STRUCTURE);
 		
-		Structure structure=new Structure();
-		
-		structure.setIdStructure(Long.parseLong(id));
+		HibernateStructurePersister structurePers =new HibernateStructurePersister();
+		Structure structure= structurePers.getAll().get(0);
 		
         try {
         	validationDate( dateCreation );
@@ -177,7 +176,6 @@ public class StructureForm {
 
         if(getErreurs().isEmpty())
         {	
-        	HibernateStructurePersister structurePers = new HibernateStructurePersister();
         	structurePers.update(structure);
         }
         

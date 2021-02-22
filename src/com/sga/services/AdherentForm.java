@@ -453,6 +453,23 @@ public class AdherentForm {
 	    {
 	        throw new Exception( "Merci de saisir une adresse mail." );
 	    }
+	    else
+	    {
+	    	if(!isEmailUnique(email))
+		      throw new Exception( "Merci de saisir une adresse mail." );
+
+	    }
+	}
+	
+	private boolean isEmailUnique(String mail)
+	{
+		HibernateAdherentPersister adherentPersister=new HibernateAdherentPersister();
+		Adherent adherent = adherentPersister.getByEmail(mail);
+		
+		if(adherent== null)
+			return true;
+		
+		return false;
 	}
 
 	//Foction de validation du mot de passe

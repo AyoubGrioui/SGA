@@ -29,6 +29,20 @@
 
     <main class="h-full pb-16 overflow-y-auto">
       <div class="container grid px-6 mx-auto">
+        <c:if test="${successMsg !=null}">
+	        	<div class="bg-green-100 border-l-4 border-green-500 text-green-700 p-4" role="alert">
+				  <p class="font-bold">Succès</p>
+				  <p><c:out value="${successMsg}"/> </p>
+				  ${successMsg =null}
+				</div>
+	      	</c:if>
+	      	<c:if test="${erreurMsg != null}">
+	        	<div class="bg-red-100 border-l-4 border-red-500 text-red-700 p-4" role="alert">
+				  <p class="font-bold">Erreur</p>
+				  <p><c:out value="${erreurMsg}"/></p>
+				   ${erreurMsg =null}
+				</div>
+	      	</c:if>
         <h2
                 class="my-6 text-2xl font-semibold text-gray-700 dark:text-gray-200"
         >
@@ -73,6 +87,7 @@
                   <td class="px-4 py-3 text-sm"><c:out value="${donateur.adresse}" /></td>
                   <td class="px-4 py-3">
                     <div class="flex items-center space-x-4 text-sm">
+                    <a href="<c:url value="/modifierDonateur"><c:param name="donneurID" value="${donateur.idDonneur}" /></c:url>">
                       <button
                               class="flex items-center justify-between px-2 py-2 text-sm font-medium leading-5 text-purple-600 rounded-lg dark:text-gray-400 focus:outline-none focus:shadow-outline-gray"
                               aria-label="Edit"
@@ -88,7 +103,14 @@
                           ></path>
                         </svg>
                       </button>
-                      <a href="<c:url value="/supprimerDesDonneurs"><c:param name="donneurID" value="${donateur.idDonneur}" /></c:url>">
+                      <a href="<c:url value="/envoyerMail"><c:param name="donneurID" value="${donateur.idDonneur}" /></c:url>">
+                      <button
+                              class="flex items-center justify-between px-2 py-2 text-sm font-medium leading-5 text-purple-600 rounded-lg dark:text-gray-400 focus:outline-none focus:shadow-outline-gray"
+                              aria-label="Edit"
+                      >
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 9l3 3m0 0l-3 3m3-3H8m13 0a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                      </button>
+                      <a href="<c:url value="/supprimerDonneur"><c:param name="donneurID" value="${donateur.idDonneur}" /></c:url>">
                       
                       <button
                               class="flex items-center justify-between px-2 py-2 text-sm font-medium leading-5 text-purple-600 rounded-lg dark:text-gray-400 focus:outline-none focus:shadow-outline-gray"

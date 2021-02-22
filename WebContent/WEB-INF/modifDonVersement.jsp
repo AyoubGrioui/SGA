@@ -17,7 +17,6 @@ pageEncoding="UTF-8"%>
       defer
     ></script>
     <script src="./assets/js/init-secretaire.js"></script>
-    <script src="./assets/js/init-don.js"></script>
   </head>
   <body>
     <div
@@ -29,6 +28,18 @@ pageEncoding="UTF-8"%>
         <c:import url="Menu/headerSecretaire.jsp"></c:import>
 
         <main class="h-full pb-16 overflow-y-auto">
+          <c:if test="${successMsg !=null}">
+	        	<div class="bg-green-100 border-l-4 border-green-500 text-green-700 p-4" role="alert">
+				  <p class="font-bold">Succès</p>
+				  <p><c:out value="${successMsg}"/> </p>
+				</div>
+	      	</c:if>
+	      	<c:if test="${erreurMsg != null}">
+	        	<div class="bg-red-100 border-l-4 border-red-500 text-red-700 p-4" role="alert">
+				  <p class="font-bold">Erreur</p>
+				  <p><c:out value="${erreurMsg}"/></p>
+				</div>
+			</c:if>  
           <form method="POST" action="<c:url value="/modifierDon"/>">
             <div class="container px-6 mx-auto grid">
               <h2
@@ -50,6 +61,12 @@ pageEncoding="UTF-8"%>
                     hidden = "hidden"
                     name="idDon"
                     value="<c:out value="${don.idDon}"/>"
+                  />
+               <input
+                    type="text"
+                    hidden = "hidden"
+                    name="typeDon"
+                    value="versement"
                   />
               <label class="mt-2 block text-sm">
                   <span class="text-gray-700 font-medium dark:text-gray-400"
@@ -80,15 +97,14 @@ pageEncoding="UTF-8"%>
                   </span>
                   <select
                     class="block w-full mt-1 text-sm dark:text-gray-300 dark:border-gray-600 dark:bg-gray-700 form-select focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:focus:shadow-outline-gray"
-                    onchange="typePaiement(this)"
-                    name="typeDon"
+                    name="" disabled
                   >
+                  	<option value="versement">Versement</option>
                     <option value="espece">Espèce</option>
                     <option value="cheque">Chèque</option>
-                    <option value="versement">Versement</option>
                   </select>
                 </label>
-                <div id="versement" style="display: none">
+                <div id="versement">
                   <label class="mt-4 block text-sm">
                     <span class="text-gray-700 font-medium dark:text-gray-400"
                       >Numéro du compte banquaire
@@ -101,64 +117,6 @@ pageEncoding="UTF-8"%>
                     />
                     <span class="text-xs text-red-600 dark:text-red-400">
                       <c:out value="${donForm.erreurs['numeroCompteBanqueDonVersement']}" />
-                    </span>
-                  </label>
-                </div>
-                <div id="cheque" style="display: none">
-                  <label class="mt-4 block text-sm">
-                    <span class="text-gray-700 font-medium dark:text-gray-400"
-                      >Numéro du compte banquaire
-                    </span>
-                    <input
-                      class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input"
-                      placeholder="Numéro du compte banquaire"
-                      name="numeroCompteBanqueDonCheque"
-                      value="<c:out value="${don.numeroCompteBanque}" />"
-                    />
-                    <span class="text-xs text-red-600 dark:text-red-400">
-                      <c:out value="${donForm.erreurs['numeroCompteBanqueDonCheque']}" />
-                    </span>
-                  </label>
-                  <label class="mt-4 block text-sm">
-                    <span class="text-gray-700 font-medium dark:text-gray-400"
-                      >Date du chèque
-                    </span>
-                    <input
-                      class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input"
-                      type="date"
-                      name="dateChequeDonCheque"
-                      value="<c:out value="${don.dateCheque}" />"
-                    />
-                    <span class="text-xs text-red-600 dark:text-red-400">
-                      <c:out value="${donForm.erreurs['dateChequeDonCheque']}" />
-                    </span>
-                  </label>
-                  <label class="mt-4 block text-sm">
-                    <span class="text-gray-700 font-medium dark:text-gray-400"
-                      >Date du dépot
-                    </span>
-                    <input
-                      class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input"
-                      type="date"
-                      name="dateDepotDonCheque"
-                      value="<c:out value="${don.dateDepot}" />"
-                    />
-                    <span class="text-xs text-red-600 dark:text-red-400">
-                      <c:out value="${donForm.erreurs['dateDepotDonCheque']}" />
-                    </span>
-                  </label>
-                  <label class="mt-4 block text-sm">
-                    <span class="text-gray-700 font-medium dark:text-gray-400"
-                      >Nom de la banque
-                    </span>
-                    <input
-                      class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input"
-                      placeholder="nom banque"
-                      name="nomBanqueDonCheque"
-                      value="<c:out value="${don.nomBanque}" />"
-                    />
-                    <span class="text-xs text-red-600 dark:text-red-400">
-                      <c:out value="${donForm.erreurs['nomBanqueDonCheque']}" />
                     </span>
                   </label>
                 </div>

@@ -24,7 +24,6 @@ public class SupprimerDonneurServlet extends HttpServlet {
        
 	public static final String PARAMETRE_ID_DONNEUR = "donneurID";
 	
-	public static final String VUE = "/listeDonateur";
 	
     
 	/**
@@ -33,7 +32,9 @@ public class SupprimerDonneurServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
         HibernateDonneurPersister donneurPersister =new HibernateDonneurPersister();
-
+        String url = request.getHeader("referer");
+    	String vue = "/"+url.substring(url.lastIndexOf('/')+1);
+    	request.setAttribute("vue", vue);
 		
 		/*Recuperation du param */
 		String idDonneur = getValeurParametre(request, PARAMETRE_ID_DONNEUR);
@@ -46,13 +47,12 @@ public class SupprimerDonneurServlet extends HttpServlet {
 
 				//suppression du donneur de la BD
 			Donneur donneur = donneurPersister.read(id);
-			System.out.println("delete 00");
 
 			donneurPersister.delete(donneur);
 
 		}
 				/* Redirection vers la fiche récapitulative */
-		        response.sendRedirect( request.getContextPath() + VUE );
+		        response.sendRedirect( request.getContextPath() + vue );
 	}
     /*
      * Méthode utilitaire qui retourne null si un paramètre est vide, et son

@@ -29,13 +29,16 @@ import com.sga.services.DonVersementForm;
 @WebServlet("/modifierDon")
 public class ModifierDonServlet extends HttpServlet {
 
-	public static final String VUE_MODIF_DON        = "/WEB-INF/modifDon.jsp";
+	public static final String VUE_MODIF_DON_ESPECE        = "/WEB-INF/modifDonEspece.jsp";
+	public static final String VUE_MODIF_DON_CHEQUE        = "/WEB-INF/modifDonCheque.jsp";
+	public static final String VUE_MODIF_DON_VERSEMENT       = "/WEB-INF/modifDonVersement.jsp";
     public static final String ATT_DONFORM = "donForm";
     public static final String ATT_DON = "don";
     private static final String ATT_LIST_STRUCTURE = "structureList";
     public static final String PARAM_TYPEDON = "typeDon";
 	public static final String INTERNAL_ID_DON = "idDon";
-
+	private static final String SUCCESS_MSG = "successMsg";
+	private static final String ERREUR_MSG = "erreurMsg";
 
     
 	public static final String PARAMETRE_ID_DON = "donID";
@@ -58,18 +61,32 @@ public class ModifierDonServlet extends HttpServlet {
  			Long id = Long.parseLong(idDon);
 
  				HttpSession session = request.getSession();
- 				//suppression de l'adherent de la BD
+
  				Don don = donPersister.read(id);
- 				request.setAttribute(ATT_DON, don);
+
  				
  				HibernateStructurePersister structurePersister =new HibernateStructurePersister();
  		        List<Structure> structureList = structurePersister.getAll();
 
  		        request.setAttribute(ATT_LIST_STRUCTURE,structureList);
  		        session.setAttribute(INTERNAL_ID_DON, id);
+ 		        
+ 		        if(don instanceof DonEspece) {
+ 		        	System.out.println("Don espece");
+ 		        	request.setAttribute(ATT_DON, don);
+ 	 		        this.getServletContext().getRequestDispatcher( VUE_MODIF_DON_ESPECE ).forward( request, response );
+ 		        }else if(don instanceof DonCheque) {
+ 		        	System.out.println("Don Cheque");
+ 		        	request.setAttribute(ATT_DON, don);
+ 	 		        this.getServletContext().getRequestDispatcher( VUE_MODIF_DON_CHEQUE ).forward( request, response );
+ 		        }else {
+ 		        	System.out.println("Don Cheque");
+ 		        	request.setAttribute(ATT_DON, don);
+ 	 		        this.getServletContext().getRequestDispatcher( VUE_MODIF_DON_VERSEMENT ).forward( request, response );
+ 		        }
 
  		        
- 		        this.getServletContext().getRequestDispatcher( VUE_MODIF_DON ).forward( request, response );
+
  			}
  		
  		else {
@@ -82,6 +99,8 @@ public class ModifierDonServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
     {
         String typeDon=(String) request.getParameter(PARAM_TYPEDON);
+        String successMsg = null;
+        String erreurMsg = null;
         
         if (typeDon.equals("espece"))
         {
@@ -89,6 +108,19 @@ public class ModifierDonServlet extends HttpServlet {
             DonEspece don = donForm.modifierDonEspece(request);
             request.setAttribute(ATT_DONFORM,donForm);
             request.setAttribute(ATT_DON,don);
+            if(donForm.getErreurs().isEmpty())
+            {
+            	successMsg ="Le don a été bien modifié.";
+            }else {
+            	erreurMsg = "Veuillez vérifier les champs saisies.";
+            }
+            
+            request.setAttribute(ERREUR_MSG, erreurMsg);
+            request.setAttribute(SUCCESS_MSG, successMsg);
+            if(donForm.getErreurs().isEmpty())
+            	response.sendRedirect(request.getContextPath() + VUE);
+            else
+            	this.getServletContext().getRequestDispatcher( VUE_MODIF_DON_ESPECE ).forward( request, response );
         }
         else if (typeDon.equals("cheque"))
         {
@@ -96,6 +128,19 @@ public class ModifierDonServlet extends HttpServlet {
             DonCheque don = donForm.modifierDonCheque(request);
             request.setAttribute(ATT_DONFORM,donForm);
             request.setAttribute(ATT_DON,don);
+            if(donForm.getErreurs().isEmpty())
+            {
+            	successMsg ="Le don a été bien modifié.";
+            }else {
+            	erreurMsg = "Veuillez vérifier les champs saisies.";
+            }
+            
+            request.setAttribute(ERREUR_MSG, erreurMsg);
+            request.setAttribute(SUCCESS_MSG, successMsg);
+            if(donForm.getErreurs().isEmpty())
+            	response.sendRedirect(request.getContextPath() + VUE);
+            else
+            	this.getServletContext().getRequestDispatcher( VUE_MODIF_DON_CHEQUE ).forward( request, response );
         }
         else if(typeDon.equals("versement"))
         {
@@ -103,9 +148,21 @@ public class ModifierDonServlet extends HttpServlet {
             DonVersement don = donForm.modifierDonVersement(request);
             request.setAttribute(ATT_DONFORM,donForm);
             request.setAttribute(ATT_DON,don);
+            if(donForm.getErreurs().isEmpty())
+            {
+            	successMsg ="Le don a été bien modifié.";
+            }else {
+            	erreurMsg = "Veuillez vérifier les champs saisies.";
+            }
+            
+            request.setAttribute(ERREUR_MSG, erreurMsg);
+            request.setAttribute(SUCCESS_MSG, successMsg);
+            if(donForm.getErreurs().isEmpty())
+            	response.sendRedirect(request.getContextPath() + VUE);
+            else
+            	this.getServletContext().getRequestDispatcher( VUE_MODIF_DON_VERSEMENT ).forward( request, response );
         }
 
-        this.getServletContext().getRequestDispatcher( VUE_MODIF_DON).forward( request, response );
 
     }
     

@@ -1,5 +1,6 @@
 package com.sga.services;
 
+import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -49,7 +50,7 @@ public class DonneurPhysiqueForm {
 
 		DonneurPhysique donneurPhysique = new DonneurPhysique();
 		
-		donneurPhysique.setMotDePasse("password");
+		
 		try {
 			validationNom(nom);
 		} catch (Exception e) {
@@ -63,13 +64,15 @@ public class DonneurPhysiqueForm {
 			setErreurs(CHAMP_PRENOM, e.getMessage());
 		}
 		donneurPhysique.setPrenom(prenom);
-		
+				
 		try {
 			validationCin(cin);
 		} catch (Exception e) {
 			setErreurs(CHAMP_CIN, e.getMessage());
 		}
 		donneurPhysique.setCin(cin);
+		
+		donneurPhysique.setMotDePasse(cin + "@" + LocalDate.now().getYear());
 		
 		try {
 			validationEmail(email);
@@ -121,8 +124,6 @@ public DonneurPhysique modifierDonneurPhysique(HttpServletRequest request) {
 		String email = getValeurChamp(request,CHAMP_EMAIL);
 		String telephone = getValeurChamp(request,CHAMP_TELEPHONE);
 		String adresse = getValeurChamp(request,CHAMP_ADRESSE);
-		String motDePasse = getValeurChamp(request,CHAMP_MOT_DE_PASSE);
-
 
         Long id = Long.parseLong(getValeurChamp(request,INTERNAL_ID_DONATEUR));
         HibernateDonneurPhysiquePersister donneurPhysiquePers= new HibernateDonneurPhysiquePersister();

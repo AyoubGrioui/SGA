@@ -17,18 +17,43 @@ pageEncoding="UTF-8"%>
       defer
     ></script>
     <script src="./assets/js/init-secretaire.js"></script>
-    <script src="./assets/js/init-don.js"></script>
+    <script src="assets/js/init-alpine.js"></script>
   </head>
   <body>
     <div
       class="flex h-screen bg-gray-50 dark:bg-gray-900"
       :class="{ 'overflow-hidden': isSideMenuOpen}"
     >
-      <c:import url="Menu/sideMenuDonateurPage.jsp"></c:import>
+    	<c:if test="${vue.equals('/listeDesDonateurs')}">
+    		   <c:import url="Menu/sideMenuDonateurs.jsp"></c:import>
+    	</c:if>
+    	<c:if test="${vue.equals('/listeDonateur')}">
+    		 <c:import url="Menu/sideMenuDonateurPage.jsp"></c:import>
+    	</c:if>
+    	
+
       <div class="flex flex-col flex-1">
-        <c:import url="Menu/headerSecretaire.jsp"></c:import>
+        <c:if test="${vue.equals('/listeDesDonateurs')}">
+    		   <c:import url="Menu/headerMenu.jsp"></c:import>
+    	</c:if>
+    	<c:if test="${vue.equals('/listeDonateur')}">
+    		 <c:import url="Menu/headerSecretaire.jsp"></c:import>
+    	</c:if>
+        
 
         <main class="h-full pb-16 overflow-y-auto">
+          <c:if test="${successMsg !=null}">
+	        	<div class="bg-green-100 border-l-4 border-green-500 text-green-700 p-4" role="alert">
+				  <p class="font-bold">Succès</p>
+				  <p><c:out value="${successMsg}"/> </p>
+				</div>
+	      	</c:if>
+	      	<c:if test="${erreurMsg != null}">
+	        	<div class="bg-red-100 border-l-4 border-red-500 text-red-700 p-4" role="alert">
+				  <p class="font-bold">Erreur</p>
+				  <p><c:out value="${erreurMsg}"/></p>
+				</div>
+			</c:if>       
           <form method="POST" action="<c:url value="/modifierDonateur"/>">
             <div class="container px-6 mx-auto grid">
               <h2
@@ -52,6 +77,18 @@ pageEncoding="UTF-8"%>
                     name="idDonneur"
                     value="<c:out value="${donneur.idDonneur}"/>"
                   />
+                  <input
+                    type="text"
+                    hidden = "hidden"
+                    name="typeDonateur"
+                    value="physique"
+                  />
+                  <input
+                    type="text"
+                    hidden = "hidden"
+                    name="vue"
+                    value="<c:out value="${vue}"/>"
+                  />
                 <div class="mt-1 text-sm">
                   <div class="mt-2">
                   <div id="nouveauDonateur">
@@ -63,7 +100,7 @@ pageEncoding="UTF-8"%>
                     <select
                       class="block w-full mt-1 text-sm dark:text-gray-300 dark:border-gray-600 dark:bg-gray-700 form-select focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:focus:shadow-outline-gray"
                       onchange="typeDonateur(this)"
-                      name="typeDonateur"
+                      name="" disabled
                     >
                       <option value="physique">Physique</option>
                       <option value="morale">Morale</option>
@@ -162,13 +199,12 @@ pageEncoding="UTF-8"%>
                     <span class="text-gray-700 font-medium dark:text-gray-400"
                       >Adresse</span
                     >
-                    <textarea
+                    <input
                       class="block w-full mt-1 text-sm dark:text-gray-300 dark:border-gray-600 dark:bg-gray-700 form-textarea focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:focus:shadow-outline-gray"
-                      rows="3"
                       placeholder="Adresse"
                       name="adresseDonneurMorale"
                       value="<c:out value="${donneur.adresse}" />"
-                    ></textarea>
+                    ></input>
                     <span class="text-xs text-red-600 dark:text-red-400">
                       <c:out value="${donneurForm.erreurs['adresseDonneurMorale']}" />
                     </span>

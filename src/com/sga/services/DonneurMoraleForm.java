@@ -10,6 +10,7 @@ import com.sga.repositories.RepositoryFactory;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -58,6 +59,8 @@ public class DonneurMoraleForm {
 		}
 		donneurMorale.setNom(nom);
 		
+		donneurMorale.setMotDePasse(nom + "@" + LocalDate.now().getYear());
+		
 		try {
 			validationEmail(email);
 		} catch (Exception e) {
@@ -98,7 +101,7 @@ public class DonneurMoraleForm {
 	        }
 		donneurMorale.setStructure(structure);
 
-		donneurMorale.setMotDePasse("test");
+		
 		if(getErreurs().isEmpty())
 		{
 			HibernateDonneurMoralPersister donneurMoralPersister = new HibernateDonneurMoralPersister();
@@ -114,7 +117,6 @@ public DonneurMoral modifierDonneurMorale(HttpServletRequest request) {
 		String email = getValeurChamp(request,CHAMP_EMAIL);
 		String telephone = getValeurChamp(request,CHAMP_TELEPHONE);
 		String adresse = getValeurChamp(request,CHAMP_ADRESSE);
-		String motDePasse = getValeurChamp(request,CHAMP_MOT_DE_PASSE);
 		
         Long id = Long.parseLong(getValeurChamp(request,INTERNAL_ID_DONATEUR));
         HibernateDonneurMoralPersister donneurMoralePers = new HibernateDonneurMoralPersister();
@@ -213,6 +215,8 @@ public DonneurMoral modifierDonneurMorale(HttpServletRequest request) {
   	        throw new Exception( "Merci de saisir un mot de passe." );
   	    }
   	}
+  	
+  	
 
   
     /* ajoute un message correspondant au champ specifie a la map des erreurs */

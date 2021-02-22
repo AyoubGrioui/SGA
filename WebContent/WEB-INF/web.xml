@@ -27,4 +27,25 @@
     <location>/ErrorHandler</location>
 </error-page>
 
+ <!-- SMTP settings -->
+    <context-param>
+        <param-name>host</param-name>
+        <param-value>smtp.gmail.com</param-value>
+    </context-param>
+ 
+    <context-param>
+        <param-name>port</param-name>
+        <param-value>587</param-value>
+    </context-param>
+ 
+    <context-param id="useremail">
+        <param-name>user</param-name>
+        <param-value >association.digitals@gmail.com</param-value>
+    </context-param>
+ 
+    <context-param id="userpass">
+        <param-name>pass</param-name>
+        <param-value >digitals2021</param-value>
+    </context-param>
+
 </web-app>
