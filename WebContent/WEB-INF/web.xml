@@ -74,8 +74,6 @@
 		<url-pattern>/listeDonateur</url-pattern>
 		<url-pattern>/listeDon</url-pattern>
 		<url-pattern>/modifierDepense</url-pattern>
-		<url-pattern>/modifierDonateur</url-pattern>
-		<url-pattern>/ModifierDonneurServlet</url-pattern>
 		<url-pattern>/modifierDon</url-pattern>
 		<url-pattern>/structureParametre</url-pattern>
 		<url-pattern>/supprimerDepense</url-pattern>
@@ -84,7 +82,7 @@
 	
 	</filter-mapping>
 	
-		<filter>
+	<filter>
 		<filter-name>FilterPresident</filter-name>
 		<filter-class>com.sga.filters.FilterPresident</filter-class>
 	</filter>
@@ -100,7 +98,7 @@
 		<url-pattern>/listeDesSorties</url-pattern>
 		<url-pattern>/modifierAdherent</url-pattern>
 		<url-pattern>/supprimerAdherent</url-pattern>
-		<url-pattern>/supprimerDesDonneurs</url-pattern>
+		<url-pattern>/supprimerDonneur</url-pattern>
 		<url-pattern>/envoyerMail</url-pattern>
 
 	</filter-mapping>
@@ -112,8 +110,7 @@
 	<filter-mapping>
 		<filter-name>FilterDonateur</filter-name>
 		
-		<url-pattern>/indexDonateur</url-pattern>
-		
+		<url-pattern>/indexDonateur</url-pattern>		
 	</filter-mapping>
 	
 	<!-- Handling Http Error 404 -->

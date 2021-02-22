@@ -65,12 +65,12 @@ public class EmailSendingServlet extends HttpServlet {
     	// reads form fields
         String recipient =donneur.getEmail();
         String subject ="Suivi de Don";
-        String content = "l'association "+ structure.getNom() +" vous remercie pour votre don généreux ,"
+        String content = "L'association "+ structure.getNom() +" vous remercie pour votre don généreux ,\n"
         		 + "ci-dessous vous trouverez les informations nécessaires "
-        		 + "pour vous connecter à votre compte:\n"
+        		 + "pour vous connecter à votre compte:\n\n"
 
         		  +	"nom d'utilisateur: " + donneur.getEmail() +"\n"
-        			+"mot de passe: " + donneur.getMotDePasse() +"\n"
+        			+"mot de passe: " + donneur.getMotDePasse() +"\n\n"
 
         			+"Veuillez changer votre mot de passe "
         			+ "lorsque vous accéder à votre compte.\n"

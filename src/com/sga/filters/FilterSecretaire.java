@@ -35,19 +35,27 @@ public class FilterSecretaire implements Filter {
 		HttpServletResponse resp=(HttpServletResponse) response;
 		
 		HttpSession session=req.getSession();
+		Adherent secretaire=new Adherent();
+		String role =null;
 		
-		Adherent president =(Adherent) session.getAttribute(ATT_SESSION_USER);
-		String role=president.getLigneFonction().getFonction().getRole();
-		
-		if(session.getAttribute(ATT_SESSION_USER)==null ) {
+		try
+		{
+			secretaire = (Adherent) session.getAttribute(ATT_SESSION_USER);
+			role=secretaire.getLigneFonction().getFonction().getRole();					
+			if(session.getAttribute(ATT_SESSION_USER)==null ) {
+				
+				req.getRequestDispatcher(LOGIN_ADHERENT).forward(req, resp);
 			
-			req.getRequestDispatcher(LOGIN_ADHERENT).forward(req, resp);
-		
-		}else if(!role.equals("President(e)")) {
-			req.getRequestDispatcher(PAGE_ERREUR).forward(req, resp);	
-		} 
-		else {
-			chain.doFilter(req, resp);
+			}else if(role.equals("President(e)")) {
+				req.getRequestDispatcher(PAGE_ERREUR).forward(req, resp);	
+			} 
+			else {
+				chain.doFilter(req, resp);
+			}
+		}
+		catch(Exception | Error e)
+		{
+			resp.sendRedirect(req.getContextPath() + PAGE_ERREUR);
 		}
 	}
 

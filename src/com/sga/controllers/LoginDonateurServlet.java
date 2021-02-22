@@ -24,7 +24,7 @@ public class LoginDonateurServlet extends HttpServlet {
      */
     private static final long  serialVersionUID = 1L;
     public static final String VUE_LOGIN        = "/WEB-INF/loginDonateur.jsp";
-    public static final String ATT_SESSION_USER = "user";
+    public static final String ATT_SESSION_USER = "userDonateur";
     public static final String  COOKIE_DERNIERE_CONNEXION = "derniereConnexion";
     public static final String  FORMAT_DATE               = "dd/MM/yyyy";
     public static final String  CHAMP_MEMOIRE             = "memoire";

@@ -1,10 +1,12 @@
 package com.sga.services;
 
 import com.sga.entities.Adherent;
+import com.sga.entities.Donneur;
 import com.sga.entities.DonneurMoral;
 import com.sga.entities.Structure;
 import com.sga.repositories.HibernateAdherentPersister;
 import com.sga.repositories.HibernateDonneurMoralPersister;
+import com.sga.repositories.HibernateDonneurPersister;
 import com.sga.repositories.HibernateStructurePersister;
 import com.sga.repositories.Repository;
 import com.sga.repositories.RepositoryFactory;
@@ -192,10 +194,10 @@ public DonneurMoral modifierDonneurMorale(HttpServletRequest request) {
 	
 	private boolean isEmailUnique(String mail)
 	{
-		HibernateAdherentPersister adherentPersister=new HibernateAdherentPersister();
-		Adherent adherent = adherentPersister.getByEmail(mail);
+		HibernateDonneurPersister donneurPersister=new HibernateDonneurPersister();
+		Donneur donneur = donneurPersister.getByEmail(mail);
 		
-		if(adherent== null)
+		if(donneur== null)
 			return true;
 		
 		return false;

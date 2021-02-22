@@ -27,10 +27,14 @@ public class Filter implements javax.servlet.Filter {
 		
 		HttpSession session=req.getSession();
 		
-		if(session.getAttribute(ATT_SESSION_USER) == null && session.getAttribute(ATT_SESSION_USER2) == null ) {
-			req.getRequestDispatcher(HOME_PAGE).forward(req, resp);	
-		} 
+		if(session.getAttribute(ATT_SESSION_USER) == null && session.getAttribute(ATT_SESSION_USER2) == null ) 
+		{
+			resp.sendRedirect(req.getContextPath() + HOME_PAGE);
+		}
+		else
+		{
 			chain.doFilter(req, resp);			
+		}
 	}
 
 }

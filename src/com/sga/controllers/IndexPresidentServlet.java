@@ -5,6 +5,7 @@ import com.sga.entities.Depense;
 import com.sga.entities.DonCheque;
 import com.sga.entities.DonEspece;
 import com.sga.entities.DonVersement;
+import com.sga.entities.Donneur;
 import com.sga.repositories.HibernateAdherentPersister;
 import com.sga.repositories.HibernateDepensePersister;
 import com.sga.repositories.HibernateDonChequePersister;
@@ -42,6 +43,9 @@ public class IndexPresidentServlet extends HttpServlet {
     protected void doGet( HttpServletRequest request, HttpServletResponse response )
             throws ServletException, IOException
     {
+    	   	
+        HttpSession session = request.getSession();
+    	    	
         HibernateDonPersister donPersister =new HibernateDonPersister();
         HibernateDepensePersister depensePersister= new HibernateDepensePersister();
         HibernateAdherentPersister adherentPersister = new HibernateAdherentPersister();

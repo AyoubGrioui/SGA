@@ -8,9 +8,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import com.sga.entities.Adherent;
+import com.sga.entities.Donneur;
 import com.sga.entities.DonneurPhysique;
 import com.sga.entities.Structure;
 import com.sga.repositories.HibernateAdherentPersister;
+import com.sga.repositories.HibernateDonneurPersister;
 import com.sga.repositories.HibernateDonneurPhysiquePersister;
 import com.sga.repositories.HibernateStructurePersister;
 
@@ -245,10 +247,10 @@ public DonneurPhysique modifierDonneurPhysique(HttpServletRequest request) {
 	
 	private boolean isEmailUnique(String mail)
 	{
-		HibernateAdherentPersister adherentPersister=new HibernateAdherentPersister();
-		Adherent adherent = adherentPersister.getByEmail(mail);
+		HibernateDonneurPersister donneurPersister=new HibernateDonneurPersister();
+		Donneur donneur = donneurPersister.getByEmail(mail);
 		
-		if(adherent== null)
+		if(donneur== null)
 			return true;
 		
 		return false;

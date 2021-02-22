@@ -22,11 +22,9 @@ import com.sga.entities.Donneur;
 public class FilterDonateur implements javax.servlet.Filter {
 
 	public static final String LOGIN_DONATEUR="/loginDonateur";
-	//public static final String PAGE_ERREUR="/404Page.jsp";
 	public static final String ATT_SESSION_USER = "userDonateur";
 	
 	public void destroy() {
-		// TODO Auto-generated method stub
 	}
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
 		
@@ -35,10 +33,10 @@ public class FilterDonateur implements javax.servlet.Filter {
 		
 		HttpSession session=req.getSession();
 		
-		if(session.getAttribute(ATT_SESSION_USER)==null ) {
-			
+		if(session.getAttribute(ATT_SESSION_USER)==null ) {			
 			req.getRequestDispatcher(LOGIN_DONATEUR).forward(req, resp);
-		}else {
+		}
+		else {
 			chain.doFilter(req, resp);
 		}
 			

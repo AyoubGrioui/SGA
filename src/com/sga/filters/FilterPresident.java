@@ -25,7 +25,6 @@ public class FilterPresident implements Filter {
 	public static final String ATT_SESSION_USER = "userAdherent";
 	
 	public void destroy() {
-		// TODO Auto-generated method stub
 	}
 
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
@@ -34,18 +33,24 @@ public class FilterPresident implements Filter {
 		
 		
 		HttpSession session=req.getSession();
-		
-		Adherent president =(Adherent) session.getAttribute(ATT_SESSION_USER);
-		String role=president.getLigneFonction().getFonction().getRole();
-		
-		if(session.getAttribute(ATT_SESSION_USER) == null ) {
-			req.getRequestDispatcher(LOGIN_ADHERENT).forward(req, resp);
+		try
+		{
+			Adherent president =(Adherent) session.getAttribute(ATT_SESSION_USER);
+			String role=president.getLigneFonction().getFonction().getRole();
 			
-		}else if(role.equals("Secretaire")) {
-			req.getRequestDispatcher(PAGE_ERREUR).forward(req, resp);	
+			if(session.getAttribute(ATT_SESSION_USER) == null ) {
+				req.getRequestDispatcher(LOGIN_ADHERENT).forward(req, resp);
+				
+			}else if(role.equals("Secretaire")) {
+				req.getRequestDispatcher(PAGE_ERREUR).forward(req, resp);	
+			}
+			else {
+				chain.doFilter(req, resp);
+			}
 		}
-		else {
-			chain.doFilter(req, resp);
+		catch(Exception | Error e)
+		{
+			resp.sendRedirect(req.getContextPath() + PAGE_ERREUR);
 		}
 	}
 

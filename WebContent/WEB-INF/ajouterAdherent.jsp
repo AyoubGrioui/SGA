@@ -270,8 +270,8 @@ pageEncoding="UTF-8"%>
                     name="roleFonction"
                     class="block w-full mt-1 text-sm dark:text-gray-300 dark:border-gray-600 dark:bg-gray-700 form-select focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:focus:shadow-outline-gray"
                   >
-                    <option value="president(e)">Président(e)</option>
-                    <option value="secretaire">Secretaire</option>
+                    <option value="President(e)">Président(e)</option>
+                    <option value="Secretaire">Secretaire</option>
                     <option value="Trésorier/Trésorière">Trésorier/Trésorière</option>
                     <option value="Autre">Autre</option>
                   </select>

@@ -38,6 +38,8 @@ public class IndexDonateurServlet extends HttpServlet {
         {
         	session.setAttribute(ATT_DON_LIST,donneur.getDonList());
         }
+        
+        System.out.println("Donneur index");
 
         request.setAttribute(ATT_DONNEUR, donneur);
 

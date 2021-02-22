@@ -50,6 +50,12 @@ public class LoginAdherentServlet extends HttpServlet {
             this.getServletContext().getRequestDispatcher(VUE_LOGIN).forward(request, response);
             }
 
+	/**
+	 *
+	 */
+	/**
+	 *
+	 */
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException 
 	{
 		HttpSession session =req.getSession();
@@ -85,9 +91,9 @@ public class LoginAdherentServlet extends HttpServlet {
         {
         	String role = user.getLigneFonction().getFonction().getRole();
         	
-			if(role.equals( "president(e)")) 
+			if(role.equals( "President(e)")) 
 				resp.sendRedirect(req.getContextPath() + "/indexPresident");
-			if(role.equals("secretaire")) 
+			if(role.equals("Secretaire")) 
 				resp.sendRedirect(req.getContextPath() + "/indexSecretaire");
 			       
 		}
