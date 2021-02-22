@@ -44,15 +44,16 @@ public class LoginDonateurServlet extends HttpServlet {
     {
         HttpSession session =req.getSession();
         Donneur user = (Donneur) session.getAttribute(ATT_SESSION_USER);
-
-
         LoginDonneurForm loginDonneurForm = new LoginDonneurForm();
-        user = loginDonneurForm.creerDonneur(req);
-
-        if(!loginDonneurForm.getErreurs().isEmpty())
-            session.setAttribute(ATT_SESSION_USER,user);
-        else
-            session.setAttribute(ATT_SESSION_USER,null);
+		if(user==null)
+        {
+            user = loginDonneurForm.creerDonneur(req);
+            
+            if(loginDonneurForm.getErreurs().isEmpty())
+                session.setAttribute(ATT_SESSION_USER,user);
+            else
+                session.setAttribute(ATT_SESSION_USER,null);
+        }
 
 
         /* Si et seulement si la case du formulaire est cochée */
@@ -76,10 +77,14 @@ public class LoginDonateurServlet extends HttpServlet {
         
         if(user !=  null)
         {
-			this.getServletContext().getRequestDispatcher(VUE_DASHBOARD_DONATEUR).forward(req, resp);
+            resp.sendRedirect( req.getContextPath() + "/indexDonateur" );
         }
         
-        resp.sendRedirect( req.getContextPath() + "/loginDonateur" );
+        else
+        {
+            resp.sendRedirect( req.getContextPath() + "/loginDonateur" );
+        }
+        
     }
 
     /**

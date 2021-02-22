@@ -63,8 +63,8 @@ public class EmailSendingServlet extends HttpServlet {
         String recipient =donneur.getEmail();
         String subject ="Suivi de Don";
         String content = donneur.getMotDePasse();   
-        String successMsg = "";
-        String errorMsg = "";
+        String successMsg = null;
+        String errorMsg = null;
         
  
         try {

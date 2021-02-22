@@ -1,7 +1,9 @@
 package com.sga.services;
 
+import com.sga.entities.Adherent;
 import com.sga.entities.DonneurMoral;
 import com.sga.entities.Structure;
+import com.sga.repositories.HibernateAdherentPersister;
 import com.sga.repositories.HibernateDonneurMoralPersister;
 import com.sga.repositories.HibernateStructurePersister;
 import com.sga.repositories.Repository;
@@ -161,15 +163,33 @@ public DonneurMoral modifierDonneurMorale(HttpServletRequest request) {
 	
 /*Foction de validation d'un adresse email*/
 	
+	
 	private void validationEmail( String email ) throws Exception {
-        if ( email != null && !email.matches( "([^.@]+)(\\.[^.@]+)*@([^.@]+\\.)+([^.@]+)" ) ) {
-            throw new Exception( "Merci de saisir une adresse mail valide." );
-        }
-        else if( email == null )
+	    if ( email != null && !email.matches( "([^.@]+)(\\.[^.@]+)*@([^.@]+\\.)+([^.@]+)" ) ) {
+	        throw new Exception( "Merci de saisir une adresse mail valide." );
+	    }
+	    else if( email == null )
 	    {
 	        throw new Exception( "Merci de saisir une adresse mail." );
 	    }
-    }
+	    else
+	    {
+	    	if(!isEmailUnique(email))
+		      throw new Exception( "l'email que vous avez entrer ." );
+
+	    }
+	}
+	
+	private boolean isEmailUnique(String mail)
+	{
+		HibernateAdherentPersister adherentPersister=new HibernateAdherentPersister();
+		Adherent adherent = adherentPersister.getByEmail(mail);
+		
+		if(adherent== null)
+			return true;
+		
+		return false;
+	}
 	
 /*Fonction de validation de numero de telephone */
 	

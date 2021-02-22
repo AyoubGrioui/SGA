@@ -456,7 +456,7 @@ public class AdherentForm {
 	    else
 	    {
 	    	if(!isEmailUnique(email))
-		      throw new Exception( "Merci de saisir une adresse mail." );
+		      throw new Exception( "l'email que vous avez entrer ." );
 
 	    }
 	}

@@ -15,7 +15,8 @@ pageEncoding="UTF-8"%>
          <span
           class="ml-6 text-lg items-center font-bold text-gray-800 dark:text-gray-200"
         >
-          Nom association ${true}
+                      <c:out value="${structure.nom }"/>
+          
         </span>
 
         <div class="flex justify-end flex-1 lg:mr-40"></div>

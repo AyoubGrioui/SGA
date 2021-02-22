@@ -26,6 +26,7 @@ public class LoginDonneurForm {
 
     public Donneur creerDonneur(HttpServletRequest req)
     {
+
         String userEmail = getValeurChamp(req,CHAMPS_EMAIL);
         String userPassword = getValeurChamp(req,CHAMPS_PASSWORD);
 
@@ -93,13 +94,12 @@ public class LoginDonneurForm {
 
     //Foction de validation du mot de passe
     private boolean validationMotDePasse( String motDePasse ,  Donneur donneur) throws Exception {
-        if ( motDePasse == null || motDePasse.length()<8 ) {
+        if ( motDePasse == null  ) {
             throw new Exception( "Merci de saisir un mot de passe valide." );
         }
         else if ( donneur !=null)
         {
-            String encPassword = traiterMotsDePasse(motDePasse);
-            if(donneur.getMotDePasse().equals(encPassword))
+            if(donneur.getMotDePasse().equals(motDePasse))
                 return true;
         }
 
