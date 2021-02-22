@@ -7,8 +7,10 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import com.sga.entities.Adherent;
 import com.sga.entities.DonneurPhysique;
 import com.sga.entities.Structure;
+import com.sga.repositories.HibernateAdherentPersister;
 import com.sga.repositories.HibernateDonneurPhysiquePersister;
 import com.sga.repositories.HibernateStructurePersister;
 
@@ -45,8 +47,6 @@ public class DonneurPhysiqueForm {
 		String email = getValeurChamp(request,CHAMP_EMAIL);
 		String telephone = getValeurChamp(request,CHAMP_TELEPHONE);
 		String adresse = getValeurChamp(request,CHAMP_ADRESSE);
-		String motDePasse = getValeurChamp(request,CHAMP_MOT_DE_PASSE);
-
 
 		DonneurPhysique donneurPhysique = new DonneurPhysique();
 		
@@ -124,6 +124,7 @@ public DonneurPhysique modifierDonneurPhysique(HttpServletRequest request) {
 		String email = getValeurChamp(request,CHAMP_EMAIL);
 		String telephone = getValeurChamp(request,CHAMP_TELEPHONE);
 		String adresse = getValeurChamp(request,CHAMP_ADRESSE);
+		String motDePasse = getValeurChamp(request,CHAMP_MOT_DE_PASSE);
 
         Long id = Long.parseLong(getValeurChamp(request,INTERNAL_ID_DONATEUR));
         HibernateDonneurPhysiquePersister donneurPhysiquePers= new HibernateDonneurPhysiquePersister();
@@ -170,6 +171,16 @@ public DonneurPhysique modifierDonneurPhysique(HttpServletRequest request) {
 			setErreurs(CHAMP_ADRESSE, e.getMessage());
 		}
 		donneurPhysique.setAdresse(adresse);
+		
+		try
+		{
+			validationMotDePasse(motDePasse);
+		}
+		catch(Exception e)
+		{
+			setErreurs(CHAMP_MOT_DE_PASSE,e.getMessage());
+		}
+		donneurPhysique.setMotDePasse(motDePasse);
 
 
 
@@ -216,15 +227,32 @@ public DonneurPhysique modifierDonneurPhysique(HttpServletRequest request) {
 	
 /*Foction de validation d'un adresse email*/
 	
-	private void validationEmail( String email ) throws Exception {
-        if ( email != null && !email.matches( "([^.@]+)(\\.[^.@]+)*@([^.@]+\\.)+([^.@]+)" ) ) {
-            throw new Exception( "Merci de saisir une adresse mail valide." );
-        }
-        else if( email == null )
+    private void validationEmail( String email ) throws Exception {
+	    if ( email != null && !email.matches( "([^.@]+)(\\.[^.@]+)*@([^.@]+\\.)+([^.@]+)" ) ) {
+	        throw new Exception( "Merci de saisir une adresse mail valide." );
+	    }
+	    else if( email == null )
 	    {
 	        throw new Exception( "Merci de saisir une adresse mail." );
 	    }
-    }
+	    else
+	    {
+	    	if(!isEmailUnique(email))
+		      throw new Exception( "l'email que vous avez entrer déja lier a un Donnateur ." );
+
+	    }
+	}
+	
+	private boolean isEmailUnique(String mail)
+	{
+		HibernateAdherentPersister adherentPersister=new HibernateAdherentPersister();
+		Adherent adherent = adherentPersister.getByEmail(mail);
+		
+		if(adherent== null)
+			return true;
+		
+		return false;
+	}
 	
 /*Fonction de validation de numero de telephone */
 	

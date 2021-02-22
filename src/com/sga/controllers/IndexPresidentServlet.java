@@ -32,7 +32,7 @@ public class IndexPresidentServlet extends HttpServlet {
      */
     private static final long  serialVersionUID        = 1L;
     public static final String VUE_DASHBOARD_PRESIDENT = "/WEB-INF/indexPresident.jsp";
-    public static final String ATT_SESSION_USER="user";
+    public static final String ATT_SESSION_USER="userAdherent";
     private static final String ATT_ADHERENT_SIZE = "adherentSize" ;
     private static final String ATT_DON_SIZE = "donSize";
     private static final String ATT_DEPENSE_MONTANT = "depenseMontant";

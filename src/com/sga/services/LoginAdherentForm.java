@@ -81,6 +81,10 @@ public class LoginAdherentForm
         if ( email != null && email.matches( "([^.@]+)(\\.[^.@]+)*@([^.@]+\\.)+([^.@]+)" ) ) {
 
            Adherent adherent=adherentPersister.getByEmail(email);
+           if(adherent==null)
+           {
+            throw new Exception( "Merci de saisir une adresse mail valide." );   
+           }
            return  adherent;
         }
         else

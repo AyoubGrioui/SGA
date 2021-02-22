@@ -26,8 +26,9 @@ public class IndexDonateurServlet extends HttpServlet {
      */
     private static final long  serialVersionUID       = 1L;
     public static final String VUE_DASHBOARD_DONATEUR = "/WEB-INF/indexDonateur.jsp";
-    public static final String ATT_SESSION_USER = "user";
+    public static final String ATT_SESSION_USER = "userDonateur";
     public static final String ATT_DON_LIST = "donList";
+    public static final String ATT_DONNEUR = "donneur";
 
     protected void doGet( HttpServletRequest request, HttpServletResponse response )
             throws ServletException, IOException {
@@ -37,6 +38,8 @@ public class IndexDonateurServlet extends HttpServlet {
         {
         	session.setAttribute(ATT_DON_LIST,donneur.getDonList());
         }
+
+        request.setAttribute(ATT_DONNEUR, donneur);
 
         this.getServletContext().getRequestDispatcher( VUE_DASHBOARD_DONATEUR ).forward( request, response );
     }

@@ -270,10 +270,10 @@ pageEncoding="UTF-8"%>
                     name="roleFonction"
                     class="block w-full mt-1 text-sm dark:text-gray-300 dark:border-gray-600 dark:bg-gray-700 form-select focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:focus:shadow-outline-gray"
                   >
-                    <option>Président(e)</option>
-                    <option>Secretaire</option>
-                    <option>Trésorier/Trésorière</option>
-                    <option>Autre</option>
+                    <option value="president(e)">Président(e)</option>
+                    <option value="secretaire">Secretaire</option>
+                    <option value="Trésorier/Trésorière">Trésorier/Trésorière</option>
+                    <option value="Autre">Autre</option>
                   </select>
                   <span class="text-xs text-red-600 dark:text-red-400">
                     <c:out value="${erreurs['roleFonction']}"/>

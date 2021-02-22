@@ -50,7 +50,6 @@ public class DonneurMoraleForm {
 		String email = getValeurChamp(request,CHAMP_EMAIL);
 		String telephone = getValeurChamp(request,CHAMP_TELEPHONE);
 		String adresse = getValeurChamp(request,CHAMP_ADRESSE);
-		String motDePasse = getValeurChamp(request,CHAMP_MOT_DE_PASSE);
 		
 		DonneurMoral donneurMorale = new DonneurMoral();
 		
@@ -119,7 +118,8 @@ public DonneurMoral modifierDonneurMorale(HttpServletRequest request) {
 		String email = getValeurChamp(request,CHAMP_EMAIL);
 		String telephone = getValeurChamp(request,CHAMP_TELEPHONE);
 		String adresse = getValeurChamp(request,CHAMP_ADRESSE);
-		
+		String motDePasse = getValeurChamp(request,CHAMP_MOT_DE_PASSE);
+
         Long id = Long.parseLong(getValeurChamp(request,INTERNAL_ID_DONATEUR));
         HibernateDonneurMoralPersister donneurMoralePers = new HibernateDonneurMoralPersister();
         DonneurMoral donneurMorale = donneurMoralePers.read(id);
@@ -152,6 +152,16 @@ public DonneurMoral modifierDonneurMorale(HttpServletRequest request) {
 		}
 		donneurMorale.setAdresse(adresse);
 		
+		try
+		{
+			validationMotDePasse(motDePasse);
+		}
+		catch(Exception e)
+		{
+			setErreurs(CHAMP_MOT_DE_PASSE,e.getMessage());
+		}
+		donneurMorale.setMotDePasse(motDePasse);
+		
 		
 		if(getErreurs().isEmpty())
 		{
@@ -175,7 +185,7 @@ public DonneurMoral modifierDonneurMorale(HttpServletRequest request) {
 	    else
 	    {
 	    	if(!isEmailUnique(email))
-		      throw new Exception( "l'email que vous avez entrer ." );
+		      throw new Exception( "l'email que vous avez entrer déja lier a un Donnateur ." );
 
 	    }
 	}

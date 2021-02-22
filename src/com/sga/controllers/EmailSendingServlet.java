@@ -24,6 +24,7 @@ import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
 
 import com.sga.entities.Donneur;
+import com.sga.entities.Structure;
 import com.sga.helpers.EmailUtility;
 import com.sga.repositories.HibernateDonneurPersister;
  
@@ -41,6 +42,7 @@ public class EmailSendingServlet extends HttpServlet {
     private String user;
     private String pass;
     private static final String PARAM_ID_DONNEUR="donneurID";
+	private static final String ATT_STRUCTURE = "structure";
  
     public void init() {
         // reads SMTP server setting from web.xml file
@@ -56,13 +58,23 @@ public class EmailSendingServlet extends HttpServlet {
         
     	HibernateDonneurPersister donneurPersister =new HibernateDonneurPersister();
     	Donneur donneur = donneurPersister.read(Long.parseLong(getValeurChamp(request, PARAM_ID_DONNEUR)));
-    	
+    	HttpSession session=request.getSession();
+    	Structure structure=(Structure) session.getAttribute(ATT_STRUCTURE);
     	
     	
     	// reads form fields
         String recipient =donneur.getEmail();
         String subject ="Suivi de Don";
-        String content = donneur.getMotDePasse();   
+        String content = "l'association "+ structure.getNom() +" vous remercie pour votre don généreux ,"
+        		 + "ci-dessous vous trouverez les informations nécessaires "
+        		 + "pour vous connecter à votre compte:\n"
+
+        		  +	"nom d'utilisateur: " + donneur.getEmail() +"\n"
+        			+"mot de passe: " + donneur.getMotDePasse() +"\n"
+
+        			+"Veuillez changer votre mot de passe "
+        			+ "lorsque vous accéder à votre compte.\n"
+        			+ "Cordialement";   
         String successMsg = null;
         String errorMsg = null;
         
@@ -70,18 +82,16 @@ public class EmailSendingServlet extends HttpServlet {
         try {
             EmailUtility.sendEmail(host, port, user, pass, recipient, subject,
                     content);
-            successMsg = "The e-mail was sent successfully";
+            successMsg = "l'email a été envoyé avec succés";
         } catch (Exception ex) {
             ex.printStackTrace();
-            errorMsg = "There were an error: " + ex.getMessage();
-        } finally {
-            HttpSession session =request.getSession();
-            
+            errorMsg = "Veulliez vérifier votre connexion";
+        } finally {            
             session.setAttribute("erreurMsg", errorMsg);
     		session.setAttribute("successMsg",successMsg);        	
             response.sendRedirect(request.getContextPath() + "/listeDesDonateurs");
 
-
+            
         }
         
     }

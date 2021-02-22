@@ -32,7 +32,7 @@ public class IndexSecretaireServlet extends HttpServlet {
      */
     private static final long  serialVersionUID         = 1L;
     public static final String VUE_DASHBOARD_SECRETAIRE = "/WEB-INF/indexSecretaire.jsp";
-    private static final String ATT_SESSION_USER = "user" ;
+    private static final String ATT_SESSION_USER = "userAdherent" ;
     private static final String ATT_ADHERENT_SIZE = "adherentSize" ;
     private static final String ATT_DON_SIZE = "donSize";
     private static final String ATT_DEPENSE_MONTANT = "depenseMontant";

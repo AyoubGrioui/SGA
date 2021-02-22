@@ -22,7 +22,7 @@ public class DepenseForm {
     public static final String CHAMP_DATE_DEPENSE="dateDepense";
     public static final String CHAMP_TYPE_DEPENSE="typeDepense";
 	public static final String ATT_STRUCTURE = "structure";
-	public static final String ATT_USER = "user";
+	public static final String ATT_USER = "userAdherent";
     public static final String INTERNAL_ID_DEPENSE = "idDepense";
     
 

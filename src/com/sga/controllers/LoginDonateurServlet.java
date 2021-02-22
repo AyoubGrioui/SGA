@@ -35,6 +35,16 @@ public class LoginDonateurServlet extends HttpServlet {
 
     protected void doGet( HttpServletRequest request, HttpServletResponse response )
             throws ServletException, IOException {
+    	
+    	HttpSession session =request.getSession();
+		try {
+        Donneur user = (Donneur) session.getAttribute(ATT_SESSION_USER);
+		}
+		catch(Exception e)
+		{
+			session.setAttribute(ATT_SESSION_USER, null);
+		}
+		
         this.getServletContext().getRequestDispatcher(VUE_LOGIN).forward(request, response);
 
     }
@@ -43,18 +53,14 @@ public class LoginDonateurServlet extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException
     {
         HttpSession session =req.getSession();
-        Donneur user = (Donneur) session.getAttribute(ATT_SESSION_USER);
         LoginDonneurForm loginDonneurForm = new LoginDonneurForm();
-		if(user==null)
-        {
-            user = loginDonneurForm.creerDonneur(req);
+        Donneur    user = loginDonneurForm.creerDonneur(req);
             
-            if(loginDonneurForm.getErreurs().isEmpty())
-                session.setAttribute(ATT_SESSION_USER,user);
-            else
-                session.setAttribute(ATT_SESSION_USER,null);
-        }
-
+        if(loginDonneurForm.getErreurs().isEmpty())
+            session.setAttribute(ATT_SESSION_USER,user);
+        else
+            session.setAttribute(ATT_SESSION_USER,null);
+        
 
         /* Si et seulement si la case du formulaire est cochée */
         if ( req.getParameter( CHAMP_MEMOIRE ) != null ) {

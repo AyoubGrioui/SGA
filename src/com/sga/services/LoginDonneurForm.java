@@ -82,6 +82,10 @@ public class LoginDonneurForm {
         if ( email != null && email.matches( "([^.@]+)(\\.[^.@]+)*@([^.@]+\\.)+([^.@]+)" ) ) 
         {
             Donneur donneur=donneurPersister.getByEmail(email);
+            if(donneur==null)
+            {
+             throw new Exception( "Merci de saisir une adresse mail valide." );   
+            }
             return  donneur;
         }
         else

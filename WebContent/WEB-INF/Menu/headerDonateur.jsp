@@ -22,10 +22,61 @@ pageEncoding="UTF-8"%>
         <div class="flex justify-end flex-1 lg:mr-40"></div>
         <ul class="flex items-center flex-shrink-0 space-x-6">
         <!-- Profile menu -->
-          <li class="relative">
-            <a
+		<li class="relative">
+            <button
+              class="align-middle focus:shadow-outline-purple focus:outline-none "
+              @click="toggleProfileMenu"
+              @keydown.escape="closeProfileMenu"
+              aria-label="Account"
+              aria-haspopup="true"
+            >
+            <c:out value="${donneur.nom}" />
+            </button>
+            <template x-if="isProfileMenuOpen">
+              <ul
+                x-transition:leave="transition ease-in duration-150"
+                x-transition:leave-start="opacity-100"
+                x-transition:leave-end="opacity-0"
+                @click.away="closeProfileMenu"
+                @keydown.escape="closeProfileMenu"
+                class="absolute right-0 w-56 p-2 mt-2 space-y-2 text-gray-600 bg-white border border-gray-100 rounded-md shadow-md dark:border-gray-700 dark:text-gray-300 dark:bg-gray-700"
+                aria-label="submenu"
+              >
+                <li class="flex">
+                  <a
                     class="inline-flex items-center w-full px-2 py-1 text-sm font-semibold transition-colors duration-150 rounded-md hover:bg-gray-100 hover:text-gray-800 dark:hover:bg-gray-800 dark:hover:text-gray-200"
-                    href="#"
+                    href="<c:url value="/modifierDonateur"><c:param name="donneurID" value="${donneur.idDonneur}" /></c:url>"
+                  >
+                <svg
+                  class="w-5 h-5 mr-3"
+                  aria-hidden="true"
+                  fill="none"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"
+                  ></path>
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
+                  ></path>
+                </svg>
+                    <span>Paramètre</span>
+                  </a>
+                </li>
+                <li class="flex">
+                  <a
+                    class="inline-flex items-center w-full px-2 py-1 text-sm font-semibold transition-colors duration-150 rounded-md hover:bg-gray-100 hover:text-gray-800 dark:hover:bg-gray-800 dark:hover:text-gray-200"
+                    href="<c:url value="/deconnexion"></c:url>"
                   >
                     <svg
                       class="w-4 h-4 mr-3"
@@ -43,6 +94,9 @@ pageEncoding="UTF-8"%>
                     </svg>
                     <span>Se déconnecter</span>
                   </a>
+                </li>
+              </ul>
+            </template>
           </li>
            <!-- Theme toggler -->
           <li class="flex">

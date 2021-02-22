@@ -64,6 +64,7 @@ pageEncoding="UTF-8"%>
                   type="email"
                   name="userEmail"
                   class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input"
+                  value="<c:out value="${user.email }"/>"
                 />
                   <span class="text-xs text-red-600 dark:text-red-400">
                     <c:out value="${loginDonneurForm.erreurs['userEmail']}" />
@@ -79,6 +80,8 @@ pageEncoding="UTF-8"%>
                   name="userPassword"
                   class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input"
                   s'
+                  value="<c:out value="${user.motDePasse }"/>"
+                  
                 />
                 <span class="text-xs text-red-600 dark:text-red-400">
                     <c:out value="${loginDonneurForm.erreurs['userPassword']}" />

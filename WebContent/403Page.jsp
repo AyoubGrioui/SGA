@@ -6,7 +6,7 @@ pageEncoding="UTF-8"%>
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Page introuvable</title>
+    <title>accès interdit</title>
     <link
       href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
       rel="stylesheet"
@@ -39,10 +39,10 @@ pageEncoding="UTF-8"%>
               ></path>
             </svg>
             <h1 class="text-6xl font-semibold text-gray-700 dark:text-gray-200">
-              404
+              403
             </h1>
             <p class="text-gray-700 dark:text-gray-300">
-              Page introuvable. Veuillez vérifier l'adresse ou
+              accès interdit. Veuillez
 				<button class="text-purple-600 hover:underline dark:text-purple-300"  onclick="history.back()"> 
          				revenir en arrière.
     			  </button>
