@@ -22,128 +22,118 @@ import com.sga.repositories.HibernateStructurePersister;
 /**
  * Servlet implementation class DashBoardDonateurServlet
  */
-@SuppressWarnings("serial")
-@WebServlet("/modifierDonateur")
+@SuppressWarnings( "serial" )
+@WebServlet( "/modifierDonateur" )
 public class ModifierDonateurServlet extends HttpServlet {
 
-	public static final String VUE_MODIF_DONATEUR_PHYSIQUE = "/WEB-INF/modifDonateurPhysique.jsp";
-	public static final String VUE_MODIF_DONATEUR_MORALE = "/WEB-INF/modifDonateurMorale.jsp";
-    public static final String ATT_DONATEURFORM = "donneurForm";
-    public static final String ATT_DONATEUR = "donneur";
-    private static final String ATT_LIST_STRUCTURE = "structureList";
-    public static final String PARAM_TYPEDONATEUR = "typeDonateur";
-	//public static final String INTERNAL_ID_DONATEUR = "ID";
-	public static final String INTERNAL_ID_DONATEUR = "idDonneur";
-	private static final String SUCCESS_MSG = "successMsg";
-	private static final String ERREUR_MSG = "erreurMsg";
+    public static final String  VUE_MODIF_DONATEUR_PHYSIQUE = "/WEB-INF/modifDonateurPhysique.jsp";
+    public static final String  VUE_MODIF_DONATEUR_MORALE   = "/WEB-INF/modifDonateurMorale.jsp";
+    public static final String  ATT_DONATEURFORM            = "donneurForm";
+    public static final String  ATT_DONATEUR                = "donneur";
+    private static final String ATT_LIST_STRUCTURE          = "structureList";
+    public static final String  PARAM_TYPEDONATEUR          = "typeDonateur";
+    public static final String  INTERNAL_ID_DONATEUR        = "idDonneur";
+    private static final String SUCCESS_MSG                 = "successMsg";
+    private static final String ERREUR_MSG                  = "erreurMsg";
 
-    
-	public static final String PARAMETRE_ID_DONATEUR = "donneurID";
-	
-	//public static final String VUE = "/listeDonateur";
+    public static final String  PARAMETRE_ID_DONATEUR       = "donneurID";
+
+    // public static final String VUE = "/listeDonateur";
 
     protected void doGet( HttpServletRequest request, HttpServletResponse response )
-            throws ServletException, IOException{
-    	
-    	String url = request.getHeader("referer");
-    	String vue = "/"+url.substring(url.lastIndexOf('/')+1);
-    	request.setAttribute("vue", vue);
-    	
-    	
-    	 HibernateDonneurPersister donneurPersister =new HibernateDonneurPersister();
+            throws ServletException, IOException {
 
- 		
- 		/*Recuperation du param */
- 		String idDonneur = getValeurParametre(request, PARAMETRE_ID_DONATEUR);
- 		
- 		// si l'id n'est pas vide 
- 		
- 		if(idDonneur != null) {
- 			
- 			Long id = Long.parseLong(idDonneur);
+        String url = request.getHeader( "referer" );
+        String vue = "/" + url.substring( url.lastIndexOf( '/' ) + 1 );
+        request.setAttribute( "vue", vue );
 
- 			HttpSession session = request.getSession();
- 				//suppression de l'adherent de la BD
- 				Donneur donneur = donneurPersister.read(id);
- 				HibernateStructurePersister structurePersister =new HibernateStructurePersister();
- 		        List<Structure> structureList = structurePersister.getAll();
+        HibernateDonneurPersister donneurPersister = new HibernateDonneurPersister();
 
- 		        request.setAttribute(ATT_LIST_STRUCTURE,structureList);
- 		        session.setAttribute(INTERNAL_ID_DONATEUR, id);
- 				if(donneur instanceof DonneurPhysique) {
- 					request.setAttribute(ATT_DONATEUR, donneur);
- 					this.getServletContext().getRequestDispatcher( VUE_MODIF_DONATEUR_PHYSIQUE ).forward( request, response );
- 				}else {
- 					request.setAttribute(ATT_DONATEUR, donneur);
- 					this.getServletContext().getRequestDispatcher( VUE_MODIF_DONATEUR_MORALE ).forward( request, response );
- 				} 				
- 		        
- 			}
- 		
- 		else {
- 			this.getServletContext().getRequestDispatcher( vue ).forward( request, response );
- 		}
+        /* Recuperation du param */
+        String idDonneur = getValeurParametre( request, PARAMETRE_ID_DONATEUR );
+
+        // si l'id n'est pas vide
+
+        if ( idDonneur != null ) {
+
+            Long id = Long.parseLong( idDonneur );
+
+            HttpSession session = request.getSession();
+            // suppression de l'adherent de la BD
+            Donneur donneur = donneurPersister.read( id );
+            HibernateStructurePersister structurePersister = new HibernateStructurePersister();
+            List<Structure> structureList = structurePersister.getAll();
+
+            request.setAttribute( ATT_LIST_STRUCTURE, structureList );
+            session.setAttribute( INTERNAL_ID_DONATEUR, id );
+            if ( donneur instanceof DonneurPhysique ) {
+                request.setAttribute( ATT_DONATEUR, donneur );
+                this.getServletContext().getRequestDispatcher( VUE_MODIF_DONATEUR_PHYSIQUE ).forward( request,
+                        response );
+            } else {
+                request.setAttribute( ATT_DONATEUR, donneur );
+                this.getServletContext().getRequestDispatcher( VUE_MODIF_DONATEUR_MORALE ).forward( request, response );
+            }
+
+        }
+
+        else {
+            this.getServletContext().getRequestDispatcher( vue ).forward( request, response );
+        }
 
     }
 
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
-    {
-    	
-        String typeDonateur=(String) request.getParameter(PARAM_TYPEDONATEUR);
+    protected void doPost( HttpServletRequest request, HttpServletResponse response )
+            throws ServletException, IOException {
+
+        String typeDonateur = (String) request.getParameter( PARAM_TYPEDONATEUR );
         String successMsg = null;
         String erreurMsg = null;
-        String vue = request.getParameter("vue");
-        
-        
-        if (typeDonateur.equals("physique"))
-        {
-            DonneurPhysiqueForm donneurForm = new DonneurPhysiqueForm();
-            DonneurPhysique donneur = donneurForm.modifierDonneurPhysique(request);
-            request.setAttribute(ATT_DONATEURFORM,donneurForm);
-            request.setAttribute(ATT_DONATEUR,donneur);
-            request.setAttribute("vue", vue);
-            
-            if(donneurForm.getErreurs().isEmpty())
-            {
-            	successMsg ="Le donateur a été bien modifié.";
-            }else {
-            	erreurMsg = "Veuillez vérifier les champs saisies.";
-            }
-            
-            request.setAttribute(ERREUR_MSG, erreurMsg);
-            request.setAttribute(SUCCESS_MSG, successMsg);
-            if(donneurForm.getErreurs().isEmpty())
-            	response.sendRedirect(request.getContextPath() + vue);
-            else
-            	this.getServletContext().getRequestDispatcher( VUE_MODIF_DONATEUR_PHYSIQUE ).forward( request, response );
-        }
-        else
-        {
-            DonneurMoraleForm donneurForm = new DonneurMoraleForm();
-            DonneurMoral donneur = donneurForm.modifierDonneurMorale(request);
-            request.setAttribute(ATT_DONATEURFORM,donneurForm);
-            request.setAttribute(ATT_DONATEUR,donneur);
-            request.setAttribute("vue", vue);
-            if(donneurForm.getErreurs().isEmpty())
-            {
-            	successMsg ="Le donateur a été bien modifié.";
-            }else {
-            	erreurMsg = "Veuillez vérifier les champs saisies.";
-            }
-            
-            request.setAttribute(ERREUR_MSG, erreurMsg);
-            request.setAttribute(SUCCESS_MSG, successMsg);
-            if(donneurForm.getErreurs().isEmpty())
-            	response.sendRedirect(request.getContextPath() + vue);
-            else
-            this.getServletContext().getRequestDispatcher( VUE_MODIF_DONATEUR_MORALE).forward( request, response );
-        }
+        String vue = request.getParameter( "vue" );
 
-        
+        if ( typeDonateur.equals( "physique" ) ) {
+            DonneurPhysiqueForm donneurForm = new DonneurPhysiqueForm();
+            DonneurPhysique donneur = donneurForm.modifierDonneurPhysique( request );
+            request.setAttribute( ATT_DONATEURFORM, donneurForm );
+            request.setAttribute( ATT_DONATEUR, donneur );
+            request.setAttribute( "vue", vue );
+
+            if ( donneurForm.getErreurs().isEmpty() ) {
+                successMsg = "Le donateur a été bien modifié.";
+            } else {
+                erreurMsg = "Veuillez vérifier les champs saisies.";
+            }
+
+            request.setAttribute( ERREUR_MSG, erreurMsg );
+            request.setAttribute( SUCCESS_MSG, successMsg );
+            if ( donneurForm.getErreurs().isEmpty() )
+                response.sendRedirect( request.getContextPath() + vue );
+            else
+                this.getServletContext().getRequestDispatcher( VUE_MODIF_DONATEUR_PHYSIQUE ).forward( request,
+                        response );
+        } else {
+            DonneurMoraleForm donneurForm = new DonneurMoraleForm();
+            DonneurMoral donneur = donneurForm.modifierDonneurMorale( request );
+            request.setAttribute( ATT_DONATEURFORM, donneurForm );
+            request.setAttribute( ATT_DONATEUR, donneur );
+            request.setAttribute( "vue", vue );
+            if ( donneurForm.getErreurs().isEmpty() ) {
+                successMsg = "Le donateur a été bien modifié.";
+            } else {
+                erreurMsg = "Veuillez vérifier les champs saisies.";
+            }
+
+            request.setAttribute( ERREUR_MSG, erreurMsg );
+            request.setAttribute( SUCCESS_MSG, successMsg );
+            if ( donneurForm.getErreurs().isEmpty() )
+                response.sendRedirect( request.getContextPath() + vue );
+            else
+                this.getServletContext().getRequestDispatcher( VUE_MODIF_DONATEUR_MORALE ).forward( request, response );
+        }
 
     }
-    
+
     /*
      * MÃ©thode utilitaire qui retourne null si un paramÃ¨tre est vide, et son
      * contenu sinon.

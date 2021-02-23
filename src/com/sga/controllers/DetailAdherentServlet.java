@@ -8,7 +8,6 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 import com.sga.entities.Adherent;
 import com.sga.entities.Structure;
@@ -24,53 +23,49 @@ public class DetailAdherentServlet extends HttpServlet {
     /**
      * 
      */
-    private static final long  serialVersionUID    = 1L;
-    public static final String VUE_AJOUTER_ADHERENT = "/WEB-INF/detailAdherent.jsp";
-    public static final String ATT_ERREURS ="erreurs";
-    public static final String ATT_ADHERENT="adherent";
-    public static final String ATT_LIST_STRUCTURE ="StructureList";
-    
-    public static final String PARAMETRE_ID_ADHERENT = "adherentID";
-	
-	public static final String VUE = "/listeDesAdherents";
+    private static final long  serialVersionUID      = 1L;
+    public static final String VUE_AJOUTER_ADHERENT  = "/WEB-INF/detailAdherent.jsp";
+    public static final String ATT_ERREURS           = "erreurs";
+    public static final String ATT_ADHERENT          = "adherent";
+    public static final String ATT_LIST_STRUCTURE    = "StructureList";
 
+    public static final String PARAMETRE_ID_ADHERENT = "adherentID";
+
+    public static final String VUE                   = "/listeDesAdherents";
 
     protected void doGet( HttpServletRequest request, HttpServletResponse response )
-            throws ServletException, IOException
-    {
-    	
-    	HibernateAdherentPersister adherentPersister =new HibernateAdherentPersister();
+            throws ServletException, IOException {
 
-		
-		/*Recuperation du param */
-		String idAdherent = getValeurParametre(request, PARAMETRE_ID_ADHERENT);
-		
-		
-		// si l'id et la map ne sont pas vides 
-		
-		if(idAdherent != null ) {
-				
-				Long id = Long.parseLong(idAdherent);
-				//suppression de l'adherent de la BD
-				Adherent adherent = adherentPersister.read(id);
-				request.setAttribute(ATT_ADHERENT, adherent);
-				
-		        HibernateStructurePersister structurePersister =new HibernateStructurePersister();
-		        List<Structure> structureList = structurePersister.getAll();
+        HibernateAdherentPersister adherentPersister = new HibernateAdherentPersister();
 
-		        request.setAttribute(ATT_LIST_STRUCTURE,structureList);
-		        
-		        this.getServletContext().getRequestDispatcher( VUE_AJOUTER_ADHERENT ).forward( request, response );
-				}
-		
-		else {
-			this.getServletContext().getRequestDispatcher(VUE).forward(request,response);
-		}
+        /* Recuperation du param */
+        String idAdherent = getValeurParametre( request, PARAMETRE_ID_ADHERENT );
+
+        // si l'id et la map ne sont pas vides
+
+        if ( idAdherent != null ) {
+
+            Long id = Long.parseLong( idAdherent );
+            // suppression de l'adherent de la BD
+            Adherent adherent = adherentPersister.read( id );
+            request.setAttribute( ATT_ADHERENT, adherent );
+
+            HibernateStructurePersister structurePersister = new HibernateStructurePersister();
+            List<Structure> structureList = structurePersister.getAll();
+
+            request.setAttribute( ATT_LIST_STRUCTURE, structureList );
+
+            this.getServletContext().getRequestDispatcher( VUE_AJOUTER_ADHERENT ).forward( request, response );
+        }
+
+        else {
+            this.getServletContext().getRequestDispatcher( VUE ).forward( request, response );
+        }
 
     }
-    
+
     /*
-     * Méthode utilitaire qui retourne null si un paramètre est vide, et son
+     * Mï¿½thode utilitaire qui retourne null si un paramï¿½tre est vide, et son
      * contenu sinon.
      */
     private static String getValeurParametre( HttpServletRequest request, String nomChamp ) {

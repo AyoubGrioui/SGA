@@ -21,6 +21,6 @@ public class Deconnexion extends HttpServlet {
         HttpSession session = request.getSession();
         session.invalidate();
 
-        response.sendRedirect(request.getContextPath() + VUE_HOME_PAGE );
+        response.sendRedirect( request.getContextPath() + VUE_HOME_PAGE );
     }
 }

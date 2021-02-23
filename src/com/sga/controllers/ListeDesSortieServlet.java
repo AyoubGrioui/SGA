@@ -21,18 +21,16 @@ public class ListeDesSortieServlet extends HttpServlet {
     /**
      * 
      */
-    private static final long  serialVersionUID     = 1L;
+    private static final long  serialVersionUID  = 1L;
     public static final String VUE_LISTE_DEPENSE = "/WEB-INF/listeDesSorties.jsp";
-    public static final String ATT_DEPENSELIST = "depenseList";
+    public static final String ATT_DEPENSELIST   = "depenseList";
 
     protected void doGet( HttpServletRequest request, HttpServletResponse response )
-            throws ServletException, IOException
-    {
-        HibernateDepensePersister depensePersister=new HibernateDepensePersister();
-        List<Depense> depenseList= depensePersister.getAll();
+            throws ServletException, IOException {
+        HibernateDepensePersister depensePersister = new HibernateDepensePersister();
+        List<Depense> depenseList = depensePersister.getAll();
 
-        request.setAttribute(ATT_DEPENSELIST,depenseList);
-
+        request.setAttribute( ATT_DEPENSELIST, depenseList );
 
         this.getServletContext().getRequestDispatcher( VUE_LISTE_DEPENSE ).forward( request, response );
     }

@@ -17,23 +17,23 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
-@Table(name = "Depenses")
+@Table( name = "Depenses" )
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 public class Depense implements Serializable {
-	private static final long serialVersionUID = -4930903130532553319L;
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long idDepense;
-	private Long idAdherent;
-	private Double montant;
-	private LocalDate dateDepense;
-	private String typeDepense;
+    private static final long serialVersionUID = -4930903130532553319L;
+    @Id
+    @GeneratedValue( strategy = GenerationType.IDENTITY )
+    private Long              idDepense;
+    private Long              idAdherent;
+    private Double            montant;
+    private LocalDate         dateDepense;
+    private String            typeDepense;
 
-	@ManyToOne
-	@JoinColumn(name = "idStructure")
-	private Structure structure;
+    @ManyToOne
+    @JoinColumn( name = "idStructure" )
+    private Structure         structure;
 
 }

@@ -22,28 +22,28 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
-@Table(name = "Donneurs")
-@Inheritance(strategy = InheritanceType.JOINED)
+@Table( name = "Donneurs" )
+@Inheritance( strategy = InheritanceType.JOINED )
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 public class Donneur implements Serializable {
-	private static final long serialVersionUID = 3897142428147558951L;
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long idDonneur;
-	private String email;
-	private String telephone;
-	private String adresse;
-	private String motDePasse;
+    private static final long serialVersionUID = 3897142428147558951L;
+    @Id
+    @GeneratedValue( strategy = GenerationType.IDENTITY )
+    private Long              idDonneur;
+    private String            email;
+    private String            telephone;
+    private String            adresse;
+    private String            motDePasse;
 
-	@OneToMany(targetEntity = Don.class,mappedBy = "donneur", cascade = CascadeType.ALL)
-	//@JoinColumn(name = "idDonneur")
-	private List<Don> donList = new ArrayList<>();
+    @OneToMany( targetEntity = Don.class, mappedBy = "donneur", cascade = CascadeType.ALL )
+    // @JoinColumn(name = "idDonneur")
+    private List<Don>         donList          = new ArrayList<>();
 
-	@ManyToOne(targetEntity = Structure.class)
-	@JoinColumn(name = "idStructure")
-	private Structure structure;
+    @ManyToOne( targetEntity = Structure.class )
+    @JoinColumn( name = "idStructure" )
+    private Structure         structure;
 
 }

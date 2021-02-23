@@ -12,16 +12,16 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
-@Table(name = "DonsCheque")
-@PrimaryKeyJoinColumn(name = "idDon")
+@Table( name = "DonsCheque" )
+@PrimaryKeyJoinColumn( name = "idDon" )
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 public class DonCheque extends Don {
-	private static final long serialVersionUID = 4912258162784610425L;
-	private String numeroCompteBanque;
-	private LocalDate dateCheque;
-	private LocalDate dateDepot;
-	private String nomBanque;
+    private static final long serialVersionUID = 4912258162784610425L;
+    private String            numeroCompteBanque;
+    private LocalDate         dateCheque;
+    private LocalDate         dateDepot;
+    private String            nomBanque;
 }

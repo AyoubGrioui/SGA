@@ -11,21 +11,22 @@ public class RepositoryFactory {
 
     SessionFactory getSessionFactory() {
         Configuration configObj = new Configuration();
-        configObj.configure("hibernate.cfg.xml");
-        configObj.addAnnotatedClass(Structure.class);
-        configObj.addAnnotatedClass(Adherent.class);
-        configObj.addAnnotatedClass(Depense.class);
-        configObj.addAnnotatedClass(Don.class);
-        configObj.addAnnotatedClass(DonCheque.class);
-        configObj.addAnnotatedClass(DonVersement.class);
-        configObj.addAnnotatedClass(DonEspece.class);
-        configObj.addAnnotatedClass(Donneur.class);
-        configObj.addAnnotatedClass(DonneurMoral.class);
-        configObj.addAnnotatedClass(DonneurPhysique.class);
-        configObj.addAnnotatedClass(Fonction.class);
-        configObj.addAnnotatedClass(LigneFonction.class);
-        ServiceRegistry serviceRegistryObj = new StandardServiceRegistryBuilder().applySettings(configObj.getProperties()).build();
-        sessionFactory = configObj.buildSessionFactory(serviceRegistryObj);
+        configObj.configure( "hibernate.cfg.xml" );
+        configObj.addAnnotatedClass( Structure.class );
+        configObj.addAnnotatedClass( Adherent.class );
+        configObj.addAnnotatedClass( Depense.class );
+        configObj.addAnnotatedClass( Don.class );
+        configObj.addAnnotatedClass( DonCheque.class );
+        configObj.addAnnotatedClass( DonVersement.class );
+        configObj.addAnnotatedClass( DonEspece.class );
+        configObj.addAnnotatedClass( Donneur.class );
+        configObj.addAnnotatedClass( DonneurMoral.class );
+        configObj.addAnnotatedClass( DonneurPhysique.class );
+        configObj.addAnnotatedClass( Fonction.class );
+        configObj.addAnnotatedClass( LigneFonction.class );
+        ServiceRegistry serviceRegistryObj = new StandardServiceRegistryBuilder()
+                .applySettings( configObj.getProperties() ).build();
+        sessionFactory = configObj.buildSessionFactory( serviceRegistryObj );
         return sessionFactory;
     }
 

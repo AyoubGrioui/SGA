@@ -9,8 +9,8 @@ import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "DonsEspece")
-@PrimaryKeyJoinColumn(name = "idDon")
+@Table( name = "DonsEspece" )
+@PrimaryKeyJoinColumn( name = "idDon" )
 @Getter
 @Setter
 @NoArgsConstructor

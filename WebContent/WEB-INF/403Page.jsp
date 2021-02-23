@@ -6,7 +6,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Page introuvable</title>
+<title>accès interdit</title>
 <link
 	href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
 	rel="stylesheet" />
@@ -22,17 +22,15 @@
 		<div class="flex flex-col flex-1 mt-16">
 			<main class="h-full pb-16 overflow-y-auto">
 				<div class="container flex flex-col items-center px-6 mx-auto">
-					<svg class="w-12 h-12 mt-8 text-purple-200" fill="currentColor"
-						viewBox="0 0 20 20">
-              <path fill-rule="evenodd"
-							d="M13.477 14.89A6 6 0 015.11 6.524l8.367 8.368zm1.414-1.414L6.524 
-                5.11a6 6 0 018.367 8.367zM18 10a8 8 0 11-16 0 8 8 0 0116 0z"
-							clip-rule="evenodd"></path>
-            </svg>
+					<svg class="w-12 h-12 mt-8 text-purple-200" xmlns="http://www.w3.org/2000/svg" fill="none"
+						viewBox="0 0 24 24" stroke="currentColor">
+  						<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+							d="M7 11.5V14m0-2.5v-6a1.5 1.5 0 113 0m-3 6a1.5 1.5 0 00-3 0v2a7.5 7.5 0 0015 0v-5a1.5 1.5 0 00-3 0m-6-3V11m0-5.5v-1a1.5 1.5 0 013 0v1m0 0V11m0-5.5a1.5 1.5 0 013 0v3m0 0V11" />
+					</svg>
 					<h1 class="text-6xl font-semibold text-gray-700 dark:text-gray-200">
-						404</h1>
+						403</h1>
 					<p class="text-gray-700 dark:text-gray-300">
-						Page introuvable. Veuillez vérifier l'adresse ou
+						accès interdit. Veuillez
 						<button
 							class="text-purple-600 hover:underline dark:text-purple-300"
 							onclick="history.back()">revenir en arrière.</button>

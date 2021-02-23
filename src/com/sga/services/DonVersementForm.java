@@ -1,177 +1,169 @@
 package com.sga.services;
 
+import java.util.HashMap;
+import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
+
 import com.sga.entities.DonVersement;
 import com.sga.entities.Donneur;
 import com.sga.helpers.SGAUtil;
 import com.sga.repositories.HibernateDonVersementPersister;
-import com.sga.repositories.HibernateDonneurPersister;
-import com.sga.repositories.Repository;
-import com.sga.repositories.RepositoryFactory;
-
-import javax.servlet.http.HttpServletRequest;
-import java.util.HashMap;
-import java.util.Map;
 
 public class DonVersementForm {
 
-	private static final String CHAMP_NUMERO_DE_COMPTE = "numeroCompteBanqueDonVersement";
-	private static final String CHAMP_DATE_DON = "dateDon";
-	private static final String CHAMP_MONTANT = "montant";
-	private static final String CHAMP_DONNEUR="donneur";
-	public static final String INTERNAL_ID_DON = "idDon";
+    private static final String CHAMP_NUMERO_DE_COMPTE = "numeroCompteBanqueDonVersement";
+    private static final String CHAMP_DATE_DON         = "dateDon";
+    private static final String CHAMP_MONTANT          = "montant";
+    private static final String CHAMP_DONNEUR          = "donneur";
+    public static final String  INTERNAL_ID_DON        = "idDon";
 
+    private Map<String, String> erreurs                = new HashMap<String, String>();
 
-	private Map<String, String> erreurs = new HashMap<String, String>();
+    public Map<String, String> getErreurs() {
+        return erreurs;
+    }
 
+    public DonVersement creerDonVersement( HttpServletRequest request ) {
 
-	public Map<String, String> getErreurs() {
-		return erreurs;
-	}
+        String numCompte = getValeurChamp( request, CHAMP_NUMERO_DE_COMPTE );
+        String dateDon = getValeurChamp( request, CHAMP_DATE_DON );
+        String montant = getValeurChamp( request, CHAMP_MONTANT );
 
+        DonVersement donVersement = new DonVersement();
 
+        try {
+            validationNumCompte( numCompte );
+        } catch ( Exception e ) {
+            setErreurs( CHAMP_NUMERO_DE_COMPTE, e.getMessage() );
+        }
+        donVersement.setNumeroCompteBanque( numCompte );
 
-	public DonVersement creerDonVersement(HttpServletRequest request) {
+        double valeurMontant = -1;
+        try {
+            valeurMontant = validationMontant( montant );
+        } catch ( Exception e ) {
+            setErreurs( CHAMP_MONTANT, e.getMessage() );
+        }
+        donVersement.setMontant( valeurMontant );
 
-		String numCompte = getValeurChamp(request, CHAMP_NUMERO_DE_COMPTE);
-		String dateDon = getValeurChamp(request, CHAMP_DATE_DON);
-		String montant = getValeurChamp(request, CHAMP_MONTANT);
+        try {
+            validationDate( CHAMP_DATE_DON );
+        } catch ( Exception e ) {
+            setErreurs( CHAMP_DATE_DON, e.getMessage() );
+        }
+        donVersement.setDateDon( SGAUtil.StringToLocalDate( dateDon ) );
 
-		DonVersement donVersement = new DonVersement();
+        Donneur donneur = (Donneur) request.getAttribute( CHAMP_DONNEUR );
+        donVersement.setDonneur( donneur );
 
-		try {
-			validationNumCompte(numCompte);
-		} catch (Exception e) {
-			setErreurs(CHAMP_NUMERO_DE_COMPTE, e.getMessage());
-		}
-		donVersement.setNumeroCompteBanque(numCompte);
+        if ( getErreurs().isEmpty() ) {
+            HibernateDonVersementPersister donVersementPersister = new HibernateDonVersementPersister();
+            donVersement.setIdDon( donVersementPersister.create( donVersement ) );
+        }
 
-		double valeurMontant = -1;
-		try {
-			valeurMontant = validationMontant(montant);
-		} catch (Exception e) {
-			setErreurs(CHAMP_MONTANT, e.getMessage());
-		}
-		donVersement.setMontant(valeurMontant);
+        return donVersement;
+    }
 
-		try {
-			validationDate(CHAMP_DATE_DON);
-		} catch (Exception e) {
-			setErreurs(CHAMP_DATE_DON, e.getMessage());
-		}
-		donVersement.setDateDon(SGAUtil.StringToLocalDate(dateDon));
+    public DonVersement modifierDonVersement( HttpServletRequest request ) {
 
-		Donneur donneur = (Donneur) request.getAttribute(CHAMP_DONNEUR);
-		donVersement.setDonneur(donneur);
+        String numCompte = getValeurChamp( request, CHAMP_NUMERO_DE_COMPTE );
+        String dateDon = getValeurChamp( request, CHAMP_DATE_DON );
+        String montant = getValeurChamp( request, CHAMP_MONTANT );
 
-		if(getErreurs().isEmpty())
-		{
-			HibernateDonVersementPersister donVersementPersister=new HibernateDonVersementPersister();
-			donVersement.setIdDon(donVersementPersister.create(donVersement));
-		}
+        Long id = Long.parseLong( getValeurChamp( request, INTERNAL_ID_DON ) );
+        HibernateDonVersementPersister donVersementPersister = new HibernateDonVersementPersister();
+        DonVersement donVersement = donVersementPersister.read( id );
 
-		return donVersement;
-	}	
-	public DonVersement modifierDonVersement(HttpServletRequest request) {
+        try {
+            validationNumCompte( numCompte );
+        } catch ( Exception e ) {
+            setErreurs( CHAMP_NUMERO_DE_COMPTE, e.getMessage() );
+        }
+        donVersement.setNumeroCompteBanque( numCompte );
 
-		String numCompte = getValeurChamp(request, CHAMP_NUMERO_DE_COMPTE);
-		String dateDon = getValeurChamp(request, CHAMP_DATE_DON);
-		String montant = getValeurChamp(request, CHAMP_MONTANT);
+        double valeurMontant = -1;
+        try {
+            valeurMontant = validationMontant( montant );
+        } catch ( Exception e ) {
+            setErreurs( CHAMP_MONTANT, e.getMessage() );
+        }
+        donVersement.setMontant( valeurMontant );
 
-		Long id=Long.parseLong(getValeurChamp(request,INTERNAL_ID_DON));
-		HibernateDonVersementPersister donVersementPersister = new HibernateDonVersementPersister();
-		DonVersement donVersement =donVersementPersister.read(id);
+        try {
+            validationDate( CHAMP_DATE_DON );
+        } catch ( Exception e ) {
+            setErreurs( CHAMP_DATE_DON, e.getMessage() );
+        }
+        donVersement.setDateDon( SGAUtil.StringToLocalDate( dateDon ) );
 
-		try {
-			validationNumCompte(numCompte);
-		} catch (Exception e) {
-			setErreurs(CHAMP_NUMERO_DE_COMPTE, e.getMessage());
-		}
-		donVersement.setNumeroCompteBanque(numCompte);
+        if ( getErreurs().isEmpty() ) {
+            donVersementPersister.update( donVersement );
+        }
 
-		double valeurMontant = -1;
-		try {
-			valeurMontant = validationMontant(montant);
-		} catch (Exception e) {
-			setErreurs(CHAMP_MONTANT, e.getMessage());
-		}
-		donVersement.setMontant(valeurMontant);
+        return donVersement;
+    }
 
-		try {
-			validationDate(CHAMP_DATE_DON);
-		} catch (Exception e) {
-			setErreurs(CHAMP_DATE_DON, e.getMessage());
-		}
-		donVersement.setDateDon(SGAUtil.StringToLocalDate(dateDon));
+    /* Fonction de validation d'un numero de compte */
 
+    private void validationNumCompte( String numCompte ) throws Exception {
+        if ( numCompte != null ) {
+            if ( !numCompte.matches( "^\\d{10,}$" ) ) {
+                throw new Exception( "Merci d'entrer un numero de compte valide." );
+            }
+        } else {
+            throw new Exception( "Merci d'entrer un numero de compte." );
+        }
+    }
 
-		if(getErreurs().isEmpty())
-		{
-			donVersementPersister.update(donVersement);
-		}
+    /* Fonction de validation d'un montant */
 
-		return donVersement;
-	}
+    private double validationMontant( String montant ) throws Exception {
+        double temp;
+        if ( montant != null ) {
+            try {
+                temp = Double.parseDouble( montant );
+                if ( temp < 0 ) {
+                    throw new Exception( "Le montant doit �tre un nombre positif." );
+                }
+            } catch ( NumberFormatException e ) {
+                temp = -1;
+                throw new Exception( "Le montant doit �tre un nombre." );
+            }
+        } else {
+            temp = -1;
+            throw new Exception( "Merci d'entrer un montant." );
+        }
+        return temp;
+    }
 
-	/*Fonction de validation d'un numero de compte */
+    // validation date
+    private void validationDate( String date ) throws Exception {
 
-	private void validationNumCompte(String numCompte) throws Exception {
-		if (numCompte != null) {
-			if (!numCompte.matches("^\\d{10,}$")) {
-				throw new Exception("Merci d'entrer un numero de compte valide.");
-			}
-		} else {
-			throw new Exception("Merci d'entrer un numero de compte.");
-		}
-	}
+        if ( date == null ) {
+            {
+                throw new Exception( "Merci d'entrer une date." );
+            }
+        }
+    }
+    /* ajoute un message correspondant au champ specifie a la map des erreurs */
 
-	/*Fonction de validation d'un montant*/
+    private void setErreurs( String champ, String message ) {
+        erreurs.put( champ, message );
+    }
 
-	private double validationMontant(String montant) throws Exception {
-		double temp;
-		if (montant != null) {
-			try {
-				temp = Double.parseDouble(montant);
-				if (temp < 0) {
-					throw new Exception("Le montant doit �tre un nombre positif.");
-				}
-			} catch (NumberFormatException e) {
-				temp = -1;
-				throw new Exception("Le montant doit �tre un nombre.");
-			}
-		} else {
-			temp = -1;
-			throw new Exception("Merci d'entrer un montant.");
-		}
-		return temp;
-	}
+    /*
+     * methode utilitaire qui retourne null si un champ est vide, et son contenu
+     * sinon
+     */
 
-	//validation date
-	private void validationDate(String date) throws Exception
-	{
-
-		if (date == null) {
-			{
-				throw new Exception("Merci d'entrer une date.");
-			}
-		}
-	}
-		/* ajoute un message correspondant au champ specifie a la map des erreurs */
-
-		private void setErreurs (String champ, String message){
-			erreurs.put(champ, message);
-		}
-
-
-		/* methode utilitaire qui retourne null si un champ est vide, et son contenu sinon */
-
-		private static String getValeurChamp (HttpServletRequest request, String nomChamp){
-			String valeur = request.getParameter(nomChamp);
-			if (valeur == null || valeur.trim().length() == 0) {
-				return null;
-			} else {
-				return valeur;
-			}
-		}
+    private static String getValeurChamp( HttpServletRequest request, String nomChamp ) {
+        String valeur = request.getParameter( nomChamp );
+        if ( valeur == null || valeur.trim().length() == 0 ) {
+            return null;
+        } else {
+            return valeur;
+        }
+    }
 
 }
-

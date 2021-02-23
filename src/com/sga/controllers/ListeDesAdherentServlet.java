@@ -1,17 +1,16 @@
 package com.sga.controllers;
 
-import com.sga.entities.Adherent;
-import com.sga.repositories.HibernateAdherentPersister;
-import com.sga.repositories.Repository;
-import com.sga.repositories.RepositoryFactory;
+import java.io.IOException;
+import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
-import java.util.List;
+
+import com.sga.entities.Adherent;
+import com.sga.repositories.HibernateAdherentPersister;
 
 /**
  * Servlet implementation class DashBoardDonateurServlet
@@ -22,16 +21,16 @@ public class ListeDesAdherentServlet extends HttpServlet {
     /**
      * 
      */
-    private static final long  serialVersionUID        = 1L;
-    public static final String VUE_LISTE_DES_ADHERENTS = "/WEB-INF/listeDesAdherent.jsp";
-    private static final String ATT_ADHERENTLIST = "adherentList";
+    private static final long   serialVersionUID        = 1L;
+    public static final String  VUE_LISTE_DES_ADHERENTS = "/WEB-INF/listeDesAdherent.jsp";
+    private static final String ATT_ADHERENTLIST        = "adherentList";
 
     protected void doGet( HttpServletRequest request, HttpServletResponse response )
             throws ServletException, IOException {
         HibernateAdherentPersister adherentPersister = new HibernateAdherentPersister();
-        List<Adherent> adherentList= adherentPersister.getAll();
+        List<Adherent> adherentList = adherentPersister.getAll();
 
-        request.setAttribute(ATT_ADHERENTLIST,adherentList);
+        request.setAttribute( ATT_ADHERENTLIST, adherentList );
 
         this.getServletContext().getRequestDispatcher( VUE_LISTE_DES_ADHERENTS ).forward( request, response );
     }

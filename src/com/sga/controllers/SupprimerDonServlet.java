@@ -1,57 +1,54 @@
 package com.sga.controllers;
 
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
-import com.sga.entities.Adherent;
 import com.sga.entities.Don;
 import com.sga.repositories.HibernateDonPersister;
 
 /**
  * Servlet implementation class SupprimerDon
  */
-@WebServlet("/supprimerDon")
+@WebServlet( "/supprimerDon" )
 public class SupprimerDonServlet extends HttpServlet {
-	private static final long serialVersionUID = 1L;
-       
-	public static final String PARAMETRE_ID_DON = "donID";
-	
-	public static final String VUE = "/listeDon";
-	
-    
-	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
-	 */
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		
-        HibernateDonPersister donPersister =new HibernateDonPersister();
+    private static final long  serialVersionUID = 1L;
 
-		
-		/*Recuperation du param */
-		String idDon = getValeurParametre(request, PARAMETRE_ID_DON);
-		
-		// si l'id et la map ne sont pas vides 
-		
-		if(idDon != null ) {
-			
-			Long id = Long.parseLong(idDon);
+    public static final String PARAMETRE_ID_DON = "donID";
 
-				//suppression de l'adherent de la BD
-				
-				Don don = donPersister.read(id);
-				donPersister.delete(don);
-		}
-				/* Redirection vers la fiche récapitulative */
-		        response.sendRedirect( request.getContextPath() + VUE );
-	}
+    public static final String VUE              = "/listeDon";
+
+    /**
+     * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
+     *      response)
+     */
+    protected void doGet( HttpServletRequest request, HttpServletResponse response )
+            throws ServletException, IOException {
+
+        HibernateDonPersister donPersister = new HibernateDonPersister();
+
+        /* Recuperation du param */
+        String idDon = getValeurParametre( request, PARAMETRE_ID_DON );
+
+        // si l'id et la map ne sont pas vides
+
+        if ( idDon != null ) {
+
+            Long id = Long.parseLong( idDon );
+
+            // suppression de l'adherent de la BD
+
+            Don don = donPersister.read( id );
+            donPersister.delete( don );
+        }
+        /* Redirection vers la fiche récapitulative */
+        response.sendRedirect( request.getContextPath() + VUE );
+    }
+
     /*
      * Méthode utilitaire qui retourne null si un paramètre est vide, et son
      * contenu sinon.

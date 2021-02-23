@@ -1,36 +1,32 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<web-app 
-  xmlns="http://java.sun.com/xml/ns/javaee"
-  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
-  version="3.0">
-	
+<web-app xmlns="http://java.sun.com/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd" version="3.0">
+
 	<filter>
-        <filter-name>Set Character Encoding</filter-name>
-        <filter-class>org.apache.catalina.filters.SetCharacterEncodingFilter</filter-class>
-        <init-param>
-            <param-name>encoding</param-name>
-            <param-value>UTF-8</param-value>
-        </init-param>
-        <init-param>
-            <param-name>ignore</param-name>
-            <param-value>false</param-value>
-        </init-param>
-    </filter>
-    <filter-mapping>
-        <filter-name>Set Character Encoding</filter-name>
-        <url-pattern>/*</url-pattern>
-    </filter-mapping>
-    
-    <filter>
+		<filter-name>Set Character Encoding</filter-name>
+		<filter-class>org.apache.catalina.filters.SetCharacterEncodingFilter</filter-class>
+		<init-param>
+			<param-name>encoding</param-name>
+			<param-value>UTF-8</param-value>
+		</init-param>
+		<init-param>
+			<param-name>ignore</param-name>
+			<param-value>false</param-value>
+		</init-param>
+	</filter>
+	<filter-mapping>
+		<filter-name>Set Character Encoding</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
+
+	<filter>
 		<filter-name>Filter</filter-name>
 		<filter-class>com.sga.filters.Filter</filter-class>
 	</filter>
 	<filter-mapping>
 		<filter-name>Filter</filter-name>
-		
+
 		<url-pattern>/indexDonateur</url-pattern>
-		
+
 		<url-pattern>/ajouterDepense</url-pattern>
 		<url-pattern>/ajouterDon</url-pattern>
 		<url-pattern>/indexSecretaire</url-pattern>
@@ -45,7 +41,7 @@
 		<url-pattern>/supprimerDepense</url-pattern>
 		<url-pattern>/supprimerDonneur</url-pattern>
 		<url-pattern>/supprimerDon</url-pattern>
-		
+
 		<url-pattern>/ajouterAdherent</url-pattern>
 		<url-pattern>/detailAdherent</url-pattern>
 		<url-pattern>/indexPresident</url-pattern>
@@ -56,17 +52,17 @@
 		<url-pattern>/modifierAdherent</url-pattern>
 		<url-pattern>/supprimerAdherent</url-pattern>
 		<url-pattern>/supprimerDesDonneurs</url-pattern>
-				
+
 	</filter-mapping>
 
-	
+
 	<filter>
 		<filter-name>FilterSecretaire</filter-name>
 		<filter-class>com.sga.filters.FilterSecretaire</filter-class>
 	</filter>
 	<filter-mapping>
 		<filter-name>FilterSecretaire</filter-name>
-			
+
 		<url-pattern>/ajouterDepense</url-pattern>
 		<url-pattern>/ajouterDon</url-pattern>
 		<url-pattern>/indexSecretaire</url-pattern>
@@ -77,18 +73,17 @@
 		<url-pattern>/modifierDon</url-pattern>
 		<url-pattern>/structureParametre</url-pattern>
 		<url-pattern>/supprimerDepense</url-pattern>
-		<url-pattern>/supprimerDonneur</url-pattern>
 		<url-pattern>/supprimerDon</url-pattern>
-	
+
 	</filter-mapping>
-	
+
 	<filter>
 		<filter-name>FilterPresident</filter-name>
 		<filter-class>com.sga.filters.FilterPresident</filter-class>
 	</filter>
 	<filter-mapping>
 		<filter-name>FilterPresident</filter-name>
-		
+
 		<url-pattern>/ajouterAdherent</url-pattern>
 		<url-pattern>/detailAdherent</url-pattern>
 		<url-pattern>/indexPresident</url-pattern>
@@ -98,46 +93,55 @@
 		<url-pattern>/listeDesSorties</url-pattern>
 		<url-pattern>/modifierAdherent</url-pattern>
 		<url-pattern>/supprimerAdherent</url-pattern>
-		<url-pattern>/supprimerDonneur</url-pattern>
 		<url-pattern>/envoyerMail</url-pattern>
 
 	</filter-mapping>
-	
+
 	<filter>
 		<filter-name>FilterDonateur</filter-name>
 		<filter-class>com.sga.filters.FilterDonateur</filter-class>
 	</filter>
 	<filter-mapping>
 		<filter-name>FilterDonateur</filter-name>
-		
-		<url-pattern>/indexDonateur</url-pattern>		
+
+		<url-pattern>/indexDonateur</url-pattern>
 	</filter-mapping>
-	
-	<!-- Handling Http Error 404 -->
+
+	<!-- Handling Http Errors -->
 	<error-page>
-	    <error-code>404</error-code>
-	    <location>/ErrorHandler</location>
+		<error-code>404</error-code>
+		<location>/ErrorHandler</location>
 	</error-page>
 
- <!-- SMTP settings -->
-    <context-param>
-        <param-name>host</param-name>
-        <param-value>smtp.gmail.com</param-value>
-    </context-param>
- 
-    <context-param>
-        <param-name>port</param-name>
-        <param-value>587</param-value>
-    </context-param>
- 
-    <context-param id="useremail">
-        <param-name>user</param-name>
-        <param-value >association.digitals@gmail.com</param-value>
-    </context-param>
- 
-    <context-param id="userpass">
-        <param-name>pass</param-name>
-        <param-value >digitals2021</param-value>
-    </context-param>
+	<error-page>
+		<error-code>403</error-code>
+		<location>/ErrorHandler</location>
+	</error-page>
+
+	<error-page>
+		<error-code>500</error-code>
+		<location>/ErrorHandler</location>
+	</error-page>
+
+	<!-- SMTP settings -->
+	<context-param>
+		<param-name>host</param-name>
+		<param-value>smtp.gmail.com</param-value>
+	</context-param>
+
+	<context-param>
+		<param-name>port</param-name>
+		<param-value>587</param-value>
+	</context-param>
+
+	<context-param id="useremail">
+		<param-name>user</param-name>
+		<param-value>association.digitals@gmail.com</param-value>
+	</context-param>
+
+	<context-param id="userpass">
+		<param-name>pass</param-name>
+		<param-value>digitals2021</param-value>
+	</context-param>
 
 </web-app>
