@@ -154,7 +154,8 @@ public DonneurPhysique modifierDonneurPhysique(HttpServletRequest request) {
 		donneurPhysique.setCin(cin);
 		
 		try {
-			validationEmail(email);
+			 if(email ==null || !email.equals(donneurPhysique.getEmail()))
+				 validationEmail(email);
 		} catch (Exception e) {
 			setErreurs(CHAMP_EMAIL, e.getMessage());
 		}

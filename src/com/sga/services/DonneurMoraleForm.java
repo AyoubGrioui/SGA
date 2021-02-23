@@ -134,6 +134,7 @@ public DonneurMoral modifierDonneurMorale(HttpServletRequest request) {
 		donneurMorale.setNom(nom);
 		
 		try {
+		 if(email ==null || !email.equals(donneurMorale.getEmail()))
 			validationEmail(email);
 		} catch (Exception e) {
 			setErreurs(CHAMP_EMAIL, e.getMessage());
@@ -185,10 +186,10 @@ public DonneurMoral modifierDonneurMorale(HttpServletRequest request) {
 	        throw new Exception( "Merci de saisir une adresse mail." );
 	    }
 	    else
-	    {
-	    	if(!isEmailUnique(email))
+	    { 	
+	    	if(!isEmailUnique(email) )
 		      throw new Exception( "l'email que vous avez entrer déja lier a un Donnateur ." );
-
+	    	
 	    }
 	}
 	

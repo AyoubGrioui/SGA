@@ -207,13 +207,11 @@ public class AdherentForm {
 		String telephone = getValeurChamp(request,CHAMP_TELEPHONE);
 		String adresse = getValeurChamp(request,CHAMP_ADRESSE);
 		String email = getValeurChamp(request,CHAMP_EMAIL);
-		String idStructure = getValeurChamp(request,ATT_STRUCTURE);
 		
 		Adherent adherent = new Adherent();
 		
 		adherent.setIdAdherent(Long.parseLong(getValeurChamp(request, INTERNAL_ID_ADHERENT)));
 		
-		String password = null;
 		
 		
 
@@ -283,6 +281,7 @@ public class AdherentForm {
         adherent.setTelephone( telephone );
 		
         try {
+   		 if(email ==null || !email.equals(adherent.getEmail()))
             validationEmail(email);
         } catch ( Exception e ) {
             setErreurs( CHAMP_EMAIL, e.getMessage() );

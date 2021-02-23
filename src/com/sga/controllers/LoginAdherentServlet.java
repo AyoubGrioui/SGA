@@ -40,14 +40,29 @@ public class LoginAdherentServlet extends HttpServlet {
     protected void doGet( HttpServletRequest request, HttpServletResponse response )
             throws ServletException, IOException {
 			HttpSession session =request.getSession();
+			Adherent user=null;
 			try {
-	        Adherent user = (Adherent) session.getAttribute(ATT_SESSION_USER);
+		        user = (Adherent) session.getAttribute(ATT_SESSION_USER);
+		       
 			}
 			catch(Exception e)
 			{
 				session.setAttribute(ATT_SESSION_USER, null);
 			}
-            this.getServletContext().getRequestDispatcher(VUE_LOGIN).forward(request, response);
+			
+			 if(user !=null)
+		        {
+		        	String role = user.getLigneFonction().getFonction().getRole();
+		        	
+					if(role.equals( "President(e)")) 
+						response.sendRedirect(request.getContextPath() + "/indexPresident");
+					if(role.equals("Secretaire")) 
+						response.sendRedirect(request.getContextPath() + "/indexSecretaire");
+		        }
+			 else
+			 {
+		            this.getServletContext().getRequestDispatcher(VUE_LOGIN).forward(request, response);
+			 }
             }
 
 	/**

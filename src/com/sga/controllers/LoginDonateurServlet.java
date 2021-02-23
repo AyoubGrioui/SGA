@@ -37,16 +37,23 @@ public class LoginDonateurServlet extends HttpServlet {
             throws ServletException, IOException {
     	
     	HttpSession session =request.getSession();
+    	Donneur user = null;
 		try {
-        Donneur user = (Donneur) session.getAttribute(ATT_SESSION_USER);
+			user = (Donneur) session.getAttribute(ATT_SESSION_USER);
 		}
 		catch(Exception e)
 		{
 			session.setAttribute(ATT_SESSION_USER, null);
 		}
 		
-        this.getServletContext().getRequestDispatcher(VUE_LOGIN).forward(request, response);
-
+		if(user!=null)
+		{
+            response.sendRedirect( request.getContextPath() + "/indexDonateur" );			
+		}
+		else
+		{		
+			this.getServletContext().getRequestDispatcher(VUE_LOGIN).forward(request, response);
+		}
     }
 
     @Override
