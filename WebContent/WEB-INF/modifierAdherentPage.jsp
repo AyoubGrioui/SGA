@@ -57,13 +57,13 @@
 						<div
 							class="px-4 py-3 mb-8 bg-white rounded-lg shadow-md dark:bg-gray-800">
 							<input type="text" hidden="hidden" name="idAdherent"
-								value="<c:out value="${adherent.idAdherent}"/>" />
-							<label class="block mt-3 text-sm"> <span
+								value="<c:out value="${adherent.idAdherent}"/>" /> <label
+								class="block mt-3 text-sm"> <span
 								class="text-gray-700 dark:text-gray-400">Nom</span> <input
 								type="text" name="nomAdherent"
 								class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input"
-								placeholder="Nom" value="<c:out value="${adherent.nom}"/>" />
-								<span class="text-xs text-red-600 dark:text-red-400"> <c:out
+								placeholder="Nom" value="<c:out value="${adherent.nom}"/>" /> <span
+								class="text-xs text-red-600 dark:text-red-400"> <c:out
 										value="${erreurs['nomAdherent']}" />
 							</span>
 							</label> <label class="block mt-4 text-sm"> <span
@@ -79,13 +79,13 @@
 								type="text" name="emailAdherent"
 								class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input"
 								placeholder="*******@gmail.com"
-								value="<c:out value="${adherent.email}"/>" />
-								<span class="text-xs text-red-600 dark:text-red-400"> <c:out
+								value="<c:out value="${adherent.email}"/>" /> <span
+								class="text-xs text-red-600 dark:text-red-400"> <c:out
 										value="${erreurs['emailAdherent']}" />
 							</span>
 							</label> <label class="block mt-4 text-sm"> <span
-								class="text-gray-700 dark:text-gray-400">Mot
-									de passe</span> <input type="text" name="motDePasseAdherent"
+								class="text-gray-700 dark:text-gray-400">Mot de passe</span> <input
+								type="text" name="motDePasseAdherent"
 								class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input"
 								placeholder="" value="<c:out value="${adherent.motDePasse}"/>" />
 								<span class="text-xs text-red-600 dark:text-red-400"> <c:out
@@ -95,31 +95,31 @@
 								class="text-gray-700 dark:text-gray-400">CIN</span> <input
 								type="text" name="cinAdherent"
 								class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input"
-								placeholder="CIN" value="<c:out value="${adherent.cin}"/>" />
-								<span class="text-xs text-red-600 dark:text-red-400"> <c:out
+								placeholder="CIN" value="<c:out value="${adherent.cin}"/>" /> <span
+								class="text-xs text-red-600 dark:text-red-400"> <c:out
 										value="${erreurs['cinAdherent']}" />
 							</span>
 							</label> <label class="block mt-4 text-sm"> <span
-								class="text-gray-700 dark:text-gray-400">Lieu
-									de naissance</span> <input type="text" name="lieuNaissanceAdherent"
+								class="text-gray-700 dark:text-gray-400">Lieu de
+									naissance</span> <input type="text" name="lieuNaissanceAdherent"
 								class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input"
 								placeholder=""
-								value="<c:out value="${adherent.lieuNaissance}"/>" />
-								<span class="text-xs text-red-600 dark:text-red-400"> <c:out
+								value="<c:out value="${adherent.lieuNaissance}"/>" /> <span
+								class="text-xs text-red-600 dark:text-red-400"> <c:out
 										value="${erreurs['lieuNaissanceAdherent']}" />
 							</span>
 							</label> <label class="block mt-4 text-sm"> <span
-								class="text-gray-700 dark:text-gray-400">Date
-									de naissance</span> <input type="date" name="dateNaissanceAdherent"
+								class="text-gray-700 dark:text-gray-400">Date de
+									naissance</span> <input type="date" name="dateNaissanceAdherent"
 								class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input"
 								placeholder=""
-								value="<c:out value="${adherent.dateNaissance}"/>" />
-								<span class="text-xs text-red-600 dark:text-red-400"> <c:out
+								value="<c:out value="${adherent.dateNaissance}"/>" /> <span
+								class="text-xs text-red-600 dark:text-red-400"> <c:out
 										value="${erreurs['dateNaissanceAdherent']}" />
 							</span>
 							</label> <label class="block mt-4 text-sm"> <span
-								class="text-gray-700 dark:text-gray-400">Numéro
-									de téléphone</span> <input type="text" name="telephoneAdherent"
+								class="text-gray-700 dark:text-gray-400">Numéro de
+									téléphone</span> <input type="text" name="telephoneAdherent"
 								class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input"
 								placeholder="" value="<c:out value="${adherent.telephone}"/>" />
 								<span class="text-xs text-red-600 dark:text-red-400"> <c:out
@@ -134,27 +134,22 @@
 										value="${erreurs['adresseAdherent']}" />
 							</span>
 							</label> <label class="block mt-4 text-sm"> <span
-								class="text-gray-700 dark:text-gray-400">Date
-									d'adhésion</span> <input type="date" name="dateadhesionAdherent"
+								class="text-gray-700 dark:text-gray-400">Date d'adhésion</span>
+								<input type="date" name="dateadhesionAdherent"
 								class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input"
 								placeholder="" value="<c:out value="${adherent.dateAdhesion}"/>" />
 								<span class="text-xs text-red-600 dark:text-red-400"> <c:out
 										value="${erreurs['dateadhesionAdherent']}" />
 							</span>
 							</label> <label class="block mt-4 text-sm"> <span
-								class="text-gray-700 dark:text-gray-400">Profession</span>
-								<input type="text" name="professionAdherent"
+								class="text-gray-700 dark:text-gray-400">Profession</span> <input
+								type="text" name="professionAdherent"
 								class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input"
 								placeholder="" value="<c:out value="${adherent.profession}"/>" />
 								<span class="text-xs text-red-600 dark:text-red-400"> <c:out
 										value="${erreurs['professionAdherent']}" />
 							</span>
-							</label> <label class="block mt-4 text-sm"> <span
-								class="text-gray-700 dark:text-gray-400">Image</span> <input
-								type="file" name="photoAdherent" class="block mt-2"
-								placeholder="" />
 							</label>
-
 							<div class="mt-4 mb-4 text-sm">
 								<span class="text-gray-700 dark:text-gray-400"> Sexe </span>
 								<div class="mt-2">
@@ -162,14 +157,13 @@
 										class="inline-flex items-center text-gray-600 dark:text-gray-400">
 										<input type="radio"
 										class="text-purple-600 form-radio focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:focus:shadow-outline-gray"
-										name="sexeAdherent" value="Femme" checked="checked" />
-										<span class="ml-2">Femme</span>
+										name="sexeAdherent" value="Femme" checked="checked" /> <span
+										class="ml-2">Femme</span>
 									</label> <label
 										class="inline-flex items-center ml-6 text-gray-600 dark:text-gray-400">
 										<input type="radio"
 										class="text-purple-600 form-radio focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:focus:shadow-outline-gray"
-										name="sexeAdherent" value="homme" /> <span
-										class="ml-2">Homme</span>
+										name="sexeAdherent" value="homme" /> <span class="ml-2">Homme</span>
 									</label>
 								</div>
 							</div>
@@ -197,8 +191,8 @@
 										value="${erreurs['roleFonction']}" />
 							</span>
 							</label> <label class="block mt-4 text-sm"> <span
-								class="text-gray-700 dark:text-gray-400">Date
-									Début</span> <input type="date" name="dateDebutLigneFonction"
+								class="text-gray-700 dark:text-gray-400">Date Début</span> <input
+								type="date" name="dateDebutLigneFonction"
 								class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input"
 								placeholder=""
 								value="<c:out value="${adherent.ligneFonction.dateDebut}"/>" />
@@ -210,8 +204,8 @@
 								type="date" name="dateFinLigneFonction"
 								class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input"
 								placeholder=""
-								value="<c:out value="${adherent.ligneFonction.dateFin}"/>" />
-								<span class="text-xs text-red-600 dark:text-red-400"> <c:out
+								value="<c:out value="${adherent.ligneFonction.dateFin}"/>" /> <span
+								class="text-xs text-red-600 dark:text-red-400"> <c:out
 										value="${erreurs['dateFinLigneFonction']}" />
 							</span>
 							</label> <label class="bl ock mt-4 text-sm">

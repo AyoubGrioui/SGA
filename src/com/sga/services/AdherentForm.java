@@ -172,14 +172,13 @@ public class AdherentForm {
         String profession = getValeurChamp( request, CHAMP_PROFESSION );
         String sexe = getValeurChamp( request, CHAMP_SEXE );
         String motDePasse = getValeurChamp( request, CHAMP_MOT_DE_PASSE );
-        System.out.println( motDePasse );
         String telephone = getValeurChamp( request, CHAMP_TELEPHONE );
         String adresse = getValeurChamp( request, CHAMP_ADRESSE );
         String email = getValeurChamp( request, CHAMP_EMAIL );
 
-        Adherent adherent = new Adherent();
-
-        adherent.setIdAdherent( Long.parseLong( getValeurChamp( request, INTERNAL_ID_ADHERENT ) ) );
+        Long id = Long.parseLong( getValeurChamp( request, INTERNAL_ID_ADHERENT ) );
+        HibernateAdherentPersister adherentPers = new HibernateAdherentPersister();
+        Adherent adherent = adherentPers.read( id );
 
         try {
             validationDate( dateNaissance );
@@ -246,6 +245,8 @@ public class AdherentForm {
         }
         adherent.setTelephone( telephone );
 
+        System.out.println( email + " == " + adherent.getEmail() );
+
         try {
             if ( email == null || !email.equals( adherent.getEmail() ) )
                 validationEmail( email );
@@ -279,10 +280,6 @@ public class AdherentForm {
         erreurs.putAll( ligneFonctionForm.getErreurs() );
 
         // Persistance des Donnnée
-
-        for ( String er : getErreurs().values() ) {
-            System.out.println( er );
-        }
 
         if ( getErreurs().isEmpty() ) {
             HibernateAdherentPersister adherentPersister = new HibernateAdherentPersister();
@@ -402,8 +399,7 @@ public class AdherentForm {
             throw new Exception( "Merci de saisir une adresse mail." );
         } else {
             if ( !isEmailUnique( email ) )
-                throw new Exception( "l'email que vous avez entrer ." );
-
+                throw new Exception( "l'email que vous avez entrer  est deja liee a un autre compte." );
         }
     }
 
