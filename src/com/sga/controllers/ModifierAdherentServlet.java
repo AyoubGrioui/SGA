@@ -48,8 +48,7 @@ public class ModifierAdherentServlet extends HttpServlet {
             // HttpSession session = request.getSession();
             // suppression de l'adherent de la BD
             Adherent adherent = adherentPersister.read( id );
-            
-            System.out.println(adherent.getEmail());
+
             request.setAttribute( ATT_ADHERENT, adherent );
 
             // session.setAttribute(INTERNAL_ID_ADHERENT, id);

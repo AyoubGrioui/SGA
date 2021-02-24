@@ -245,8 +245,6 @@ public class AdherentForm {
         }
         adherent.setTelephone( telephone );
 
-        System.out.println( email + " == " + adherent.getEmail() );
-
         try {
             if ( email == null || !email.equals( adherent.getEmail() ) )
                 validationEmail( email );

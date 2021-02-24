@@ -13,6 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import com.sga.entities.Adherent;
+import com.sga.repositories.HibernateAdherentPersister;
 import com.sga.services.LoginAdherentForm;
 
 /**
@@ -35,8 +36,10 @@ public class LoginAdherentServlet extends HttpServlet {
 
     protected void doGet( HttpServletRequest request, HttpServletResponse response )
             throws ServletException, IOException {
-        HttpSession session = request.getSession();
+
         Adherent user = null;
+
+        HttpSession session = request.getSession();
         try {
             user = (Adherent) session.getAttribute( ATT_SESSION_USER );
 
@@ -44,13 +47,33 @@ public class LoginAdherentServlet extends HttpServlet {
             session.setAttribute( ATT_SESSION_USER, null );
         }
 
+        String email = null;
+        String pass = null;
+
+        Cookie[] cookies = request.getCookies();
+
+        if ( cookies != null ) {
+            for ( Cookie cookie : cookies ) {
+                if ( cookie.getName().equals( "username" ) ) {
+                    request.setAttribute( "username", cookie.getValue() );
+                } else if ( cookie.getName().equals( "password" ) ) {
+                    request.setAttribute( "password", cookie.getValue() );
+                }
+            }
+
+                this.getServletContext().getRequestDispatcher( VUE_LOGIN ).forward( request, response );
+                return;
+        }
+
         if ( user != null ) {
             String role = user.getLigneFonction().getFonction().getRole();
 
             if ( role.equals( "President(e)" ) )
                 response.sendRedirect( request.getContextPath() + "/indexPresident" );
-            if ( role.equals( "Secretaire" ) )
+            else if ( role.equals( "Secretaire" ) )
                 response.sendRedirect( request.getContextPath() + "/indexSecretaire" );
+           
+
         } else {
             this.getServletContext().getRequestDispatcher( VUE_LOGIN ).forward( request, response );
         }
@@ -73,24 +96,21 @@ public class LoginAdherentServlet extends HttpServlet {
         else
             session.setAttribute( ATT_SESSION_USER, null );
 
-        /* Si et seulement si la case du formulaire est cochée */
-        if ( req.getParameter( CHAMP_MEMOIRE ) != null ) {
-            /* Récupération de la date courante */
-            LocalDate dt = LocalDate.now();
-            /* Formatage de la date et conversion en texte */
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern( FORMAT_DATE );
-            String dateDerniereConnexion = dt.format( formatter ).toString();
-            /* Création du cookie, et ajout à la réponse HTTP */
-            setCookie( resp, COOKIE_DERNIERE_CONNEXION, dateDerniereConnexion, COOKIE_MAX_AGE );
-        } else {
-            /* Demande de suppression du cookie du navigateur */
-            setCookie( resp, COOKIE_DERNIERE_CONNEXION, "", 0 );
-        }
-
         /* Stockage du formulaire et du bean dans l'objet request */
         session.setAttribute( ATT_LOGIN_ADHERENT_FORM, loginAdherentForm );
 
         if ( user != null ) {
+
+            /* Si et seulement si la case du formulaire est cochée */
+            if ( req.getParameter( CHAMP_MEMOIRE ) != null ) {
+                setCookie( resp, "username", user.getEmail(), 60 * 60 * 24 * 30 );
+                setCookie( resp, "password", user.getMotDePasse(), 60 * 60 * 24 * 30 );
+            } else {
+                setCookie( resp, "username", "", 60 * 60 * 24 * 30 );
+                setCookie( resp, "password", "", 60 * 60 * 24 * 30 );
+
+            }
+
             String role = user.getLigneFonction().getFonction().getRole();
 
             if ( role.equals( "President(e)" ) )
