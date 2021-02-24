@@ -46,27 +46,24 @@ public class LoginDonateurServlet extends HttpServlet {
             session.setAttribute( ATT_SESSION_USER, null );
         }
 
-        String email = null;
-        String pass = null;
-
-        Cookie[] cookies = request.getCookies();
-
-        if ( cookies != null ) {
-            for ( Cookie cookie : cookies ) {
-                if ( cookie.getName().equals( "username" ) ) {
-                    request.setAttribute( "username", cookie.getValue() );
-                } else if ( cookie.getName().equals( "password" ) ) {
-                    request.setAttribute( "password", cookie.getValue() );
-                }
-            }
-
-            this.getServletContext().getRequestDispatcher( VUE_LOGIN ).forward( request, response );
-            return;
-        }
-
         if ( user != null ) {
             response.sendRedirect( request.getContextPath() + "/indexDonateur" );
         } else {
+            String email = null;
+            String pass = null;
+
+            Cookie[] cookies = request.getCookies();
+
+            if ( cookies != null ) {
+                for ( Cookie cookie : cookies ) {
+                    if ( cookie.getName().equals( "username" ) ) {
+                        request.setAttribute( "username", cookie.getValue() );
+                    } else if ( cookie.getName().equals( "password" ) ) {
+                        request.setAttribute( "password", cookie.getValue() );
+                    }
+                }
+
+            }
             this.getServletContext().getRequestDispatcher( VUE_LOGIN ).forward( request, response );
         }
     }
