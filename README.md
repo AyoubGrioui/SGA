@@ -6,12 +6,12 @@ L’application SGA permet l’automatisation de la gestion des associations, no
 
 Réalisé par :
 
-- Saidem Mohamed
 - El-youssefy Omaima
-- Grioui Ayoub
-- Erguiti Imane
-- Makhlouk Oussama
 - Elhilali Yassine
+- Erguiti Imane
+- Grioui Ayoub
+- Makhlouk Oussama
+- Saidem Mohamed
 
 ## Déploiement du projet
 
