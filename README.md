@@ -1,4 +1,4 @@
-# SGA
+# Systéme de Gestion des Associations
 
 ## Introduction
 
